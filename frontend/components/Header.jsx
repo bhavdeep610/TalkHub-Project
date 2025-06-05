@@ -29,7 +29,7 @@ const Header = () => {
             }
 
             console.log('Fetching profile picture for user:', userId);
-            const response = await axios.get(`http://localhost:5211/api/ProfilePicture/${userId}`, {
+            const response = await axios.get(`https://talkhub-backend-02fc.onrender.com/api/ProfilePicture/${userId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -46,7 +46,7 @@ const Header = () => {
                 // If it's already a full URL (starts with http or https), use it as is
                 const imageUrl = rawUrl.startsWith('http') 
                     ? rawUrl 
-                    : `http://localhost:5211/${rawUrl}`;
+                    : `http://xxx/${rawUrl}`;
                 
                 console.log('Setting profile picture URL:', imageUrl);
                 setProfilePicture(imageUrl);

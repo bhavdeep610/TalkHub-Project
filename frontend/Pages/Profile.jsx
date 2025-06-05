@@ -51,7 +51,7 @@ const Profile = () => {
             }
 
             // Load user data from backend
-            const userResponse = await axios.get(`http://localhost:5211/api/User/profile`, {
+            const userResponse = await axios.get(`https://talkhub-backend-02fc.onrender.com/api/User/profile`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -176,7 +176,7 @@ const Profile = () => {
             const userId = localStorage.getItem('userId');
 
             // Make API call to update the field
-            await axios.put(`http://localhost:5211/api/User/update`, {
+            await axios.put(`https://talkhub-backend-02fc.onrender.com/api/User/update`, {
                 [field]: editData[field]
             }, {
                 headers: {

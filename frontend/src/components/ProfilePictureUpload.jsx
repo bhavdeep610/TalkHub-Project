@@ -41,7 +41,7 @@ const ProfilePictureUpload = ({ isOpen, onClose, onUploadSuccess }) => {
         formData.append('file', selectedFile);
 
         try {
-            const response = await axios.post('http://localhost:5211/api/ProfilePicture/upload', formData, {
+            const response = await axios.post('https://talkhub-backend-02fc.onrender.com/api/ProfilePicture/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
