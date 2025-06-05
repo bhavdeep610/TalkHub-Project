@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create axios instance with your backend base URL
 const API = axios.create({
-  baseURL: '/api',  // This will be proxied by Vite
+  baseURL: 'http://localhost:5211/api',  // Direct URL to your backend
   timeout: 5000, // 5 second timeout
   headers: {
     'Content-Type': 'application/json',
@@ -52,8 +52,12 @@ API.interceptors.response.use(
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       
-      // Clear token and redirect to login
+      // Clear all auth data
       localStorage.removeItem('token');
+      localStorage.removeItem('userId');
+      localStorage.removeItem('username');
+      
+      // Use navigate if available, otherwise fallback to window.location
       window.location.href = '/login';
       
       return Promise.reject({

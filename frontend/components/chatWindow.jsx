@@ -67,14 +67,17 @@ MessageContent.displayName = 'MessageContent';
 const MessageBubble = memo(({ 
   message, 
   isCurrentUser, 
-  selectedUser, 
+  selectedUser,
+  currentUser, 
   isEditing, 
   editMessageContent,
+  setEditMessageContent,
   editInputRef,
   handleEditMessage,
   startEditing,
   cancelEditing,
-  handleDeleteMessage 
+  handleDeleteMessage,
+  profilePicture 
 }) => {
   const messageId = message.id || message.Id;
   const content = message.content || message.Content;
@@ -85,9 +88,17 @@ const MessageBubble = memo(({
       className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'} items-end space-x-2`}
     >
       {!isCurrentUser && (
-        <div className="h-6 w-6 rounded-full bg-purple-600 flex-shrink-0 flex items-center justify-center text-white text-xs">
-          {selectedUser.username[0].toUpperCase()}
-        </div>
+        profilePicture ? (
+          <img 
+            src={profilePicture} 
+            alt={`${selectedUser.username}'s profile`}
+            className="h-6 w-6 rounded-full object-cover flex-shrink-0"
+          />
+        ) : (
+          <div className="h-6 w-6 rounded-full bg-purple-600 flex-shrink-0 flex items-center justify-center text-white text-xs">
+            {selectedUser.username[0].toUpperCase()}
+          </div>
+        )
       )}
       
       <div className="group relative">
@@ -182,10 +193,41 @@ const ChatWindow = ({
   const [shouldAutoScroll, setShouldAutoScroll] = useState(true);
   const [isUserScrolling, setIsUserScrolling] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState('disconnected');
+  const [selectedUserProfilePicture, setSelectedUserProfilePicture] = useState(null);
+  const [currentUserProfilePicture, setCurrentUserProfilePicture] = useState(null);
   const messagesEndRef = useRef(null);
   const chatContainerRef = useRef(null);
   const editInputRef = useRef(null);
   const scrollTimeoutRef = useRef(null);
+
+  // Fetch profile pictures when users change
+  useEffect(() => {
+    const fetchProfilePictures = async () => {
+      if (selectedUser) {
+        try {
+          const response = await API.get(`/ProfilePicture/${selectedUser.id}`);
+          // Even if imageUrl is null, we still set it to indicate we tried fetching
+          setSelectedUserProfilePicture(response.data?.imageUrl || null);
+        } catch (error) {
+          console.error('Error fetching selected user profile picture:', error);
+          // Don't update the state on error to keep any existing profile picture
+        }
+      }
+
+      if (currentUser) {
+        try {
+          const response = await API.get(`/ProfilePicture/${currentUser.id}`);
+          // Even if imageUrl is null, we still set it to indicate we tried fetching
+          setCurrentUserProfilePicture(response.data?.imageUrl || null);
+        } catch (error) {
+          console.error('Error fetching current user profile picture:', error);
+          // Don't update the state on error to keep any existing profile picture
+        }
+      }
+    };
+
+    fetchProfilePictures();
+  }, [selectedUser, currentUser]);
 
   // Initialize SignalR with proper connection handling
   const { sendMessage, connectionState, connectionError, isConnecting } = useSignalR(token, (message) => {
@@ -510,150 +552,106 @@ const ChatWindow = ({
   }
 
   return (
-    <div className="flex flex-col h-full w-full bg-gray-50">
-      <Toaster />
+    <div className="flex flex-col h-full bg-white">
       {/* Chat Header */}
-      <div className="bg-white h-12 min-h-[48px] px-6 flex-shrink-0 border-b border-gray-200 flex items-center justify-between z-10">
-        <div className="flex items-center">
-          <div className="h-8 w-8 rounded-full bg-purple-600 flex items-center justify-center text-white font-semibold text-sm">
-            {selectedUser.username[0].toUpperCase()}
-          </div>
-          <div className="ml-3">
-            <h2 className="text-base font-semibold text-gray-800">
-              {selectedUser.username}
-            </h2>
-            {/* Connection Status Indicator */}
-            <div className="flex items-center">
-              <div
-                className={`w-2 h-2 rounded-full mr-2 ${
-                  connectionStatus === 'connected'
-                    ? 'bg-green-500'
-                    : connectionStatus === 'reconnecting'
-                    ? 'bg-yellow-500 animate-pulse'
-                    : connectionStatus === 'disconnecting'
-                    ? 'bg-blue-500 animate-pulse'
-                    : 'bg-red-500'
-                }`}
-              />
-              <span className="text-sm text-gray-500">
-                {connectionStatus === 'connected'
-                  ? 'Connected'
-                  : connectionStatus === 'reconnecting'
-                  ? 'Reconnecting...'
-                  : connectionStatus === 'disconnecting'
-                  ? 'Disconnecting...'
-                  : connectionStatus === 'connecting'
-                  ? 'Connecting...'
-                  : 'Disconnected'}
-              </span>
+      <div className="flex items-center px-6 py-3 border-b border-gray-200 bg-white">
+        <div className="flex items-center flex-1">
+          {selectedUser.profilePicture || selectedUserProfilePicture ? (
+            <img 
+              src={selectedUser.profilePicture || selectedUserProfilePicture} 
+              alt={selectedUser.username}
+              className="w-10 h-10 rounded-full object-cover border-2 border-purple-500"
+            />
+          ) : (
+            <div className="w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center text-white font-semibold border-2 border-purple-500">
+              {selectedUser.username[0].toUpperCase()}
             </div>
+          )}
+          <div className="ml-3">
+            <h2 className="text-lg font-semibold text-gray-900">{selectedUser.username}</h2>
+            <p className="text-sm text-gray-500">
+              {connectionStatus === 'connected' ? 'Online' : 'Connecting...'}
+            </p>
           </div>
         </div>
       </div>
 
       {/* Chat Messages */}
-      <div 
+      <div
         ref={chatContainerRef}
-        className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent px-6 py-4"
-        style={{ 
-          height: 'calc(100vh - 128px)', // Subtract navbar (48px) + chat header (48px) + input area (32px)
-          overscrollBehavior: 'contain'
-        }}
+        className="flex-1 overflow-y-auto p-4 space-y-4 bg-white scrollbar-thin scrollbar-thumb-purple-500 scrollbar-track-gray-100"
         onScroll={handleScroll}
       >
-        <div className="space-y-6">
-          {isLoadingMessages ? (
-            <div className="flex justify-center items-center h-full">
-              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-600"></div>
-            </div>
-          ) : messages.length === 0 ? (
-            <div className="flex justify-center items-center h-full text-gray-500 text-sm">
-              No messages yet. Start a conversation!
-            </div>
-          ) : (
-            <>
-              {groupedMessages.map(([dateKey, dateMessages]) => (
-                <div key={dateKey} className="space-y-3">
-                  <div className="flex justify-center sticky top-2 z-10">
-                    <div className="bg-white/80 backdrop-blur-sm text-gray-600 text-xs px-3 py-1 rounded-full shadow-sm border border-gray-100">
-                      {formatDate(dateKey)}
-                    </div>
-                  </div>
-                  {dateMessages.map((message) => (
-                    <MessageBubble
-                      key={message.id || message.Id}
-                      message={message}
-                      isCurrentUser={message.senderId === currentUser?.id}
-                      selectedUser={selectedUser}
-                      isEditing={editingMessageId === (message.id || message.Id)}
-                      editMessageContent={editMessageContent}
-                      editInputRef={editInputRef}
-                      handleEditMessage={handleEditMessage}
-                      startEditing={startEditing}
-                      cancelEditing={cancelEditing}
-                      handleDeleteMessage={handleDeleteMessage}
-                    />
-                  ))}
-                </div>
-              ))}
-              <div ref={messagesEndRef} className="h-3" />
-            </>
-          )}
-        </div>
+        {isLoadingMessages ? (
+          <div className="flex justify-center items-center h-full">
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-500"></div>
+          </div>
+        ) : messages.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-full text-gray-400">
+            <p>No messages yet</p>
+            <p className="text-sm">Send a message to start the conversation!</p>
+          </div>
+        ) : (
+          messages.map((message) => (
+            <MessageBubble
+              key={message.id || message.Id}
+              message={message}
+              isCurrentUser={message.senderId === currentUser.id}
+              selectedUser={selectedUser}
+              currentUser={currentUser}
+              isEditing={editingMessageId === (message.id || message.Id)}
+              editMessageContent={editMessageContent}
+              setEditMessageContent={setEditMessageContent}
+              editInputRef={editInputRef}
+              handleEditMessage={handleEditMessage}
+              startEditing={startEditing}
+              cancelEditing={cancelEditing}
+              handleDeleteMessage={handleDeleteMessage}
+              profilePicture={message.senderId === currentUser.id ? currentUserProfilePicture : selectedUserProfilePicture}
+            />
+          ))
+        )}
+        <div ref={messagesEndRef} />
       </div>
 
-      {/* New Message Indicator */}
-      {hasNewMessages && !shouldAutoScroll && (
-        <button
-          onClick={() => {
-            setShouldAutoScroll(true);
-            scrollToBottom(true);
-          }}
-          className="fixed bottom-24 left-1/2 transform -translate-x-1/2 bg-purple-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-purple-700 transition-colors z-10"
-        >
-          New messages ↓
-        </button>
-      )}
-
       {/* Message Input */}
-      <div className="bg-white border-t border-gray-200 px-4 py-2 h-16 min-h-[64px] flex-shrink-0">
-        <form onSubmit={handleSubmit} className="flex items-center space-x-3 h-full">
+      <div className="px-4 py-3 border-t border-gray-200 bg-white">
+        <form onSubmit={handleSubmit} className="flex items-center space-x-2">
           <input
             type="text"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            onKeyPress={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                handleSubmit(e);
-              }
-            }}
-            placeholder={
-              connectionStatus !== 'connected'
-                ? 'Connecting to chat...'
-                : 'Type a message...'
-            }
-            disabled={connectionStatus !== 'connected'}
-            className="flex-1 bg-gray-50 rounded-full border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+            placeholder="Type a message..."
+            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors duration-200"
           />
           <button
             type="submit"
-            disabled={!newMessage.trim() || connectionStatus !== 'connected'}
-            className="bg-purple-600 text-white px-4 py-2 rounded-full text-sm hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+            disabled={!newMessage.trim()}
+            className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
+              newMessage.trim()
+                ? 'bg-purple-600 text-white hover:bg-purple-700'
+                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+            }`}
           >
             Send
           </button>
         </form>
       </div>
 
-      {/* Status Message */}
-      {status && (
-        <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-10">
-          <div className="bg-gray-800 text-white px-3 py-1.5 rounded-lg shadow-lg text-sm">
-            {status}
-          </div>
-        </div>
+      {/* New Messages Notification */}
+      {hasNewMessages && !shouldAutoScroll && (
+        <button
+          onClick={() => {
+            scrollToBottom(true);
+            setHasNewMessages(false);
+          }}
+          className="absolute bottom-20 left-1/2 transform -translate-x-1/2 bg-purple-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-purple-700 transition-colors duration-200"
+        >
+          New Messages ↓
+        </button>
       )}
+
+      <Toaster position="top-center" />
     </div>
   );
 };

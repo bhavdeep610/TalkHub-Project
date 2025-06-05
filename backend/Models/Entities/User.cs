@@ -16,6 +16,8 @@ public class User
 
     public DateTime Created { get; set; }
 
+    public String? ProfilePictureUrl { get; set; }
     public ICollection<Message> SentMessages { get; set; }
     public ICollection<Message> ReceivedMessages { get; set; }
+    public virtual ProfilePicture ProfilePicture { get; set; } 
 }

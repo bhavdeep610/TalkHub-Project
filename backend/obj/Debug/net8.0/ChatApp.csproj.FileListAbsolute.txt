@@ -614,8 +614,6 @@ C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\package.json
 C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\appsettings.json
-C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\package-lock.json
-C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\package.json
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\ChatApp.staticwebassets.endpoints.json
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\ChatApp.exe
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\ChatApp.deps.json
@@ -752,5 +750,10 @@ C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chata
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Http.Connections.Client.dll
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Client.dll
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Client.Core.dll
-C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\ChatApp.staticwebassets.runtime.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\CloudinaryDotNet.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Cloudinary.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\dotenv.net.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\package-lock.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\package.json

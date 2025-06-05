@@ -6,6 +6,7 @@ using ChatApp.Models.Entities;
 using ChatApp.Data;
 using ChatApp.Interfaces;
 using ChatApp.Service;
+using ChatApp.Services;
 using Microsoft.OpenApi.Models;
 using ChatApp.Hubs;
 
@@ -30,6 +31,10 @@ builder.Services.AddSignalR(options =>
 
 // Custom Auth Service
 builder.Services.AddScoped<IAuthService, AuthService>();
+
+// Profile Picture Service
+builder.Services.AddScoped<CloudinaryService>();
+builder.Services.AddScoped<ProfilePictureService>();
 
 // JWT Auth with SignalR support
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -113,6 +118,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
+
+// Create uploads directory for profile pictures
+var uploadsPath = Path.Combine(app.Environment.WebRootPath, "uploads", "profile-pictures");
+if (!Directory.Exists(uploadsPath))
+{
+    Directory.CreateDirectory(uploadsPath);
+}
 
 // Auto migrate & seed roles
 using (var scope = app.Services.CreateScope())

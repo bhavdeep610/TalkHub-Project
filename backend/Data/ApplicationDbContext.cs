@@ -12,6 +12,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<AppRoles> AppRoles { get; set; }
     public DbSet<Message> Messages { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<ProfilePicture> ProfilePictures { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -152,6 +153,49 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
                 Created = DateTime.UtcNow
             }
         );
-    }
+        modelBuilder.Entity<ProfilePicture>(e =>
+        {
+            e.ToTable("profile_picture");
 
+            e.HasKey(p => p.Id);
+
+            e.Property(p => p.Id)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("id");
+
+            e.Property(p => p.UserId)
+                .HasColumnName("user_id")
+                .IsRequired();
+
+            e.Property(p => p.ImageUrl)
+                .HasColumnName("ImageUrl")
+                .IsRequired();
+
+
+            e.Property(p => p.UploadedAt)
+                .HasColumnName("uploaded_at")
+                .IsRequired();
+            
+            e.Property(p => p.UpdatedAt)
+                .HasColumnName("updated_at")
+                .IsRequired(false);
+
+
+            e.HasOne(p => p.User)
+             .WithOne(u => u.ProfilePicture)
+             .HasForeignKey<ProfilePicture>(p => p.UserId)
+             .OnDelete(DeleteBehavior.Cascade);
+        }
+
+
+       );
+    }
 }
+
+
+
+
+
+
+
+

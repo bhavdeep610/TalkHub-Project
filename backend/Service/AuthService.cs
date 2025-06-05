@@ -50,14 +50,14 @@ namespace ChatApp.Service
             return "Registration successful";
         }
 
-        public async Task<string?> LoginAsync(Login dto)
+        public async Task<LoginResponse> LoginAsync(Login dto)
         {
             var user = await _context.Users
                 .Include(u => u.Role)
                 .FirstOrDefaultAsync(u => u.UserName == dto.Username);
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
-                return null;
+                return new LoginResponse { Token = null, UserId = 0 };
 
             // Generate JWT token
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -83,7 +83,28 @@ namespace ChatApp.Service
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            return new LoginResponse 
+            { 
+                Token = tokenHandler.WriteToken(token),
+                UserId = user.Id
+            };
+        }
+
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        }
+
+        public async Task<bool> ResetPasswordAsync(string email, string newPassword)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            if (user == null)
+                return false;
+
+            // Hash the new password
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

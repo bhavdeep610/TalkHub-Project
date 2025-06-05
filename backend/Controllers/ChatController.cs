@@ -93,19 +93,48 @@ public class ChatController : ControllerBase
     [HttpPut("update/{id}")]
     public async Task<IActionResult> UpdateMessage(int id, [FromBody] UpdateMessage dto)
     {
-        int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-        var message = await _context.Messages.FindAsync(id);
+        try
+        {
+            int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var message = await _context.Messages.FindAsync(id);
 
-        if (message == null)
-            return NotFound();
+            if (message == null)
+                return NotFound("Message not found");
 
-        if (message.SenderId != userId)
-            return Forbid();
+            if (message.SenderId != userId)
+                return Forbid("You can only edit your own messages");
 
-        message.Content = dto.NewContent;
-        await _context.SaveChangesAsync();
+            if (string.IsNullOrWhiteSpace(dto.NewContent))
+                return BadRequest("Message content cannot be empty");
 
-        return Ok(message);
+            message.Content = dto.NewContent;
+            await _context.SaveChangesAsync();
+
+            var senderName = await _context.Users
+                .Where(u => u.Id == message.SenderId)
+                .Select(u => u.UserName)
+                .FirstOrDefaultAsync();
+
+            var receiverName = await _context.Users
+                .Where(u => u.Id == message.ReceiverId)
+                .Select(u => u.UserName)
+                .FirstOrDefaultAsync();
+
+            return Ok(new
+            {
+                id = message.MessageId,
+                content = message.Content,
+                senderId = message.SenderId,
+                receiverId = message.ReceiverId,
+                created = message.Created,
+                senderName = senderName,
+                receiverName = receiverName
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"An error occurred while updating the message: {ex.Message}");
+        }
     }
 
     [HttpDelete("delete/{id}")]

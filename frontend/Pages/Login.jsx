@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import API from '../src/services/api';
 import { motion } from 'framer-motion';
 import toast, { Toaster } from 'react-hot-toast';
@@ -45,33 +45,31 @@ const Login = () => {
       if (response.data && response.data.token) {
         // Store token and user data
         localStorage.setItem('token', response.data.token);
+        localStorage.setItem('username', username.trim());
+        localStorage.setItem('userId', response.data.userId.toString());
         
-        // Pre-fetch initial data before navigation
-        try {
-          // Fetch initial conversations
-          await API.get('/Chat/conversations');
-          
-          // Show success toast
-          toast.success('Login successful! Redirecting...', {
-            duration: 1000,
-            position: 'top-center',
-            style: {
-              background: '#10B981',
-              color: '#fff',
-              padding: '12px',
-              borderRadius: '8px',
-            },
-          });
+        // Show success toast
+        toast.success('Login successful! Redirecting...', {
+          duration: 1000,
+          position: 'top-center',
+          style: {
+            background: '#10B981',
+            color: '#fff',
+            padding: '12px',
+            borderRadius: '8px',
+          },
+        });
 
-          setError('');
-          
-          // Navigate after a short delay to allow toast to be seen
-          await new Promise(resolve => setTimeout(resolve, 1000));
-          navigate('/chat', { replace: true }); // Using replace to prevent back navigation to login
+        setError('');
+        
+        // Navigate immediately and then fetch data
+        navigate('/chat');
+        
+        // Fetch initial data after navigation
+        try {
+          await API.get('/Chat/conversations');
         } catch (fetchError) {
           console.error('Error fetching initial data:', fetchError);
-          // Still proceed with navigation even if pre-fetch fails
-          navigate('/chat', { replace: true });
         }
       } else {
         throw new Error('Invalid response from server: No token received');
@@ -195,32 +193,37 @@ const Login = () => {
             </button>
           </div>
 
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="mt-6 w-full bg-purple-600 text-white py-2.5 rounded-xl font-semibold transition-all duration-300 ease-in-out transform hover:scale-105 hover:bg-purple-700 hover:shadow-lg disabled:opacity-50"
-          >
-            {isLoading ? (
-              <div className="flex items-center justify-center">
-                <div className="w-5 h-5 border-t-2 border-b-2 border-white rounded-full animate-spin mr-2"></div>
-                Logging in...
-              </div>
-            ) : (
-              'Login'
-            )}
-          </button>
-        </form>
+          <div>
+            <button
+              type="submit"
+              disabled={isLoading}
+              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${
+                isLoading ? 'bg-purple-400' : 'bg-purple-600 hover:bg-purple-700'
+              } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500`}
+            >
+              {isLoading ? 'Signing in...' : 'Sign in'}
+            </button>
+          </div>
 
-        <p className="mt-6 text-center text-sm text-gray-600">
-          Don&apos;t have an account?{' '}
-          <button
-            onClick={() => navigate('/register')}
-            className="text-purple-600 font-semibold hover:underline"
-            disabled={isLoading}
-          >
-            Register
-          </button>
-        </p>
+          <div className="flex items-center justify-between">
+            <div className="text-sm">
+              <Link
+                to="/forgot-password"
+                className="font-medium text-purple-600 hover:text-purple-500"
+              >
+                Forgot your password?
+              </Link>
+            </div>
+            <div className="text-sm">
+              <Link
+                to="/register"
+                className="font-medium text-purple-600 hover:text-purple-500"
+              >
+                Don't have an account? Sign up
+              </Link>
+            </div>
+          </div>
+        </form>
 
         <div className="mt-4 text-center">
           <button

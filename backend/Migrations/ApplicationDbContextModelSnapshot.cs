@@ -53,6 +53,44 @@ namespace ChatApp.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ChatApp.Models.Entities.ProfilePicture", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("ImageUrl");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("updated_at");
+
+                    b.Property<DateTime>("UploadedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("uploaded_at");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("profile_picture", (string)null);
+                });
+
             modelBuilder.Entity("Message", b =>
                 {
                     b.Property<int>("MessageId")
@@ -92,7 +130,7 @@ namespace ChatApp.Migrations
                         {
                             MessageId = 1,
                             Content = "Hello, how are you?",
-                            Created = new DateTime(2025, 5, 23, 7, 32, 46, 239, DateTimeKind.Utc).AddTicks(4583),
+                            Created = new DateTime(2025, 6, 4, 13, 29, 36, 109, DateTimeKind.Utc).AddTicks(5490),
                             ReceiverId = 2,
                             SenderId = 3
                         },
@@ -100,7 +138,7 @@ namespace ChatApp.Migrations
                         {
                             MessageId = 2,
                             Content = "I am fine. Thank you.",
-                            Created = new DateTime(2025, 5, 23, 7, 32, 46, 239, DateTimeKind.Utc).AddTicks(4585),
+                            Created = new DateTime(2025, 6, 4, 13, 29, 36, 109, DateTimeKind.Utc).AddTicks(5491),
                             ReceiverId = 2,
                             SenderId = 3
                         });
@@ -132,6 +170,9 @@ namespace ChatApp.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("password_hash");
 
+                    b.Property<string>("ProfilePictureUrl")
+                        .HasColumnType("longtext");
+
                     b.Property<int?>("RoleId")
                         .IsRequired()
                         .HasColumnType("int")
@@ -154,7 +195,7 @@ namespace ChatApp.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2025, 5, 23, 7, 32, 46, 239, DateTimeKind.Utc).AddTicks(3528),
+                            Created = new DateTime(2025, 6, 4, 13, 29, 36, 109, DateTimeKind.Utc).AddTicks(4844),
                             Email = "admin@gmail.com",
                             PasswordHash = "admin123",
                             RoleId = 1,
@@ -163,7 +204,7 @@ namespace ChatApp.Migrations
                         new
                         {
                             Id = 2,
-                            Created = new DateTime(2025, 5, 23, 7, 32, 46, 239, DateTimeKind.Utc).AddTicks(3532),
+                            Created = new DateTime(2025, 6, 4, 13, 29, 36, 109, DateTimeKind.Utc).AddTicks(4846),
                             Email = "receiver@gmail.com",
                             PasswordHash = "receiver123",
                             RoleId = 2,
@@ -172,12 +213,23 @@ namespace ChatApp.Migrations
                         new
                         {
                             Id = 3,
-                            Created = new DateTime(2025, 5, 23, 7, 32, 46, 239, DateTimeKind.Utc).AddTicks(3533),
+                            Created = new DateTime(2025, 6, 4, 13, 29, 36, 109, DateTimeKind.Utc).AddTicks(4848),
                             Email = "sender@gmail.com",
                             PasswordHash = "sender123",
                             RoleId = 2,
                             UserName = "sender"
                         });
+                });
+
+            modelBuilder.Entity("ChatApp.Models.Entities.ProfilePicture", b =>
+                {
+                    b.HasOne("User", "User")
+                        .WithOne("ProfilePicture")
+                        .HasForeignKey("ChatApp.Models.Entities.ProfilePicture", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Message", b =>
@@ -221,6 +273,9 @@ namespace ChatApp.Migrations
 
             modelBuilder.Entity("User", b =>
                 {
+                    b.Navigation("ProfilePicture")
+                        .IsRequired();
+
                     b.Navigation("ReceivedMessages");
 
                     b.Navigation("SentMessages");
