@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ProfilePictureUpload from '../components/ProfilePictureUpload';
-import API from '../services/API';
+import API from '../src/services/api';
 
 const Profile = () => {
     const navigate = useNavigate();
