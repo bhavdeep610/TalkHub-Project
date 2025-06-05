@@ -1,8 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["ChatApp.csproj", "./"]
-RUN dotnet restore "ChatApp.csproj"
 COPY . .
+RUN dotnet restore "ChatApp.csproj"
 RUN dotnet build "ChatApp.csproj" -c Release -o /app/build
 
 FROM build AS publish
