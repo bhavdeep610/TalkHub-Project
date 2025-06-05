@@ -9,6 +9,7 @@ using ChatApp.Service;
 using ChatApp.Services;
 using Microsoft.OpenApi.Models;
 using ChatApp.Hubs;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,16 +20,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     try 
     {
         var serverVersion = new MySqlServerVersion(new Version(8, 0, 0));
-        
         options.UseMySql(connectionString, serverVersion, mySqlOptions =>
         {
             mySqlOptions.EnableRetryOnFailure(
                 maxRetryCount: 10,
                 maxRetryDelay: TimeSpan.FromSeconds(30),
                 errorNumbersToAdd: null);
-            
-            // Required for Railway.app MySQL
-            mySqlOptions.SslMode(MySqlSslMode.Required);
         });
     }
     catch (Exception ex)
