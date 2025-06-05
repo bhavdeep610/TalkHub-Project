@@ -14,10 +14,23 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseMySql(
-        builder.Configuration.GetConnectionString("ChatAppConnection"),
-        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("ChatAppConnection"))
-    ));
+{
+    var connectionString = builder.Configuration.GetConnectionString("ChatAppConnection");
+    var serverVersion = ServerVersion.AutoDetect(connectionString);
+    
+    options.UseMySql(connectionString, serverVersion, mySqlOptions =>
+    {
+        mySqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 10,
+            maxRetryDelay: TimeSpan.FromSeconds(30),
+            errorNumbersToAdd: null);
+        
+        if (builder.Environment.IsProduction())
+        {
+            mySqlOptions.SslMode(MySqlSslMode.VerifyFull);
+        }
+    });
+});
 
 // Add SignalR with detailed configuration
 builder.Services.AddSignalR(options =>
@@ -106,11 +119,12 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowViteDevClient", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "http://127.0.0.1:5173")
+        policy.WithOrigins("http://localhost:5173", 
+                          "http://127.0.0.1:5173",
+                          "https://talk-hub-project.vercel.app")
               .AllowAnyHeader()
               .AllowAnyMethod()
-              .AllowCredentials()
-              .SetIsOriginAllowed(_ => true); // Be careful with this in production
+              .AllowCredentials();
     });
 });
 
