@@ -12,7 +12,7 @@ class SignalRService {
         this.connectionStarted = false;
         this.retryCount = 0;
         this.maxRetries = 5;
-        this.baseUrl = 'http://localhost:5211';
+        this.baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:8080';
 
         this.isStarting = false;
         this.isStopping = false;

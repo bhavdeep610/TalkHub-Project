@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create axios instance with your backend base URL
 const API = axios.create({
-  baseURL: 'http://localhost:5211/api',  // Direct URL to your backend
+  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:8080/api',  // Updated to use port 8080
   timeout: 5000, // 5 second timeout
   headers: {
     'Content-Type': 'application/json',
