@@ -16,20 +16,26 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     var connectionString = builder.Configuration.GetConnectionString("ChatAppConnection");
-    var serverVersion = ServerVersion.AutoDetect(connectionString);
-    
-    options.UseMySql(connectionString, serverVersion, mySqlOptions =>
+    try 
     {
-        mySqlOptions.EnableRetryOnFailure(
-            maxRetryCount: 10,
-            maxRetryDelay: TimeSpan.FromSeconds(30),
-            errorNumbersToAdd: null);
+        var serverVersion = new MySqlServerVersion(new Version(8, 0, 0));
         
-        if (builder.Environment.IsProduction())
+        options.UseMySql(connectionString, serverVersion, mySqlOptions =>
         {
-            mySqlOptions.SslMode(MySqlSslMode.VerifyFull);
-        }
-    });
+            mySqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 10,
+                maxRetryDelay: TimeSpan.FromSeconds(30),
+                errorNumbersToAdd: null);
+            
+            // Required for Railway.app MySQL
+            mySqlOptions.SslMode(MySqlSslMode.Required);
+        });
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Database connection error: {ex.Message}");
+        throw;
+    }
 });
 
 // Add SignalR with detailed configuration
