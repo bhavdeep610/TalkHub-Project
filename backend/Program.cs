@@ -120,11 +120,9 @@ builder.Services.AddEndpointsApiExplorer();
 var app = builder.Build();
 
 // Create uploads directory for profile pictures
-var uploadsPath = Path.Combine(app.Environment.WebRootPath, "uploads", "profile-pictures");
-if (!Directory.Exists(uploadsPath))
-{
-    Directory.CreateDirectory(uploadsPath);
-}
+string contentRootPath = app.Environment.ContentRootPath;
+var uploadsPath = Path.Combine(contentRootPath, "wwwroot", "uploads", "profile-pictures");
+Directory.CreateDirectory(uploadsPath); // This will create all necessary parent directories
 
 // Auto migrate & seed roles
 using (var scope = app.Services.CreateScope())
