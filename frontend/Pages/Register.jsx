@@ -49,7 +49,7 @@ function Register() {
     }
 
     try {
-      const response = await API.post('/auth/register', {
+      const response = await API.post('/Auth/register', {
         username,
         email,
         password

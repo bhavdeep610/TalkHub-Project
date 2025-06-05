@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ProfilePictureUpload from '../components/ProfilePictureUpload';
+import API from '../services/API';
 
 const Profile = () => {
     const navigate = useNavigate();
@@ -71,7 +72,7 @@ const Profile = () => {
 
             // Load profile picture
             try {
-                const response = await axios.get(`http://localhost:5211/api/ProfilePicture/${userId}`, {
+                const response = await API.get(`/ProfilePicture/${userId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -84,7 +85,7 @@ const Profile = () => {
                     
                     const imageUrl = rawUrl.startsWith('http')
                         ? rawUrl
-                        : `http://localhost:5211/${rawUrl}`;
+                        : `${API.defaults.baseURL}/${rawUrl}`;
                     
                     userData.profilePicture = imageUrl;
                 }
@@ -113,7 +114,7 @@ const Profile = () => {
             
             const imageUrl = rawUrl.startsWith('http')
                 ? rawUrl
-                : `http://localhost:5211/${rawUrl}`;
+                : `${API.defaults.baseURL}/${rawUrl}`;
             
             setProfileData(prev => ({
                 ...prev,

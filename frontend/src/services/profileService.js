@@ -1,12 +1,10 @@
-import axios from 'axios';
-
-const API_URL = 'http://localhost:5000/api';
+import API from './api';
 
 export const uploadProfilePicture = async (file) => {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await axios.post(`${API_URL}/ProfilePicture/upload`, formData, {
+    const response = await API.post('/ProfilePicture/upload', formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
             'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -16,7 +14,7 @@ export const uploadProfilePicture = async (file) => {
 };
 
 export const getProfilePicture = async (userId) => {
-    const response = await axios.get(`${API_URL}/ProfilePicture/${userId}`, {
+    const response = await API.get(`/ProfilePicture/${userId}`, {
         headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -25,7 +23,7 @@ export const getProfilePicture = async (userId) => {
 };
 
 export const deleteProfilePicture = async () => {
-    await axios.delete(`${API_URL}/ProfilePicture`, {
+    await API.delete('/ProfilePicture', {
         headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
