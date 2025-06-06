@@ -13,20 +13,27 @@ class SignalRService {
         this.retryCount = 0;
         this.maxRetries = 5;
         this.baseUrl = process.env.REACT_APP_API_URL || 'https://talkhub-backend-02fc.onrender.com';
-
         this.isStarting = false;
         this.isStopping = false;
+        this.reconnectTimeout = null;
     }
 
     async startConnection(token) {
-        if (this.connectionStarted || this.isStarting || this.isStopping) return;
+        if (this.connectionStarted || this.isStarting || this.isStopping) {
+            console.log('Connection already exists or is in progress');
+            return;
+        }
+
+        if (this.reconnectTimeout) {
+            clearTimeout(this.reconnectTimeout);
+            this.reconnectTimeout = null;
+        }
 
         this.isStarting = true;
         try {
             if (this.connection) {
                 console.warn('Stopping existing connection before restarting...');
-                await this.connection.stop();
-                this.connection = null;
+                await this.stopConnection();
             }
 
             const connectionBuilder = new signalR.HubConnectionBuilder()
@@ -37,8 +44,18 @@ class SignalRService {
                     logger: signalR.LogLevel.Warning
                 })
                 .withAutomaticReconnect({
-                    nextRetryDelayInMilliseconds: retryContext =>
-                        retryContext.elapsedMilliseconds < 60000 ? Math.random() * 10000 : null
+                    nextRetryDelayInMilliseconds: retryContext => {
+                        if (retryContext.elapsedMilliseconds < 60000) {
+                            // First minute: try every 10 seconds
+                            return Math.min(10000, 1000 * Math.pow(2, retryContext.previousRetryCount));
+                        }
+                        if (retryContext.elapsedMilliseconds < 300000) {
+                            // First 5 minutes: try every 30 seconds
+                            return 30000;
+                        }
+                        // After 5 minutes: stop trying
+                        return null;
+                    }
                 })
                 .configureLogging(signalR.LogLevel.Warning)
                 .build();
@@ -46,7 +63,6 @@ class SignalRService {
             this.connection = connectionBuilder;
             this.setupEventHandlers();
 
-            console.log('Starting SignalR connection...');
             await this.connection.start();
             console.log('Connected to SignalR hub');
 
@@ -59,30 +75,40 @@ class SignalRService {
             console.error('Error starting SignalR connection:', err);
             this.connectionStarted = false;
             this.notifyConnectionChange({ status: 'error', error: err });
+            
+            // Schedule a single retry after 5 seconds
+            if (!this.reconnectTimeout) {
+                this.reconnectTimeout = setTimeout(() => {
+                    this.reconnectTimeout = null;
+                    if (!this.connectionStarted && !this.isStarting) {
+                        this.startConnection(token);
+                    }
+                }, 5000);
+            }
         } finally {
             this.isStarting = false;
         }
     }
 
     async stopConnection() {
-        if (!this.connection || this.isStopping || this.isStarting) return;
+        if (this.isStopping || !this.connection) return;
 
         this.isStopping = true;
         try {
-            this.notifyConnectionChange({ status: 'disconnecting' });
             await this.connection.stop();
+            this.connection = null;
             this.connectionStarted = false;
-            console.log('Disconnected from SignalR hub');
             this.notifyConnectionChange({ status: 'disconnected' });
         } catch (err) {
             console.error('Error stopping SignalR connection:', err);
-            this.notifyConnectionChange({ status: 'error', error: err });
         } finally {
             this.isStopping = false;
         }
     }
 
     setupEventHandlers() {
+        if (!this.connection) return;
+
         this.connection.on('ReceiveMessage', (message) => {
             this.messageHandlers.forEach(handler => handler(message));
         });
@@ -105,6 +131,8 @@ class SignalRService {
         });
 
         this.connection.onreconnecting((error) => {
+            if (this.isReconnecting) return;
+            
             console.log('Reconnecting to SignalR hub...', error);
             this.isReconnecting = true;
             this.connectionStarted = false;
@@ -121,53 +149,38 @@ class SignalRService {
         });
 
         this.connection.onclose((error) => {
-            console.log('Connection closed', error);
+            console.log('SignalR connection closed', error);
             this.connectionStarted = false;
             this.notifyConnectionChange({ status: 'disconnected', error });
-
-            if (this.retryCount < this.maxRetries) {
-                this.retryCount++;
-                console.log(`Attempting to reconnect... (Attempt ${this.retryCount} of ${this.maxRetries})`);
-                setTimeout(() => {
-                    this.startConnection(); // Note: ensure token is accessible or stored
-                }, 2000 * this.retryCount);
-            }
         });
     }
 
     async sendMessage(receiverId, content) {
-        const message = { receiverId, content };
-
-        if (!this.connectionStarted || this.isReconnecting) {
-            this.messageQueue.push(message);
-            console.log('Message queued:', message);
-            return { queued: true, message };
+        if (!this.connection || !this.connectionStarted) {
+            this.messageQueue.push({ receiverId, content });
+            throw new Error('Not connected to chat');
         }
 
         try {
             await this.connection.invoke('SendMessage', receiverId, content);
-            return { sent: true, message };
         } catch (error) {
             console.error('Error sending message:', error);
-            this.messageQueue.push(message);
-            return { queued: true, error, message };
+            this.messageQueue.push({ receiverId, content });
+            throw error;
         }
     }
 
     async processMessageQueue() {
         if (!this.connectionStarted || this.messageQueue.length === 0) return;
 
-        console.log(`Processing ${this.messageQueue.length} queued messages`);
-        const messages = [...this.messageQueue];
-        this.messageQueue = [];
-
-        for (const message of messages) {
+        while (this.messageQueue.length > 0 && this.connectionStarted) {
+            const { receiverId, content } = this.messageQueue[0];
             try {
-                await this.connection.invoke('SendMessage', message.receiverId, message.content);
-                console.log('Queued message sent successfully:', message);
+                await this.connection.invoke('SendMessage', receiverId, content);
+                this.messageQueue.shift(); // Remove the message after successful send
             } catch (error) {
-                console.error('Error sending queued message:', error);
-                this.messageQueue.push(message); // Re-queue
+                console.error('Error processing message queue:', error);
+                break;
             }
         }
     }
@@ -201,20 +214,15 @@ class SignalRService {
         return () => this.connectionHandlers.delete(handler);
     }
 
-    notifyConnectionChange(state) {
-        this.connectionHandlers.forEach(handler => {
-            try {
-                handler(state);
-            } catch (error) {
-                console.error('Error in connection state handler:', error);
-            }
-        });
+    notifyConnectionChange(status) {
+        this.connectionHandlers.forEach(handler => handler(status));
     }
 
     isConnected() {
-        return this.connectionStarted && !this.isReconnecting;
+        return this.connectionStarted && this.connection?.state === signalR.HubConnectionState.Connected;
     }
 }
 
+// Create a singleton instance
 const signalRService = new SignalRService();
 export default signalRService;

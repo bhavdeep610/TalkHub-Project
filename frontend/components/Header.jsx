@@ -28,28 +28,32 @@ const Header = () => {
                 return;
             }
 
-            console.log('Fetching profile picture for user:', userId);
             const response = await axios.get(`https://talkhub-backend-02fc.onrender.com/api/ProfilePicture/${userId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
             
-            console.log('Profile picture response:', response.data);
-            
             if (response.data) {
-                // Handle both string and object responses
-                const rawUrl = typeof response.data === 'string' 
-                    ? response.data
-                    : (response.data.imageUrl || response.data);
+                let imageUrl = null;
                 
-                // If it's already a full URL (starts with http or https), use it as is
-                const imageUrl = rawUrl.startsWith('http') 
-                    ? rawUrl 
-                    : `http://xxx/${rawUrl}`;
-                
-                console.log('Setting profile picture URL:', imageUrl);
-                setProfilePicture(imageUrl);
+                // Handle different response formats
+                if (typeof response.data === 'string') {
+                    imageUrl = response.data;
+                } else if (response.data.imageUrl) {
+                    imageUrl = response.data.imageUrl;
+                } else if (response.data.fileUrl) {
+                    imageUrl = response.data.fileUrl;
+                }
+
+                // Only set the profile picture if we have a valid URL
+                if (imageUrl) {
+                    // Ensure the URL is absolute
+                    if (!imageUrl.startsWith('http')) {
+                        imageUrl = `https://talkhub-backend-02fc.onrender.com${imageUrl}`;
+                    }
+                    setProfilePicture(imageUrl);
+                }
             }
         } catch (error) {
             console.error('Error loading profile picture:', error);
@@ -76,7 +80,7 @@ const Header = () => {
             <div className="flex items-center justify-between max-w-7xl mx-auto">
                 <div className="flex items-center space-x-8">
                     <h1 className="text-2xl font-semibold text-purple-700 cursor-pointer">
-                TalkHub
+                        TalkHub
                     </h1>
                 </div>
                 
