@@ -200,34 +200,6 @@ const ChatWindow = ({
   const editInputRef = useRef(null);
   const scrollTimeoutRef = useRef(null);
 
-  // Fetch profile pictures when users change
-  useEffect(() => {
-    const fetchProfilePictures = async () => {
-      if (!selectedUser || !currentUser) return;
-
-      const fetchPicture = async (userId) => {
-        try {
-          const response = await API.get(`/ProfilePicture/${userId}`);
-          return response.data?.imageUrl || null;
-        } catch (error) {
-          console.error('Error fetching profile picture:', error);
-          return null;
-        }
-      };
-
-      // Use Promise.all to fetch both pictures concurrently
-      const [selectedUserPic, currentUserPic] = await Promise.all([
-        fetchPicture(selectedUser.id),
-        fetchPicture(currentUser.id)
-      ]);
-
-      setSelectedUserProfilePicture(selectedUserPic);
-      setCurrentUserProfilePicture(currentUserPic);
-    };
-
-    fetchProfilePictures();
-  }, [selectedUser?.id, currentUser?.id]); // Only re-run when user IDs change
-
   // Initialize SignalR with proper connection handling
   const { sendMessage, connectionState, connectionError, isConnecting } = useSignalR(token, useCallback((message) => {
     // Handle incoming messages
@@ -243,47 +215,57 @@ const ChatWindow = ({
   useEffect(() => {
     let mounted = true;
     let debounceTimeout;
+    let lastStatusUpdate = Date.now();
+    const MIN_STATUS_UPDATE_INTERVAL = 1000; // 1 second minimum between status updates
 
     const handleConnectionChange = ({ status, error }) => {
       if (!mounted) return;
       
-      // Clear any existing timeout
-      if (debounceTimeout) {
-        clearTimeout(debounceTimeout);
+      const now = Date.now();
+      if (now - lastStatusUpdate < MIN_STATUS_UPDATE_INTERVAL) {
+        // If we're updating too frequently, debounce
+        if (debounceTimeout) {
+          clearTimeout(debounceTimeout);
+        }
+        debounceTimeout = setTimeout(() => {
+          if (!mounted) return;
+          updateConnectionStatus(status, error);
+        }, MIN_STATUS_UPDATE_INTERVAL);
+        return;
       }
 
-      // Debounce the status update
-      debounceTimeout = setTimeout(() => {
-        if (!mounted) return;
+      updateConnectionStatus(status, error);
+      lastStatusUpdate = now;
+    };
 
-        console.log('[ChatWindow] SignalR connection status changed:', status);
-        setConnectionStatus(status);
+    const updateConnectionStatus = (status, error) => {
+      console.log('[ChatWindow] SignalR connection status changed:', status);
+      setConnectionStatus(status);
 
-        if (status === 'error' && error) {
-          toast.error(`Connection error: ${error?.message || 'Unknown error'}`, {
-            duration: 3000,
-            position: 'top-center',
-          });
-        } else if (status === 'disconnecting') {
-          toast('Disconnecting from chat...', {
-            duration: 1500,
-            position: 'top-center',
-            icon: '🔄'
-          });
-        } else if (status === 'reconnecting') {
-          toast('Reconnecting to chat...', {
-            duration: 2000,
-            position: 'top-center',
-            icon: '🔄'
-          });
-        } else if (status === 'connected') {
-          toast.success('Connected to chat', {
-            duration: 2000,
-            position: 'top-center',
-            icon: '✅'
-          });
-        }
-      }, 300); // 300ms debounce
+      if (status === 'error' && error) {
+        toast.error(`Connection error: ${error?.message || 'Unknown error'}`, {
+          duration: 3000,
+          position: 'top-center',
+        });
+      } else if (status === 'disconnecting') {
+        toast('Disconnecting from chat...', {
+          duration: 1500,
+          position: 'top-center',
+          icon: '🔄'
+        });
+      } else if (status === 'reconnecting') {
+        toast('Reconnecting to chat...', {
+          duration: 2000,
+          position: 'top-center',
+          icon: '🔄'
+        });
+      } else if (status === 'connected') {
+        toast.success('Connected to chat', {
+          duration: 2000,
+          position: 'top-center',
+          icon: '✅'
+        });
+      }
     };
 
     const unsubscribe = signalRService.onConnectionChange(handleConnectionChange);
@@ -303,6 +285,52 @@ const ChatWindow = ({
       unsubscribe();
     };
   }, []);
+
+  // Fetch profile pictures when users change, with caching
+  useEffect(() => {
+    const profilePictureCache = new Map();
+    let mounted = true;
+
+    const fetchProfilePictures = async () => {
+      if (!selectedUser || !currentUser) return;
+
+      const fetchPicture = async (userId) => {
+        // Check cache first
+        if (profilePictureCache.has(userId)) {
+          return profilePictureCache.get(userId);
+        }
+
+        try {
+          const response = await API.get(`/ProfilePicture/${userId}`);
+          const imageUrl = response.data?.imageUrl || null;
+          if (imageUrl) {
+            profilePictureCache.set(userId, imageUrl);
+          }
+          return imageUrl;
+        } catch (error) {
+          console.error('Error fetching profile picture:', error);
+          return null;
+        }
+      };
+
+      // Use Promise.all to fetch both pictures concurrently
+      const [selectedUserPic, currentUserPic] = await Promise.all([
+        fetchPicture(selectedUser.id),
+        fetchPicture(currentUser.id)
+      ]);
+
+      if (mounted) {
+        if (selectedUserPic) setSelectedUserProfilePicture(selectedUserPic);
+        if (currentUserPic) setCurrentUserProfilePicture(currentUserPic);
+      }
+    };
+
+    fetchProfilePictures();
+
+    return () => {
+      mounted = false;
+    };
+  }, [selectedUser?.id, currentUser?.id]);
 
   // Memoize the grouped messages to prevent unnecessary re-renders
   const groupedMessages = useMemo(() => {
