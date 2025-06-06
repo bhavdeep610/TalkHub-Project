@@ -1,40 +1,58 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Login from '../Pages/Login';
-import Register from '../Pages/Register';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ThemeProvider } from './contexts/ThemeContext';
+import { useTheme } from './contexts/ThemeContext';
+import Login from './Pages/Login';
+import Register from './Pages/Register';
+import Chat from './Pages/Chat';
+import Profile from './Pages/Profile';
 import Home from '../Pages/Home'; // You need to create this file
 import ChatPage from '../Pages/ChatPage'; 
-import Profile from '../Pages/Profile';
 import ForgotPassword from '../Pages/ForgotPassword';
 import PrivateRoute from '../components/PrivateRoute';
 
-function App() {
+// Wrapper component to apply theme styles
+const ThemedApp = () => {
+  const { isDarkMode } = useTheme();
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route 
-          path="/chat" 
-          element={
-            <PrivateRoute>
-              <ChatPage />
-            </PrivateRoute>
-          } 
-        />
-        <Route 
-          path="/profile" 
-          element={
-            <PrivateRoute>
-              <Profile />
-            </PrivateRoute>
-          } 
-        />
-      </Routes>
-    </BrowserRouter>
+    <div className={`min-h-screen transition-colors duration-200 ${
+      isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'
+    }`}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route 
+            path="/chat" 
+            element={
+              <PrivateRoute>
+                <ChatPage />
+              </PrivateRoute>
+            } 
+          />
+          <Route 
+            path="/profile" 
+            element={
+              <PrivateRoute>
+                <Profile />
+              </PrivateRoute>
+            } 
+          />
+        </Routes>
+      </Router>
+    </div>
   );
-}
+};
+
+const App = () => {
+  return (
+    <ThemeProvider>
+      <ThemedApp />
+    </ThemeProvider>
+  );
+};
 
 export default App;

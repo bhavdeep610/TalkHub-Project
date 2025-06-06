@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import ThemeToggle from '../src/components/ThemeToggle';
+import { useTheme } from '../src/contexts/ThemeContext';
 
 const Header = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [profilePicture, setProfilePicture] = useState(null);
     const [username, setUsername] = useState('');
+    const { isDarkMode } = useTheme();
     
     useEffect(() => {
         loadProfilePicture();
@@ -76,17 +79,28 @@ const Header = () => {
     }
 
     return (
-        <header className="w-full px-5 py-2 bg-white border-b border-gray-200 sticky top-0 z-50">
+        <header className={`w-full px-5 py-2 sticky top-0 z-50 transition-colors duration-200 ${
+            isDarkMode 
+                ? 'bg-gray-800 border-gray-700 text-white' 
+                : 'bg-white border-gray-200'
+        } border-b`}>
             <div className="flex items-center justify-between max-w-7xl mx-auto">
                 <div className="flex items-center space-x-8">
-                    <h1 className="text-2xl font-semibold text-purple-700 cursor-pointer">
+                    <h1 className={`text-2xl font-semibold ${
+                        isDarkMode ? 'text-purple-400' : 'text-purple-700'
+                    } cursor-pointer`}>
                         TalkHub
                     </h1>
                 </div>
                 
                 <div className="flex items-center space-x-4">
+                    <ThemeToggle />
                     <div className="flex items-center space-x-3">
-                        <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-purple-600 flex items-center justify-center bg-gray-100">
+                        <div className={`w-9 h-9 rounded-full overflow-hidden border-2 ${
+                            isDarkMode ? 'border-purple-400' : 'border-purple-600'
+                        } flex items-center justify-center ${
+                            isDarkMode ? 'bg-gray-700' : 'bg-gray-100'
+                        }`}>
                             {profilePicture ? (
                                 <img 
                                     src={profilePicture} 
@@ -99,23 +113,31 @@ const Header = () => {
                                     }}
                                 />
                             ) : (
-                                <span className="text-sm font-medium text-gray-600">
+                                <span className={`text-sm font-medium ${
+                                    isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                                }`}>
                                     {username[0]?.toUpperCase()}
                                 </span>
                             )}
                         </div>
-                        <span className="text-sm font-medium text-gray-700">
+                        <span className={`text-sm font-medium ${
+                            isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                        }`}>
                             {username}
                         </span>
                         <Link
                             to="/profile"
-                            className="px-4 py-2 text-sm font-medium text-purple-600 bg-purple-50 rounded-md transition-colors duration-200 hover:bg-purple-100"
+                            className={`px-4 py-2 text-sm font-medium ${
+                                isDarkMode ? 'text-purple-400 bg-purple-700' : 'text-purple-600 bg-purple-50'
+                            } rounded-md transition-colors duration-200 hover:bg-purple-100`}
                         >
                             Profile
                         </Link>
                         <button 
                             onClick={handleLogout}
-                            className="px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-md transition-colors duration-200 hover:bg-purple-700"
+                            className={`px-4 py-2 text-sm font-medium ${
+                                isDarkMode ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-red-500 hover:bg-red-600 text-white'
+                            } rounded-md transition-colors duration-200`}
                         >
                             Logout
                         </button>
