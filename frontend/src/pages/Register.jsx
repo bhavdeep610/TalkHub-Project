@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import API from '../src/services/api';
+import API from '@services/api';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import toast, { Toaster } from 'react-hot-toast';

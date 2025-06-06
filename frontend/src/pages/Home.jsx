@@ -1,9 +1,10 @@
 import React from 'react';
 import { Users, Shield, Zap, Globe } from 'lucide-react';
-import "../src/index.css";
 import { useNavigate } from 'react-router-dom';
-import heroImg from '../assets/chat-illustration.avif'; // Make sure this image exists
 import { motion } from 'framer-motion';
+import heroImg from '@/assets/chat-illustration.avif';
+import '@/index.css';
+
 export default function NexChatHomepage() {
   const navigate = useNavigate();
 
@@ -20,7 +21,7 @@ export default function NexChatHomepage() {
   const animateButton = (id) => {
     const el = document.getElementById(id);
     if (!el) return;
-    el.classList.add("scale-90", "opacity-80");r̥
+    el.classList.add("scale-90", "opacity-80");
     setTimeout(() => {
       el.classList.remove("scale-90", "opacity-80");
     }, 150);

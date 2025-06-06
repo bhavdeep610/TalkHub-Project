@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import ProfilePictureUpload from '../components/ProfilePictureUpload';
-import API from '../src/services/api';
+import API from '@services/api';
+import ProfilePictureUpload from '@components/ProfilePictureUpload';
 
 const Profile = () => {
     const navigate = useNavigate();

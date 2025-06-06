@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import API from '../src/services/api';
 import { motion } from 'framer-motion';
 import toast, { Toaster } from 'react-hot-toast';
+import API from '@services/api';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');

@@ -7,6 +7,7 @@ import Register from '@pages/Register';
 import Chat from '@pages/Chat';
 import Profile from '@pages/Profile';
 import ForgotPassword from '@pages/ForgotPassword';
+import Home from '@pages/Home';
 import PrivateRoute from '@components/PrivateRoute';
 
 // Wrapper component to apply theme styles
@@ -19,11 +20,12 @@ const ThemedApp = () => {
     }`}>
       <Router>
         <Routes>
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route 
-            path="/" 
+            path="/chat" 
             element={
               <PrivateRoute>
                 <Chat />
