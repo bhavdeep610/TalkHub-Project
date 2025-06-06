@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '@contexts/ThemeContext';
 import { useNavigate } from 'react-router-dom';
+import API from '@services/api';
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [conversations, setConversations] = useState([]);
   const [currentConversation, setCurrentConversation] = useState(null);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { isDarkMode } = useTheme();
   const navigate = useNavigate();
 
@@ -22,37 +25,41 @@ const Chat = () => {
 
   const fetchConversations = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('https://talkhub-backend-02fc.onrender.com/api/conversations', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      setIsLoading(true);
+      setError(null);
+      const response = await API.get('/Chat/conversations');
       
-      if (response.ok) {
-        const data = await response.json();
-        setConversations(data);
+      if (response.data) {
+        setConversations(response.data);
       }
     } catch (error) {
       console.error('Error fetching conversations:', error);
+      setError(error.message || 'Failed to load conversations');
+      if (error.status === 401) {
+        navigate('/login');
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const fetchMessages = async (conversationId) => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`https://talkhub-backend-02fc.onrender.com/api/messages/${conversationId}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      setIsLoading(true);
+      setError(null);
+      const response = await API.get(`/Chat/get/${conversationId}`);
       
-      if (response.ok) {
-        const data = await response.json();
-        setMessages(data);
+      if (response.data) {
+        setMessages(response.data);
       }
     } catch (error) {
       console.error('Error fetching messages:', error);
+      setError(error.message || 'Failed to load messages');
+      if (error.status === 401) {
+        navigate('/login');
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -61,25 +68,26 @@ const Chat = () => {
     if (!newMessage.trim() || !currentConversation) return;
 
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('https://talkhub-backend-02fc.onrender.com/api/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          conversationId: currentConversation,
-          content: newMessage
-        })
+      setIsLoading(true);
+      setError(null);
+      const response = await API.post(`/Chat/send/${currentConversation.id}`, {
+        content: newMessage.trim()
       });
 
-      if (response.ok) {
+      if (response.data) {
+        setMessages(prev => [...prev, response.data]);
         setNewMessage('');
-        fetchMessages(currentConversation);
+        // Refresh conversations to update last message
+        fetchConversations();
       }
     } catch (error) {
       console.error('Error sending message:', error);
+      setError(error.message || 'Failed to send message');
+      if (error.status === 401) {
+        navigate('/login');
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
