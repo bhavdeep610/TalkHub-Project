@@ -1,15 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ThemeProvider } from './contexts/ThemeContext';
-import { useTheme } from './contexts/ThemeContext';
-import Login from './Pages/Login';
-import Register from './Pages/Register';
-import Chat from './Pages/Chat';
-import Profile from './Pages/Profile';
-import Home from '../Pages/Home'; // You need to create this file
-import ChatPage from '../Pages/ChatPage'; 
-import ForgotPassword from '../Pages/ForgotPassword';
-import PrivateRoute from '../components/PrivateRoute';
+import { ThemeProvider } from '@contexts/ThemeContext';
+import { useTheme } from '@contexts/ThemeContext';
+import Login from '@pages/Login';
+import Register from '@pages/Register';
+import Chat from '@pages/Chat';
+import Profile from '@pages/Profile';
+import ForgotPassword from '@pages/ForgotPassword';
+import PrivateRoute from '@components/PrivateRoute';
 
 // Wrapper component to apply theme styles
 const ThemedApp = () => {
@@ -21,15 +19,14 @@ const ThemedApp = () => {
     }`}>
       <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route 
-            path="/chat" 
+            path="/" 
             element={
               <PrivateRoute>
-                <ChatPage />
+                <Chat />
               </PrivateRoute>
             } 
           />

@@ -1,26 +1,37 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@components': path.resolve(__dirname, './components'),
+      '@pages': path.resolve(__dirname, './Pages'),
+      '@services': path.resolve(__dirname, './services'),
+      '@hooks': path.resolve(__dirname, './hooks'),
+      '@contexts': path.resolve(__dirname, './src/contexts')
+    }
+  },
   server: {
-    port: 5175,
+    port: 5173,
+    host: true,
     proxy: {
-      '/chathub': {
-        target: 'http://localhost:5211',
-        ws: true,
-        secure: false,
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/chathub/, '/chathub')
-      },
       '/api': {
-        target: 'http://localhost:5211',
-        secure: false,
+        target: 'https://talkhub-backend-02fc.onrender.com',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '/api')
+        secure: false,
       }
-    },
-    cors: true
+    }
+  },
+  build: {
+    outDir: 'dist',
+    sourcemap: true,
+    commonjsOptions: {
+      include: [/node_modules/],
+      extensions: ['.js', '.cjs']
+    }
   }
 })
