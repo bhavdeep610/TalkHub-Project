@@ -1,0 +1,16 @@
+﻿<Project>
+  <ItemGroup>
+    <StaticWebAssetEndpoint Include="_content/ChatApp/test.341hj1eo2c.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\test.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"341hj1eo2c"},{"Name":"integrity","Value":"sha256-45b45KSAvFl4XUTG2yYDFEi3oWO\u002BbVVxfgFyJinPxcU="},{"Name":"label","Value":"_content/ChatApp/test.html"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"4903"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u002245b45KSAvFl4XUTG2yYDFEi3oWO\u002BbVVxfgFyJinPxcU=\u0022"},{"Name":"Last-Modified","Value":"Wed, 04 Jun 2025 06:59:39 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/ChatApp/test.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\test.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-45b45KSAvFl4XUTG2yYDFEi3oWO\u002BbVVxfgFyJinPxcU="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"4903"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u002245b45KSAvFl4XUTG2yYDFEi3oWO\u002BbVVxfgFyJinPxcU=\u0022"},{"Name":"Last-Modified","Value":"Wed, 04 Jun 2025 06:59:39 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+  </ItemGroup>
+</Project>
