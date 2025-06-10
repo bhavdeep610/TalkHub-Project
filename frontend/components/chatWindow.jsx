@@ -234,10 +234,6 @@ const MessageList = memo(({
 MessageList.displayName = 'MessageList';
 
 
-          >
-            Cancel
-          </button>
-
 
 const ChatWindow = ({
   selectedUser,
