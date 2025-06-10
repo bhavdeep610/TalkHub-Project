@@ -28,7 +28,8 @@ const ChatPage = () => {
     setSelectedUser,
     fetchRegisteredUsers,
     sendMessage,
-    updateMessages
+    updateMessages,
+    startNewConversation
   } = useChatAPI();
 
   // Add state for new chat dialog
@@ -134,14 +135,15 @@ const ChatPage = () => {
     }
   };
 
-  // Filter users for new chat
+  // Memoize filtered users
   const filteredUsers = useMemo(() => {
-    if (!searchQuery) return registeredUsers.filter(u => u.id !== currentUser?.id);
-    const query = searchQuery.toLowerCase();
-    return registeredUsers.filter(
-      u => u.id !== currentUser?.id && u.username.toLowerCase().includes(query)
-    );
-  }, [registeredUsers, searchQuery, currentUser?.id]);
+    return registeredUsers.filter(u => u.id !== currentUser?.id);
+  }, [registeredUsers, currentUser]);
+
+  // Memoize the new chat handler
+  const handleStartNewChat = useCallback((userId) => {
+    return startNewConversation(userId);
+  }, [startNewConversation]);
 
   // Fetch profile pictures when users list changes and not in cache
   useEffect(() => {
@@ -193,44 +195,19 @@ const ChatPage = () => {
     updateMessages(prev => prev.filter(m => (m.id || m.Id) !== messageId));
   }, [updateMessages]);
 
-  // Check authentication on mount and token changes
+  // Redirect if not authenticated
   useEffect(() => {
-    let mounted = true;
+    if (!authLoading && !isAuthenticated) {
+      navigate('/login');
+    }
+  }, [authLoading, isAuthenticated, navigate]);
 
-    const checkAuth = async () => {
-      if (!authLoading && mounted) {
-        if (!isAuthenticated) {
-          console.log('Not authenticated, redirecting to login...');
-          navigate('/login', { replace: true });
-          return;
-        }
-
-        // Only fetch users when authenticated
-        if (isAuthenticated && currentUser) {
-          await fetchRegisteredUsers();
-        }
-      }
-    };
-
-    checkAuth();
-
-    return () => {
-      mounted = false;
-    };
-  }, [authLoading, isAuthenticated, currentUser, navigate, fetchRegisteredUsers]);
-
-  // If still loading auth, show loading spinner
   if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+      <div className="h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-600"></div>
       </div>
     );
-  }
-
-  // If not authenticated, show nothing (will be redirected by useEffect)
-  if (!isAuthenticated || !currentUser) {
-    return null;
   }
 
   // If there's an auth error, show error message
@@ -282,16 +259,8 @@ const ChatPage = () => {
                   selectedUser={selectedUser}
                   onSelectUser={setSelectedUser}
                   isLoadingUsers={isLoadingUsers}
-                  newChatUserOptions={registeredUsers.filter(u => u.id !== currentUser?.id)}
-                  onStartNewChat={(userId) => {
-                    const user = registeredUsers.find(u => u.id === userId);
-                    if (user) {
-                      setSelectedUser(user);
-                      setShowNewChatDialog(false);
-                      return true;
-                    }
-                    return false;
-                  }}
+                  newChatUserOptions={filteredUsers}
+                  onStartNewChat={handleStartNewChat}
                   onRefreshUsers={fetchRegisteredUsers}
                   formatDate={formatDate}
                 />

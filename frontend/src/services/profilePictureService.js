@@ -7,6 +7,7 @@ const CACHE_EXPIRY = 30 * 60 * 1000; // 30 minutes
 class ProfilePictureService {
   constructor() {
     this.cache = this.loadCache();
+    this.pendingRequests = new Map();
   }
 
   loadCache() {
@@ -28,11 +29,11 @@ class ProfilePictureService {
 
   updateCache(pictures) {
     try {
+      this.cache = pictures;
       localStorage.setItem(CACHE_KEY, JSON.stringify({
         pictures,
         timestamp: Date.now()
       }));
-      this.cache = pictures;
     } catch (error) {
       console.error('Error updating profile picture cache:', error);
     }
@@ -44,36 +45,54 @@ class ProfilePictureService {
       return this.cache[userId];
     }
 
+    // Check if there's already a pending request for this user
+    if (this.pendingRequests.has(userId)) {
+      return this.pendingRequests.get(userId);
+    }
+
     try {
-      const response = await API.get(`/ProfilePicture/${userId}`);
-      let imageUrl = null;
+      // Create a new promise for this request
+      const promise = (async () => {
+        try {
+          const response = await API.get(`/ProfilePicture/${userId}`);
+          let imageUrl = null;
 
-      if (response.data) {
-        if (typeof response.data === 'string') {
-          imageUrl = response.data;
-        } else if (response.data.imageUrl) {
-          imageUrl = response.data.imageUrl;
-        } else if (response.data.filePath) {
-          imageUrl = response.data.filePath;
+          if (response.data) {
+            if (typeof response.data === 'string') {
+              imageUrl = response.data;
+            } else if (response.data.imageUrl) {
+              imageUrl = response.data.imageUrl;
+            } else if (response.data.filePath) {
+              imageUrl = response.data.filePath;
+            }
+
+            if (imageUrl && !imageUrl.startsWith('http')) {
+              imageUrl = imageUrl.startsWith('/')
+                ? `${config.API_BASE_URL}${imageUrl}`
+                : `${config.API_BASE_URL}/${imageUrl}`;
+            }
+
+            // Update cache with new picture
+            this.updateCache({
+              ...this.cache,
+              [userId]: imageUrl
+            });
+
+            return imageUrl;
+          }
+          return null;
+        } finally {
+          // Remove from pending requests when done
+          this.pendingRequests.delete(userId);
         }
+      })();
 
-        if (imageUrl && !imageUrl.startsWith('http')) {
-          imageUrl = imageUrl.startsWith('/')
-            ? `${config.API_BASE_URL}${imageUrl}`
-            : `${config.API_BASE_URL}/${imageUrl}`;
-        }
-
-        // Update cache with new picture
-        this.updateCache({
-          ...this.cache,
-          [userId]: imageUrl
-        });
-
-        return imageUrl;
-      }
-      return null;
+      // Store the promise in pending requests
+      this.pendingRequests.set(userId, promise);
+      return promise;
     } catch (error) {
       console.error(`Error fetching profile picture for user ${userId}:`, error);
+      this.pendingRequests.delete(userId);
       return null;
     }
   }
@@ -87,8 +106,12 @@ class ProfilePictureService {
     }
 
     try {
+      // Create a map of promises for uncached users
       const fetchPromises = uncachedUserIds.map(userId => this.getProfilePicture(userId));
+      
+      // Wait for all promises to resolve
       await Promise.all(fetchPromises);
+      
       return this.cache;
     } catch (error) {
       console.error('Error fetching multiple profile pictures:', error);
@@ -97,8 +120,8 @@ class ProfilePictureService {
   }
 
   clearCache() {
-    localStorage.removeItem(CACHE_KEY);
     this.cache = {};
+    localStorage.removeItem(CACHE_KEY);
   }
 }
 

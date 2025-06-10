@@ -27,6 +27,8 @@ const ChatSidebar = ({
   const [loadingPictures, setLoadingPictures] = useState(false);
   const [error, setError] = useState(null);
   const retryTimeoutRef = useRef(null);
+  const lastFetchTimeRef = useRef(0);
+  const FETCH_COOLDOWN = 60000; // 1 minute cooldown between fetches
 
   // Subscribe to SignalR conversation updates
   useEffect(() => {
@@ -37,8 +39,13 @@ const ChatSidebar = ({
     return () => unsubscribe();
   }, [onConversationUpdate]);
 
-  // Fetch profile pictures with retry logic
+  // Fetch profile pictures with retry logic and cooldown
   const fetchProfilePictures = useCallback(async (retryCount = 0) => {
+    const now = Date.now();
+    if (now - lastFetchTimeRef.current < FETCH_COOLDOWN) {
+      return; // Skip if within cooldown period
+    }
+
     if (retryCount > 3) {
       setError('Failed to load profile pictures. Please try again later.');
       return;
@@ -52,27 +59,38 @@ const ChatSidebar = ({
       ];
       const uniqueUserIds = [...new Set(userIds)];
       
-      const pictures = await profilePictureService.getProfilePictures(uniqueUserIds);
-      setUserProfilePictures(pictures);
+      // Only fetch for users whose pictures are not in cache
+      const uncachedUserIds = uniqueUserIds.filter(id => !userProfilePictures[id]);
+      
+      if (uncachedUserIds.length === 0) {
+        setLoadingPictures(false);
+        return;
+      }
+
+      const pictures = await profilePictureService.getProfilePictures(uncachedUserIds);
+      setUserProfilePictures(prev => ({
+        ...prev,
+        ...pictures
+      }));
       setError(null);
+      lastFetchTimeRef.current = now;
     } catch (error) {
       console.error('Error in fetchProfilePictures:', error);
       
-      // Retry after delay if it's a network error
       if (error.isNetworkError || error.isTimeout) {
         if (retryTimeoutRef.current) {
           clearTimeout(retryTimeoutRef.current);
         }
         retryTimeoutRef.current = setTimeout(() => {
           fetchProfilePictures(retryCount + 1);
-        }, 2000 * (retryCount + 1)); // Exponential backoff
+        }, 2000 * (retryCount + 1));
       } else {
         setError('Failed to load profile pictures. Please try again later.');
       }
     } finally {
       setLoadingPictures(false);
     }
-  }, [conversations, newChatUserOptions]);
+  }, [conversations, newChatUserOptions, userProfilePictures]);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -83,11 +101,19 @@ const ChatSidebar = ({
     };
   }, []);
 
+  // Only fetch profile pictures when user list changes or cache is empty
   useEffect(() => {
-    if (conversations.length > 0 || newChatUserOptions.length > 0) {
+    const userIds = [
+      ...conversations.map(c => c.user.id),
+      ...(newChatUserOptions || []).map(u => u.id)
+    ];
+    const uniqueUserIds = [...new Set(userIds)];
+    const hasUncachedUsers = uniqueUserIds.some(id => !userProfilePictures[id]);
+
+    if (hasUncachedUsers) {
       fetchProfilePictures();
     }
-  }, [conversations, newChatUserOptions, fetchProfilePictures]);
+  }, [conversations, newChatUserOptions, userProfilePictures, fetchProfilePictures]);
 
   // Memoize conversation list to prevent unnecessary re-renders
   const conversationList = useMemo(() => {
@@ -106,19 +132,17 @@ const ChatSidebar = ({
           } transition-colors duration-200`}
           onClick={() => handleSelectConversation(conversation)}
         >
-          <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-purple-600 flex-shrink-0 transform hover:scale-105 transition-transform duration-200">
-            {profilePicture ? (
+          <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-purple-600 flex-shrink-0">
+            {loadingPictures && !profilePicture ? (
+              <div className="w-full h-full bg-gray-100 animate-pulse flex items-center justify-center">
+                <div className="w-5 h-5 border-2 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            ) : profilePicture ? (
               <img 
-                src={profilePicture} 
+                src={profilePicture}
                 alt={`${user.username}'s profile`}
                 className="w-full h-full object-cover"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  setUserProfilePictures(prev => ({
-                    ...prev,
-                    [user.id]: null
-                  }));
-                }}
+                loading="lazy"
               />
             ) : (
               <div className="w-full h-full bg-purple-100 flex items-center justify-center">
@@ -143,13 +167,12 @@ const ChatSidebar = ({
         </div>
       );
     });
-  }, [conversations, selectedUser, userProfilePictures]);
+  }, [conversations, selectedUser, userProfilePictures, loadingPictures]);
 
   // Memoize user list to prevent unnecessary re-renders
   const userList = useMemo(() => {
     return (newChatUserOptions || []).map(user => {
       const profilePicture = userProfilePictures[user.id];
-      console.log(`User ${user.username} (${user.id}) profile picture:`, profilePicture);
       
       return (
         <div 
@@ -157,8 +180,8 @@ const ChatSidebar = ({
           className="flex items-center px-6 py-3 cursor-pointer hover:bg-gray-50 transition-colors duration-200"
           onClick={() => handleStartChat(user.id)}
         >
-          <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-purple-600 flex-shrink-0 transform hover:scale-105 transition-transform duration-200">
-            {loadingPictures ? (
+          <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-purple-600 flex-shrink-0">
+            {loadingPictures && !profilePicture ? (
               <div className="w-full h-full bg-gray-100 animate-pulse flex items-center justify-center">
                 <div className="w-5 h-5 border-2 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
               </div>
@@ -167,15 +190,7 @@ const ChatSidebar = ({
                 src={profilePicture}
                 alt={`${user.username}'s profile`}
                 className="w-full h-full object-cover"
-                onLoad={() => console.log(`Image loaded successfully for user ${user.username}`)}
-                onError={(e) => {
-                  console.error(`Error loading image for user ${user.username}:`, e);
-                  e.target.onerror = null;
-                  setUserProfilePictures(prev => ({
-                    ...prev,
-                    [user.id]: null
-                  }));
-                }}
+                loading="lazy"
               />
             ) : (
               <div className="w-full h-full bg-purple-100 flex items-center justify-center">
@@ -207,6 +222,15 @@ const ChatSidebar = ({
       setShowUserList(false);
     }
   }, [onStartNewChat]);
+
+  // Memoize the refresh handler to prevent unnecessary re-renders
+  const handleRefresh = useCallback(() => {
+    onRefreshUsers();
+    const now = Date.now();
+    if (now - lastFetchTimeRef.current >= FETCH_COOLDOWN) {
+      fetchProfilePictures();
+    }
+  }, [onRefreshUsers, fetchProfilePictures]);
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden bg-white">
@@ -252,10 +276,7 @@ const ChatSidebar = ({
                 ← Back
               </button>
               <button
-                onClick={() => {
-                  onRefreshUsers();
-                  fetchProfilePictures();
-                }}
+                onClick={handleRefresh}
                 className="text-sm text-purple-600 hover:text-purple-700 transition-colors duration-200 flex items-center gap-2"
                 disabled={isLoadingUsers || loadingPictures}
               >
@@ -278,21 +299,23 @@ const ChatSidebar = ({
         </div>
       ) : (
         <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500 scrollbar-track-gray-100">
-          {conversationList.length > 0 ? (
-            <div className="py-2">
-              {conversationList}
-            </div>
-          ) : (
-            <div className="px-6 py-4 text-center text-gray-500">
-              <p>No conversations yet</p>
-              <button 
-                onClick={() => setShowUserList(true)}
-                className="mt-2 text-sm text-purple-600 hover:text-purple-700 transition-colors duration-200"
-              >
-                Start a conversation
-              </button>
-            </div>
-          )}
+          <div className="py-2">
+            <button
+              onClick={() => setShowUserList(true)}
+              className="w-full px-6 py-3 text-left text-purple-600 hover:text-purple-700 transition-colors duration-200"
+            >
+              Start a new conversation
+            </button>
+            {conversationList.length > 0 ? (
+              <div className="py-2">
+                {conversationList}
+              </div>
+            ) : (
+              <div className="px-6 py-4 text-center text-gray-500">
+                <p>No conversations yet</p>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>
