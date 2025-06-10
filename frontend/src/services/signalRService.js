@@ -264,7 +264,9 @@ class SignalRService {
 
     onConversationUpdate(handler) {
         this.conversationHandlers.add(handler);
-        return () => this.conversationHandlers.delete(handler);
+        return () => {
+            this.conversationHandlers.delete(handler);
+        };
     }
 
     notifyConnectionChange(state) {
