@@ -381,11 +381,13 @@ const ChatWindow = ({
       
       try {
         const date = new Date(timestamp);
+        // Add 6 hours and 30 minutes for IST offset
+        date.setHours(date.getHours() + 6);
+        date.setMinutes(date.getMinutes() + 30);
         const formatted = new Intl.DateTimeFormat('en-IN', {
           hour: '2-digit',
           minute: '2-digit',
-          hour12: true,
-          timeZone: 'Asia/Kolkata'
+          hour12: true
         }).format(date);
         timeCache.set(cacheKey, formatted);
         return formatted;
@@ -409,10 +411,10 @@ const ChatWindow = ({
     const tempId = `temp-${Date.now()}`;
     const now = new Date();
     
-    // Convert to IST for consistent timestamp storage
-    const istOptions = { timeZone: 'Asia/Kolkata' };
-    const istTimestamp = now.toLocaleString('en-US', istOptions);
-    const istDate = new Date(istTimestamp);
+    // Adjust the timestamp for IST
+    const istDate = new Date(now);
+    istDate.setHours(istDate.getHours() + 6);
+    istDate.setMinutes(istDate.getMinutes() + 30);
     
     const optimisticMessage = {
       id: tempId,
@@ -431,13 +433,18 @@ const ChatWindow = ({
 
       const result = await messageService.sendMessage(selectedUser.id, optimisticMessage.content);
       
-      // Remove optimistic message and add the real message
+      // Remove optimistic message and add the real message with adjusted timestamp
       setLocalMessages(prev => {
         const filtered = prev.filter(msg => msg.id !== tempId);
         if (result) {
+          const timestamp = result.created || result.timestamp;
+          const adjustedDate = new Date(timestamp);
+          adjustedDate.setHours(adjustedDate.getHours() + 6);
+          adjustedDate.setMinutes(adjustedDate.getMinutes() + 30);
+          
           return [...filtered, {
             ...result,
-            timestamp: result.created || result.timestamp,
+            timestamp: adjustedDate.toISOString(),
             isOptimistic: false
           }];
         }

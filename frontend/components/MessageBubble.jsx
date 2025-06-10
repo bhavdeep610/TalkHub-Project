@@ -54,12 +54,13 @@ const MessageBubble = memo(({
     if (!timestamp) return '';
     try {
       const date = new Date(timestamp);
-      // Use the local timezone (India/Kolkata) without manual offset
+      // Add 6 hours and 30 minutes for IST offset
+      date.setHours(date.getHours() + 6);
+      date.setMinutes(date.getMinutes() + 30);
       return new Intl.DateTimeFormat('en-IN', {
         hour: '2-digit',
         minute: '2-digit',
-        hour12: true,
-        timeZone: 'Asia/Kolkata'
+        hour12: true
       }).format(date);
     } catch (error) {
       console.error('Error formatting time:', error);
