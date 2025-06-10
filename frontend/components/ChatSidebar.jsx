@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import API from '../src/services/api';
 import { profilePictureService } from '../src/services/profilePictureService';
@@ -25,6 +25,8 @@ const ChatSidebar = ({
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [userProfilePictures, setUserProfilePictures] = useState({});
   const [loadingPictures, setLoadingPictures] = useState(false);
+  const [error, setError] = useState(null);
+  const retryTimeoutRef = useRef(null);
 
   // Subscribe to SignalR conversation updates
   useEffect(() => {
@@ -35,8 +37,13 @@ const ChatSidebar = ({
     return () => unsubscribe();
   }, [onConversationUpdate]);
 
-  // Fetch profile pictures for all users
-  const fetchProfilePictures = async () => {
+  // Fetch profile pictures with retry logic
+  const fetchProfilePictures = useCallback(async (retryCount = 0) => {
+    if (retryCount > 3) {
+      setError('Failed to load profile pictures. Please try again later.');
+      return;
+    }
+
     setLoadingPictures(true);
     try {
       const userIds = [
@@ -47,18 +54,40 @@ const ChatSidebar = ({
       
       const pictures = await profilePictureService.getProfilePictures(uniqueUserIds);
       setUserProfilePictures(pictures);
+      setError(null);
     } catch (error) {
       console.error('Error in fetchProfilePictures:', error);
+      
+      // Retry after delay if it's a network error
+      if (error.isNetworkError || error.isTimeout) {
+        if (retryTimeoutRef.current) {
+          clearTimeout(retryTimeoutRef.current);
+        }
+        retryTimeoutRef.current = setTimeout(() => {
+          fetchProfilePictures(retryCount + 1);
+        }, 2000 * (retryCount + 1)); // Exponential backoff
+      } else {
+        setError('Failed to load profile pictures. Please try again later.');
+      }
     } finally {
       setLoadingPictures(false);
     }
-  };
+  }, [conversations, newChatUserOptions]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (retryTimeoutRef.current) {
+        clearTimeout(retryTimeoutRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (conversations.length > 0 || newChatUserOptions.length > 0) {
       fetchProfilePictures();
     }
-  }, [conversations, newChatUserOptions]);
+  }, [conversations, newChatUserOptions, fetchProfilePictures]);
 
   // Memoize conversation list to prevent unnecessary re-renders
   const conversationList = useMemo(() => {
@@ -181,6 +210,37 @@ const ChatSidebar = ({
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden bg-white">
+      {error && (
+        <div className="bg-red-50 p-4">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <p className="text-sm text-red-700">{error}</p>
+            </div>
+            <div className="ml-auto pl-3">
+              <div className="-mx-1.5 -my-1.5">
+                <button
+                  onClick={() => {
+                    setError(null);
+                    fetchProfilePictures();
+                  }}
+                  className="inline-flex rounded-md p-1.5 text-red-500 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                >
+                  <span className="sr-only">Retry</span>
+                  <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {showUserList ? (
         <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500 scrollbar-track-gray-100">
           <div className="py-2">

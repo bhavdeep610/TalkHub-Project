@@ -263,6 +263,17 @@ const ChatWindow = ({
   const messageUpdateTimeoutRef = useRef(null);
   const scrollDebounceRef = useRef(null);
 
+  // Add startEditing and cancelEditing functions
+  const startEditing = useCallback((messageId, content) => {
+    setEditingMessageId(messageId);
+    setEditMessageContent(content);
+  }, []);
+
+  const cancelEditing = useCallback(() => {
+    setEditingMessageId(null);
+    setEditMessageContent('');
+  }, []);
+
   // Combine server messages with local optimistic messages
   const allMessages = useMemo(() => {
     const combined = [...messages, ...localMessages];
