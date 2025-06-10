@@ -20,12 +20,12 @@ const ForgotPassword = () => {
       await API.post('/Auth/verify-email', { email });
       setIsEmailVerified(true);
       toast.success('Email verified! Please set your new password.', {
-        duration: 3000,
+        duration: 1500,
         position: 'top-center',
       });
     } catch (error) {
       toast.error(error.response?.data?.message || 'Email not found', {
-        duration: 3000,
+        duration: 1500,
         position: 'top-center',
       });
     } finally {
@@ -38,7 +38,7 @@ const ForgotPassword = () => {
     
     if (newPassword !== confirmPassword) {
       toast.error('Passwords do not match!', {
-        duration: 3000,
+        duration: 1500,
         position: 'top-center',
       });
       return;
@@ -53,7 +53,7 @@ const ForgotPassword = () => {
       });
       
       toast.success('Password reset successful! Please login with your new password.', {
-        duration: 3000,
+        duration: 1500,
         position: 'top-center',
       });
       
@@ -62,7 +62,7 @@ const ForgotPassword = () => {
       }, 2000);
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to reset password', {
-        duration: 3000,
+        duration: 1500,
         position: 'top-center',
       });
     } finally {
