@@ -5,6 +5,7 @@ import { toast, Toaster } from 'react-hot-toast';
 import { useSignalR } from '../src/hooks/useSignalR';
 import signalRService from '../src/services/signalRService';
 import { profilePictureService } from '../src/services/profilePictureService';
+import { messageService } from '../src/services/messageService';
 
 // Create a stable time formatter
 const createTimeFormatter = () => {
@@ -319,7 +320,57 @@ const ChatWindow = ({
     }
   }, []);
 
-  // Handle new messages with optimistic updates
+  // Handle message editing
+  const handleEditMessage = useCallback(async (messageId) => {
+    if (!editMessageContent.trim()) {
+      toast.error('Message cannot be empty');
+      return;
+    }
+
+    try {
+      const updatedMessage = await messageService.editMessage(messageId, editMessageContent.trim());
+      
+      // Update local messages
+      setLocalMessages(prev => prev.map(msg => 
+        msg.id === messageId ? { ...msg, content: editMessageContent.trim() } : msg
+      ));
+
+      // Clear edit state
+      setEditingMessageId(null);
+      setEditMessageContent('');
+      
+      toast.success('Message updated successfully');
+    } catch (error) {
+      console.error('Failed to edit message:', error);
+      toast.error(error.message || 'Failed to edit message');
+    }
+  }, [editMessageContent]);
+
+  // Handle message deletion
+  const handleDeleteMessage = useCallback(async (messageId) => {
+    if (!window.confirm('Are you sure you want to delete this message?')) {
+      return;
+    }
+
+    try {
+      await messageService.deleteMessage(messageId);
+      
+      // Update local messages
+      setLocalMessages(prev => prev.filter(msg => msg.id !== messageId));
+      
+      // Notify parent component
+      if (onMessageDeleted) {
+        onMessageDeleted(messageId);
+      }
+      
+      toast.success('Message deleted successfully');
+    } catch (error) {
+      console.error('Failed to delete message:', error);
+      toast.error(error.message || 'Failed to delete message');
+    }
+  }, [onMessageDeleted]);
+
+  // Handle sending messages
   const handleSendMessage = useCallback(async (e) => {
     e.preventDefault();
     if (!newMessage.trim() || !selectedUser?.id) return;
@@ -338,7 +389,7 @@ const ChatWindow = ({
       setNewMessage('');
       scrollToBottom(true);
 
-      const result = await onSendMessage(selectedUser.id, optimisticMessage.content);
+      const result = await messageService.sendMessage(selectedUser.id, optimisticMessage.content);
       
       // Remove optimistic message once confirmed
       setLocalMessages(prev => prev.filter(msg => msg !== optimisticMessage));
@@ -346,8 +397,9 @@ const ChatWindow = ({
       console.error('Failed to send message:', error);
       // Remove failed optimistic message
       setLocalMessages(prev => prev.filter(msg => msg !== optimisticMessage));
+      toast.error(error.message || 'Failed to send message');
     }
-  }, [newMessage, selectedUser?.id, currentUser?.id, onSendMessage, scrollToBottom]);
+  }, [newMessage, selectedUser?.id, currentUser?.id, scrollToBottom]);
 
   // Fetch profile pictures when users change
   useEffect(() => {
@@ -464,40 +516,6 @@ const ChatWindow = ({
       }
     };
   }, [formatTime]);
-
-  // Stable message handlers
-  const handleEditMessage = useCallback(async (messageId) => {
-    if (!editMessageContent.trim()) return;
-    try {
-      // Optimistic update
-      const messageToUpdate = messages.find(m => m.id === messageId);
-      if (!messageToUpdate) return;
-
-      const updatedMessage = { ...messageToUpdate, content: editMessageContent };
-      const updatedMessages = messages.map(m => m.id === messageId ? updatedMessage : m);
-      onSendMessage(updatedMessages);
-
-      await API.put(`/api/chat/messages/${messageId}`, { content: editMessageContent });
-      setEditingMessageId(null);
-      setEditMessageContent('');
-    } catch (error) {
-      console.error('Failed to edit message:', error);
-      toast.error('Failed to edit message');
-    }
-  }, [editMessageContent, messages, onSendMessage]);
-
-  const handleDeleteMessage = useCallback(async (messageId) => {
-    try {
-      // Optimistic update
-      const updatedMessages = messages.filter(m => m.id !== messageId);
-      onMessageDeleted(updatedMessages);
-
-      await API.delete(`/api/chat/messages/${messageId}`);
-    } catch (error) {
-      console.error('Failed to delete message:', error);
-      toast.error('Failed to delete message');
-    }
-  }, [messages, onMessageDeleted]);
 
   // Handle message updates with debouncing
   useEffect(() => {
