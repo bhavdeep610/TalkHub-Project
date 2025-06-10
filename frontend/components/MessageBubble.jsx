@@ -90,7 +90,7 @@ const MessageBubble = memo(({
       
       <div className="group relative max-w-[70%]">
         <div
-          className={`rounded-xl px-3 py-1.5 ${
+          className={`rounded-xl px-4 py-2 ${
             isCurrentUser
               ? 'bg-purple-600 text-white rounded-br-none'
               : 'bg-white text-gray-800 rounded-bl-none shadow-sm'
@@ -124,10 +124,10 @@ const MessageBubble = memo(({
             </div>
           ) : (
             <>
-              <p className="break-words text-sm whitespace-pre-wrap">{content}</p>
+              <p className="text-base break-words whitespace-pre-wrap leading-relaxed">{content}</p>
               <p
-                className={`text-[10px] mt-0.5 ${
-                  isCurrentUser ? 'text-purple-200' : 'text-gray-500'
+                className={`text-xs mt-1 ${
+                  isCurrentUser ? 'text-purple-100' : 'text-gray-500'
                 }`}
               >
                 {formattedTime}

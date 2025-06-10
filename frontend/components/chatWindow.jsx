@@ -378,12 +378,14 @@ const ChatWindow = ({
 
     sendingMessageRef.current = true;
     const tempId = `temp-${Date.now()}`;
+    const now = new Date();
     const optimisticMessage = {
       id: tempId,
       senderId: currentUser.id,
       receiverId: selectedUser.id,
       content: newMessage.trim(),
-      timestamp: new Date().toISOString(),
+      timestamp: now.toISOString(),
+      created: now.toISOString(), // Add created field for consistency
       isOptimistic: true
     };
 
@@ -400,6 +402,7 @@ const ChatWindow = ({
         if (result) {
           return [...filtered, {
             ...result,
+            timestamp: result.created || result.timestamp, // Ensure timestamp is set
             isOptimistic: false
           }];
         }
@@ -521,7 +524,14 @@ const ChatWindow = ({
       }
       
       try {
-        const formatted = formatTime(new Date(timestamp));
+        const date = new Date(timestamp);
+        // Add IST offset (5 hours and 30 minutes)
+        date.setMinutes(date.getMinutes() + 330);
+        const formatted = new Intl.DateTimeFormat('en-IN', {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true
+        }).format(date);
         timeCache.set(cacheKey, formatted);
         return formatted;
       } catch (error) {
@@ -529,7 +539,7 @@ const ChatWindow = ({
         return '';
       }
     };
-  }, [formatTime]);
+  }, []);
 
   // Handle message updates with debouncing
   useEffect(() => {
