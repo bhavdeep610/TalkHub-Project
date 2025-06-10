@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo, memo } from 'react';
+import React, { useState, useRef, useEffect, useMemo, memo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import API from '../src/services/api';
 import { toast, Toaster } from 'react-hot-toast';
@@ -169,6 +169,43 @@ const MessageBubble = memo(({
 
 MessageBubble.displayName = 'MessageBubble';
 
+// Memoized Message List component to prevent unnecessary re-renders
+const MessageList = memo(({ messages, currentUser, selectedUser, editingMessageId, editMessageContent, setEditMessageContent, handleEditMessage, startEditing, cancelEditing, handleDeleteMessage, editInputRef, selectedUserProfilePicture, currentUserProfilePicture }) => {
+  const stableMessages = useMemo(() => messages, [messages]);
+
+  return (
+    <>
+      {stableMessages.map((message) => (
+        <MessageBubble
+          key={`${message.id}-${message.timestamp}`}
+          messageId={message.id}
+          content={message.content}
+          timestamp={message.timestamp}
+          isCurrentUser={message.senderId === currentUser?.id}
+          isEditing={message.id === editingMessageId}
+          editMessageContent={editMessageContent}
+          setEditMessageContent={setEditMessageContent}
+          handleEditMessage={handleEditMessage}
+          startEditing={(messageId, content) => {
+            setEditingMessageId(messageId);
+            setEditMessageContent(content);
+          }}
+          cancelEditing={() => {
+            setEditingMessageId(null);
+            setEditMessageContent('');
+          }}
+          handleDeleteMessage={handleDeleteMessage}
+          editInputRef={editInputRef}
+          selectedUser={selectedUser}
+          profilePicture={message.senderId === currentUser?.id ? currentUserProfilePicture : selectedUserProfilePicture}
+        />
+      ))}
+    </>
+  );
+});
+
+MessageList.displayName = 'MessageList';
+
 const ChatWindow = ({
   selectedUser,
   messages,
@@ -195,6 +232,8 @@ const ChatWindow = ({
   const chatContainerRef = useRef(null);
   const editInputRef = useRef(null);
   const scrollTimeoutRef = useRef(null);
+  const previousMessagesRef = useRef(messages);
+  const messageUpdateTimeoutRef = useRef(null);
 
   // Fetch profile pictures when users change
   useEffect(() => {
@@ -312,220 +351,99 @@ const ChatWindow = ({
     };
   }, [formatTime]);
 
-  // Scroll to bottom when new messages arrive
-  const scrollToBottom = (force = false) => {
-    if (messagesEndRef.current && (shouldAutoScroll || force)) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+  // Stable message handlers
+  const handleEditMessage = useCallback(async (messageId) => {
+    if (!editMessageContent.trim()) return;
+    try {
+      // Optimistic update
+      const messageToUpdate = messages.find(m => m.id === messageId);
+      if (!messageToUpdate) return;
+
+      const updatedMessage = { ...messageToUpdate, content: editMessageContent };
+      const updatedMessages = messages.map(m => m.id === messageId ? updatedMessage : m);
+      onSendMessage(updatedMessages);
+
+      await API.put(`/api/chat/messages/${messageId}`, { content: editMessageContent });
+      setEditingMessageId(null);
+      setEditMessageContent('');
+    } catch (error) {
+      console.error('Failed to edit message:', error);
+      toast.error('Failed to edit message');
     }
-  };
+  }, [editMessageContent, messages, onSendMessage]);
 
-  // Handle scroll events
-  const handleScroll = () => {
-    if (!chatContainerRef.current) return;
+  const handleDeleteMessage = useCallback(async (messageId) => {
+    try {
+      // Optimistic update
+      const updatedMessages = messages.filter(m => m.id !== messageId);
+      onMessageDeleted(updatedMessages);
 
-    const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
-    const isAtBottom = Math.abs(scrollHeight - scrollTop - clientHeight) < 30;
-    
-    // Clear any existing scroll timeout
-    if (scrollTimeoutRef.current) {
-      clearTimeout(scrollTimeoutRef.current);
+      await API.delete(`/api/chat/messages/${messageId}`);
+    } catch (error) {
+      console.error('Failed to delete message:', error);
+      toast.error('Failed to delete message');
     }
+  }, [messages, onMessageDeleted]);
 
-    if (isAtBottom) {
-      setShouldAutoScroll(true);
-      setHasNewMessages(false);
-    } else {
-      setShouldAutoScroll(false);
+  // Optimized scroll handling
+  const scrollToBottom = useCallback((force = false) => {
+    if (!messagesEndRef.current || !chatContainerRef.current) return;
+
+    const container = chatContainerRef.current;
+    const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+
+    if (force || isNearBottom || !isUserScrolling) {
+      if (messageUpdateTimeoutRef.current) {
+        clearTimeout(messageUpdateTimeoutRef.current);
+      }
+
+      messageUpdateTimeoutRef.current = setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({
+          behavior: force ? 'auto' : 'smooth',
+          block: 'end'
+        });
+      }, 50);
     }
+  }, [isUserScrolling]);
 
-    setIsUserScrolling(true);
-    
-    // Reset user scrolling flag after 100ms of no scroll events
-    scrollTimeoutRef.current = setTimeout(() => {
-      setIsUserScrolling(false);
-    }, 100);
-  };
+  // Handle message updates with debouncing
+  useEffect(() => {
+    if (messages !== previousMessagesRef.current) {
+      previousMessagesRef.current = messages;
+      if (messageUpdateTimeoutRef.current) {
+        clearTimeout(messageUpdateTimeoutRef.current);
+      }
+      messageUpdateTimeoutRef.current = setTimeout(() => {
+        scrollToBottom(true);
+      }, 50);
+    }
+  }, [messages, scrollToBottom]);
 
-  // Cleanup scroll timeout
+  // Cleanup
   useEffect(() => {
     return () => {
+      if (messageUpdateTimeoutRef.current) {
+        clearTimeout(messageUpdateTimeoutRef.current);
+      }
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current);
       }
     };
   }, []);
-  // Add scroll event listener
-  useEffect(() => {
-    const container = chatContainerRef.current;
-    if (container) {
-      container.addEventListener('scroll', handleScroll);
-      return () => container.removeEventListener('scroll', handleScroll);
-    }
-  }, []);
 
-  // Scroll to bottom only for new messages and initial load
-  useEffect(() => {
-    if (!isUserScrolling) {
-      scrollToBottom();
-    }
-  }, [messages]);
+  const handleScroll = useCallback(() => {
+    if (!chatContainerRef.current) return;
 
-  // Handle message submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const trimmedMessage = newMessage.trim();
-    
-    if (!trimmedMessage) return;
-  
-    try {
-      setNewMessage('');
-      
-      // Optimistically add message to UI
-      const optimisticMessage = {
-        id: `temp-${Date.now()}`,
-        senderId: currentUser.id,
-        senderName: currentUser.username,
-        receiverId: selectedUser.id,
-        receiverName: selectedUser.username,
-        content: trimmedMessage,
-        timestamp: new Date().toISOString(),
-        pending: true
-      };
-  
-      // Add optimistic message to UI
-      onSendMessage(optimisticMessage);
-      
-      // Attempt to send message through SignalR
-      try {
-        const result = await sendMessage(selectedUser.id.toString(), trimmedMessage);
-        
-        if (result?.queued) {
-          toast('Message queued - Will be sent when connection is restored', {
-            duration: 3000,
-            position: 'top-center',
-            icon: '🕒'
-          });
-        }
-      } catch (sendError) {
-        console.error('Failed to send via SignalR:', sendError);
-        // The optimistic message will remain in the UI as "pending"
-        toast.error('Message will be sent when connection is restored', {
-          duration: 3000,
-          position: 'top-center'
-        });
-      }
-      
-      // Scroll to bottom after sending
-      scrollToBottom(true);
-    } catch (error) {
-      console.error('Failed to process message:', error);
-      toast.error('Failed to send message. Please try again.', {
-        duration: 3000,
-        position: 'top-center'
-      });
-      setNewMessage(trimmedMessage); // Restore message on failure
-    }
-  };
-  const handleEditMessage = async (messageId) => {
-    const updatedContent = editMessageContent.trim();
-    
-    // Optimistically update the UI
-    const updatedMessages = messages.map(msg => {
-      if ((msg.id || msg.Id) === messageId) {
-        return {
-          ...msg,
-          content: updatedContent,
-          Content: updatedContent
-        };
-      }
-      return msg;
-    });
-    
-    setEditingMessageId(null);
-    setEditMessageContent('');
-    
-    if (onMessageDeleted) {
-      onMessageDeleted(messageId, updatedMessages);
-    }
+    const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
+    const isAtBottom = scrollHeight - scrollTop - clientHeight < 100;
 
-    try {
-      await API.put(`/Chat/update/${messageId}`, {
-        newContent: updatedContent
-      });
-      
-      toast.success('Message updated successfully', {
-        duration: 2000,
-        position: 'top-center',
-        style: {
-          background: '#10B981',
-          color: '#fff',
-          padding: '12px',
-          borderRadius: '8px',
-        },
-      });
-    } catch (error) {
-      console.error('Error updating message:', error);
-      if (onMessageDeleted) {
-        onMessageDeleted(messageId, messages); // Revert to original messages
-      }
-      toast.error('Failed to update message', {
-        duration: 2000,
-        position: 'top-center',
-        style: {
-          background: '#EF4444',
-          color: '#fff',
-          padding: '12px',
-          borderRadius: '8px',
-        },
-      });
+    setIsUserScrolling(!isAtBottom);
+    setShouldAutoScroll(isAtBottom);
+
+    if (isAtBottom) {
+      setHasNewMessages(false);
     }
-  };
-
-  const handleDeleteMessage = async (messageId) => {
-    try {
-      await API.delete(`/Chat/delete/${messageId}`);
-      if (onMessageDeleted) {
-        onMessageDeleted(messageId);
-      }
-      toast.success('Message deleted successfully', {
-        duration: 2000,
-        position: 'top-center',
-        style: {
-          background: '#10B981',
-          color: '#fff',
-          padding: '12px',
-          borderRadius: '8px',
-        },
-      });
-    } catch (error) {
-      console.error('Error deleting message:', error);
-      toast.error('Failed to delete message', {
-        duration: 2000,
-        position: 'top-center',
-        style: {
-          background: '#EF4444',
-          color: '#fff',
-          padding: '12px',
-          borderRadius: '8px',
-        },
-      });
-    }
-  };
-
-  const startEditing = (messageId, content) => {
-    setEditingMessageId(messageId);
-    setEditMessageContent(content);
-    setTimeout(() => {
-      if (editInputRef.current) {
-        editInputRef.current.focus();
-      }
-    }, 0);
-  };
-
-  const cancelEditing = () => {
-    setEditingMessageId(null);
-    setEditMessageContent('');
-  };
+  }, [setHasNewMessages]);
 
   if (!selectedUser) {
     return null;
@@ -564,58 +482,67 @@ const ChatWindow = ({
       >
         {isLoadingMessages ? (
           <div className="flex justify-center items-center h-full">
-            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-500"></div>
-          </div>
-        ) : messages.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-gray-400">
-            <p>No messages yet</p>
-            <p className="text-sm">Send a message to start the conversation!</p>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
           </div>
         ) : (
-          messages.map((message) => (
-            <MessageBubble
-              key={message.id}
-              messageId={message.id}
-              content={message.content}
-              timestamp={message.timestamp || message.created || message.Created}
-              isCurrentUser={message.senderId === currentUser?.id}
-              isEditing={editingMessageId === message.id}
-              editMessageContent={editMessageContent}
-              setEditMessageContent={setEditMessageContent}
-              handleEditMessage={handleEditMessage}
-              startEditing={startEditing}
-              cancelEditing={cancelEditing}
-              handleDeleteMessage={handleDeleteMessage}
-              editInputRef={editInputRef}
-              selectedUser={selectedUser}
-              profilePicture={message.senderId === currentUser?.id ? currentUserProfilePicture : selectedUserProfilePicture}
-            />
-          ))
+          <MessageList
+            messages={messages}
+            currentUser={currentUser}
+            selectedUser={selectedUser}
+            editingMessageId={editingMessageId}
+            editMessageContent={editMessageContent}
+            setEditMessageContent={setEditMessageContent}
+            handleEditMessage={handleEditMessage}
+            startEditing={(messageId, content) => {
+              setEditingMessageId(messageId);
+              setEditMessageContent(content);
+            }}
+            cancelEditing={() => {
+              setEditingMessageId(null);
+              setEditMessageContent('');
+            }}
+            handleDeleteMessage={handleDeleteMessage}
+            editInputRef={editInputRef}
+            selectedUserProfilePicture={selectedUserProfilePicture}
+            currentUserProfilePicture={currentUserProfilePicture}
+          />
         )}
         <div ref={messagesEndRef} />
       </div>
 
       {/* Message Input */}
       <div className="px-4 py-3 border-t border-gray-200 bg-white">
-        <form onSubmit={handleSubmit} className="flex items-center space-x-2">
-          <input
-            type="text"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Type a message..."
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors duration-200"
-          />
-          <button
-            type="submit"
-            disabled={!newMessage.trim()}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
-              newMessage.trim()
-                ? 'bg-purple-600 text-white hover:bg-purple-700'
-                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-            }`}
-          >
-            Send
-          </button>
+        <form onSubmit={async (e) => {
+          e.preventDefault();
+          if (!newMessage.trim()) return;
+
+          try {
+            await sendMessage(selectedUser.id, newMessage.trim());
+            setNewMessage('');
+            scrollToBottom(true);
+          } catch (error) {
+            console.error('Failed to send message:', error);
+            toast.error('Failed to send message');
+          }
+        }}>
+          <div className="flex items-center space-x-2">
+            <input
+              type="text"
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              placeholder="Type a message..."
+              className="flex-1 rounded-full border border-gray-300 px-4 py-2 focus:outline-none focus:border-purple-500"
+            />
+            <button
+              type="submit"
+              disabled={!newMessage.trim() || connectionStatus !== 'connected'}
+              className="bg-purple-600 text-white rounded-full p-2 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                <path d="M3.478 2.404a.75.75 0 00-.926.941l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.404z" />
+              </svg>
+            </button>
+          </div>
         </form>
       </div>
 
