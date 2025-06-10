@@ -5,11 +5,11 @@ using System.Text;
 using ChatApp.Models.Entities;
 using ChatApp.Data;
 using ChatApp.Interfaces;
-using ChatApp.Service;
 using ChatApp.Services;
 using Microsoft.OpenApi.Models;
 using ChatApp.Hubs;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using ChatApp.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 

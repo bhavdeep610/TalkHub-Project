@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "T6mEvi9YwH0s/7DY7Scrb74Un9WBYabvV/l3a0QcQxU=",
+  "Hash": "tSE6RjeBTIY6NVd1lTDjF617R2YmuEnBNGOVSNDFsyM=",
   "Source": "ChatApp",
   "BasePath": "_content/ChatApp",
   "Mode": "Default",
@@ -10,7 +10,7 @@
     {
       "Name": "ChatApp\\wwwroot",
       "Source": "ChatApp",
-      "ContentRoot": "C:\\Users\\BhavdeepSinghRajora\\OneDrive - Kadel Labs Private Limited\\Desktop\\Chatapp_React\\backend\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\BhavdeepSinghRajora\\OneDrive - Kadel Labs Private Limited\\Documents\\Chatapp_React_complete live\\backend\\wwwroot\\",
       "BasePath": "_content/ChatApp",
       "Pattern": "**"
     }
