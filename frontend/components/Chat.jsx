@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useSignalR } from '../hooks/useSignalR';
 
 const Chat = ({ token, currentUser, selectedUser }) => {
@@ -6,6 +6,7 @@ const Chat = ({ token, currentUser, selectedUser }) => {
     const [isTyping, setIsTyping] = useState(false);
     const typingTimeoutRef = useRef(null);
     const messagesEndRef = useRef(null);
+    const previousMessagesLengthRef = useRef(0);
 
     const {
         isConnected,
@@ -16,43 +17,80 @@ const Chat = ({ token, currentUser, selectedUser }) => {
         onlineUsers
     } = useSignalR(token);
 
-    // Scroll to bottom when new messages arrive
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    };
+    // Memoize filtered messages
+    const chatMessages = useMemo(() => 
+        messages.filter(msg => 
+            (msg.senderId === currentUser?.id && msg.receiverId === selectedUser?.id) ||
+            (msg.senderId === selectedUser?.id && msg.receiverId === currentUser?.id)
+        ),
+        [messages, currentUser?.id, selectedUser?.id]
+    );
 
+    // Memoize user status
+    const { isUserOnline, lastSeen } = useMemo(() => {
+        const selectedUserStatus = onlineUsers.find(([userId]) => userId === selectedUser?.id);
+        return {
+            isUserOnline: !!selectedUserStatus,
+            lastSeen: selectedUserStatus ? selectedUserStatus[1].lastSeen : null
+        };
+    }, [onlineUsers, selectedUser?.id]);
+
+    // Memoize selected user typing status
+    const isSelectedUserTyping = useMemo(() => 
+        typingUsers.some(([userId]) => userId === selectedUser?.id),
+        [typingUsers, selectedUser?.id]
+    );
+
+    // Optimize scroll behavior
+    const scrollToBottom = useCallback((force = false) => {
+        if (!messagesEndRef.current) return;
+
+        const container = messagesEndRef.current.parentElement;
+        const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+
+        if (force || isNearBottom) {
+            messagesEndRef.current.scrollIntoView({ behavior: force ? 'auto' : 'smooth' });
+        }
+    }, []);
+
+    // Handle new messages
     useEffect(() => {
-        scrollToBottom();
-    }, [messages]);
+        const hasNewMessages = chatMessages.length > previousMessagesLengthRef.current;
+        previousMessagesLengthRef.current = chatMessages.length;
+        
+        if (hasNewMessages) {
+            scrollToBottom(true);
+        }
+    }, [chatMessages.length, scrollToBottom]);
 
-    // Handle typing indicator
-    const handleTyping = () => {
-        if (!isTyping) {
+    // Optimize typing handler
+    const handleTyping = useCallback(() => {
+        if (!isTyping && selectedUser?.id) {
             setIsTyping(true);
             sendTypingNotification(selectedUser.id, true);
         }
 
-        // Clear existing timeout
         if (typingTimeoutRef.current) {
             clearTimeout(typingTimeoutRef.current);
         }
 
-        // Set new timeout
         typingTimeoutRef.current = setTimeout(() => {
             setIsTyping(false);
-            sendTypingNotification(selectedUser.id, false);
+            if (selectedUser?.id) {
+                sendTypingNotification(selectedUser.id, false);
+            }
         }, 2000);
-    };
+    }, [isTyping, selectedUser?.id, sendTypingNotification]);
 
-    // Handle message sending
-    const handleSendMessage = async (e) => {
+    // Optimize message sending
+    const handleSendMessage = useCallback(async (e) => {
         e.preventDefault();
-        if (!messageInput.trim() || !selectedUser) return;
+        if (!messageInput.trim() || !selectedUser?.id || !isConnected) return;
 
         try {
             await sendMessage(selectedUser.id, messageInput.trim());
             setMessageInput('');
-            // Clear typing indicator
+            
             if (typingTimeoutRef.current) {
                 clearTimeout(typingTimeoutRef.current);
                 setIsTyping(false);
@@ -60,23 +98,27 @@ const Chat = ({ token, currentUser, selectedUser }) => {
             }
         } catch (error) {
             console.error('Failed to send message:', error);
-            // Handle error (show notification, etc.)
         }
-    };
+    }, [messageInput, selectedUser?.id, isConnected, sendMessage, sendTypingNotification]);
 
-    // Filter messages for current chat
-    const chatMessages = messages.filter(msg => 
-        (msg.senderId === currentUser.id && msg.receiverId === selectedUser.id) ||
-        (msg.senderId === selectedUser.id && msg.receiverId === currentUser.id)
-    );
+    // Cleanup on unmount
+    useEffect(() => {
+        return () => {
+            if (typingTimeoutRef.current) {
+                clearTimeout(typingTimeoutRef.current);
+            }
+        };
+    }, []);
 
-    // Check if selected user is typing
-    const isSelectedUserTyping = typingUsers.some(([userId]) => userId === selectedUser.id);
+    // Memoize message input handler
+    const handleMessageInputChange = useCallback((e) => {
+        setMessageInput(e.target.value);
+        handleTyping();
+    }, [handleTyping]);
 
-    // Get selected user's online status
-    const selectedUserStatus = onlineUsers.find(([userId]) => userId === selectedUser.id);
-    const isUserOnline = selectedUserStatus ? true : false;
-    const lastSeen = selectedUserStatus ? selectedUserStatus[1].lastSeen : null;
+    if (!selectedUser || !currentUser) {
+        return null;
+    }
 
     return (
         <div className="flex flex-col h-full">
@@ -102,9 +144,9 @@ const Chat = ({ token, currentUser, selectedUser }) => {
 
             {/* Messages Area */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                {chatMessages.map((message, index) => (
+                {chatMessages.map((message) => (
                     <div
-                        key={index}
+                        key={message.id || `${message.senderId}-${message.timestamp}`}
                         className={`flex ${message.senderId === currentUser.id ? 'justify-end' : 'justify-start'}`}
                     >
                         <div
@@ -137,10 +179,7 @@ const Chat = ({ token, currentUser, selectedUser }) => {
                     <input
                         type="text"
                         value={messageInput}
-                        onChange={(e) => {
-                            setMessageInput(e.target.value);
-                            handleTyping();
-                        }}
+                        onChange={handleMessageInputChange}
                         placeholder="Type a message..."
                         className="flex-1 rounded-full border border-gray-300 px-4 py-2 focus:outline-none focus:border-blue-500"
                         disabled={!isConnected || !selectedUser}
@@ -170,4 +209,4 @@ const Chat = ({ token, currentUser, selectedUser }) => {
     );
 };
 
-export default Chat; 
+export default React.memo(Chat); 
