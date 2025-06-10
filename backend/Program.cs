@@ -5,18 +5,35 @@ using System.Text;
 using ChatApp.Models.Entities;
 using ChatApp.Data;
 using ChatApp.Interfaces;
+using ChatApp.Service;
 using ChatApp.Services;
 using Microsoft.OpenApi.Models;
 using ChatApp.Hubs;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseMySql(
-        builder.Configuration.GetConnectionString("ChatAppConnection"),
-        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("ChatAppConnection"))
-    ));
+{
+    var connectionString = builder.Configuration.GetConnectionString("ChatAppConnection");
+    try 
+    {
+        var serverVersion = new MySqlServerVersion(new Version(8, 0, 0));
+        options.UseMySql(connectionString, serverVersion, mySqlOptions =>
+        {
+            mySqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 10,
+                maxRetryDelay: TimeSpan.FromSeconds(30),
+                errorNumbersToAdd: null);
+        });
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Database connection error: {ex.Message}");
+        throw;
+    }
+});
 
 // Add SignalR with detailed configuration
 builder.Services.AddSignalR(options =>
@@ -36,53 +53,38 @@ builder.Services.AddScoped<CloudinaryService>();
 builder.Services.AddScoped<ProfilePictureService>();
 
 // JWT Auth with SignalR support
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.SaveToken = true;
-    options.RequireHttpsMetadata = false; // Set to true in production
-    options.TokenValidationParameters = new TokenValidationParameters
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
     {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ClockSkew = TimeSpan.Zero,
-        ValidIssuer = builder.Configuration["JWT:Issuer"],
-        ValidAudiences = builder.Configuration["JWT:Audience"]?.Split(','),
-        IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]!)
-        )
-    };
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["JWT:Issuer"],
+            ValidAudience = builder.Configuration["JWT:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]!)
+            )
+        };
 
-    // Configure JWT Bearer Auth to handle SignalR
-    options.Events = new JwtBearerEvents
-    {
-        OnMessageReceived = context =>
+        // Configure JWT Bearer Auth to handle SignalR
+        options.Events = new JwtBearerEvents
         {
-            var accessToken = context.Request.Query["access_token"];
-            var path = context.HttpContext.Request.Path;
-            if (!string.IsNullOrEmpty(accessToken) && 
-                (path.StartsWithSegments("/chathub")))
+            OnMessageReceived = context =>
             {
-                context.Token = accessToken;
+                var accessToken = context.Request.Query["access_token"];
+                var path = context.HttpContext.Request.Path;
+                if (!string.IsNullOrEmpty(accessToken) && 
+                    (path.StartsWithSegments("/chathub") || path.StartsWithSegments("/hubs/chat")))
+                {
+                    context.Token = accessToken;
+                }
+                return Task.CompletedTask;
             }
-            return Task.CompletedTask;
-        },
-        OnAuthenticationFailed = context =>
-        {
-            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-            {
-                context.Response.Headers.Add("Token-Expired", "true");
-            }
-            return Task.CompletedTask;
-        }
-    };
-});
+        };
+    });
 
 // Swagger setup
 builder.Services.AddSwaggerGen(options =>
@@ -120,17 +122,14 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowViteDevClient", policy =>
     {
-        policy.WithOrigins(
-                "http://localhost:5175",
-                "http://localhost:5173",
-                "http://localhost:5174",
-                "http://localhost:5000",
-                "https://talk-hub-project.vercel.app"
-            )
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials()
-            .SetIsOriginAllowed(_ => true); // Be careful with this in production
+        policy.WithOrigins("http://localhost:5173", 
+                          "http://127.0.0.1:5173",
+                          "https://talk-hub-project.vercel.app",
+                          "http://talk-hub-project.vercel.app")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials()
+              .SetIsOriginAllowed(_ => true); // Be careful with this in production
     });
 });
 
@@ -140,16 +139,9 @@ builder.Services.AddEndpointsApiExplorer();
 var app = builder.Build();
 
 // Create uploads directory for profile pictures
-var contentRoot = app.Environment.ContentRootPath;
-var uploadsPath = Path.Combine(contentRoot, "wwwroot", "uploads", "profile-pictures");
-if (!Directory.Exists(Path.GetDirectoryName(uploadsPath)))
-{
-    Directory.CreateDirectory(Path.GetDirectoryName(uploadsPath)!);
-}
-if (!Directory.Exists(uploadsPath))
-{
-    Directory.CreateDirectory(uploadsPath);
-}
+string contentRootPath = app.Environment.ContentRootPath;
+var uploadsPath = Path.Combine(contentRootPath, "wwwroot", "uploads", "profile-pictures");
+Directory.CreateDirectory(uploadsPath); // This will create all necessary parent directories
 
 // Auto migrate & seed roles
 using (var scope = app.Services.CreateScope())

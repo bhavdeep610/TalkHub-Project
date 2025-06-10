@@ -58,13 +58,9 @@
               "target": "Package",
               "version": "[2.2.1, )"
             },
-            "Cloudinary": {
-              "target": "Package",
-              "version": "[0.0.5, )"
-            },
             "CloudinaryDotNet": {
               "target": "Package",
-              "version": "[1.27.5, )"
+              "version": "[1.25.0, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",

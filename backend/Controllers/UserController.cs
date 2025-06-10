@@ -24,20 +24,13 @@ namespace ChatApp.Controllers
         {
             try
             {
-                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-                if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
-                {
-                    return Unauthorized(new { message = "Invalid or missing user identifier in token" });
-                }
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+                if (userId == 0)
+                    return Unauthorized();
 
-                var user = await _context.Users
-                    .Include(u => u.ProfilePicture)
-                    .FirstOrDefaultAsync(u => u.Id == userId);
-
+                var user = await _context.Users.FindAsync(userId);
                 if (user == null)
-                {
-                    return NotFound(new { message = "User not found" });
-                }
+                    return NotFound("User not found");
 
                 return Ok(new
                 {
@@ -45,7 +38,7 @@ namespace ChatApp.Controllers
                     userName = user.UserName,
                     email = user.Email,
                     created = user.Created,
-                    profilePictureUrl = user.ProfilePicture?.ImageUrl ?? user.ProfilePictureUrl
+                    profilePictureUrl = user.ProfilePictureUrl
                 });
             }
             catch (Exception ex)

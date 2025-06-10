@@ -95,20 +95,20 @@ public class ChatController : ControllerBase
     {
         try
         {
-            int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-            var message = await _context.Messages.FindAsync(id);
+        int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var message = await _context.Messages.FindAsync(id);
 
-            if (message == null)
+        if (message == null)
                 return NotFound("Message not found");
 
-            if (message.SenderId != userId)
+        if (message.SenderId != userId)
                 return Forbid("You can only edit your own messages");
 
             if (string.IsNullOrWhiteSpace(dto.NewContent))
                 return BadRequest("Message content cannot be empty");
 
-            message.Content = dto.NewContent;
-            await _context.SaveChangesAsync();
+        message.Content = dto.NewContent;
+        await _context.SaveChangesAsync();
 
             var senderName = await _context.Users
                 .Where(u => u.Id == message.SenderId)
