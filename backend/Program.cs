@@ -16,9 +16,30 @@ var builder = WebApplication.CreateBuilder(args);
 // Add DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    var connectionString = builder.Configuration.GetConnectionString("ChatAppConnection");
+    var connectionString = Environment.GetEnvironmentVariable("MYSQL_URL") ?? 
+                         builder.Configuration.GetConnectionString("ChatAppConnection");
+    
+    if (string.IsNullOrEmpty(connectionString))
+    {
+        throw new InvalidOperationException("Database connection string is not configured.");
+    }
+
     try 
     {
+        // Parse connection string if it's in the mysql:// format
+        if (connectionString.StartsWith("mysql://"))
+        {
+            var uri = new Uri(connectionString);
+            var userInfo = uri.UserInfo.Split(':');
+            var user = userInfo[0];
+            var password = userInfo[1];
+            var host = uri.Host;
+            var port = uri.Port;
+            var database = uri.AbsolutePath.TrimStart('/');
+
+            connectionString = $"Server={host};Port={port};Database={database};User={user};Password={password};";
+        }
+
         var serverVersion = new MySqlServerVersion(new Version(8, 0, 0));
         options.UseMySql(connectionString, serverVersion, mySqlOptions =>
         {
