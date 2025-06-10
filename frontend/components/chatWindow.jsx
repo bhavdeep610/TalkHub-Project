@@ -233,9 +233,6 @@ const MessageList = memo(({
 
 MessageList.displayName = 'MessageList';
 
-
-
-
 const ChatWindow = ({
   selectedUser,
   messages,
@@ -380,8 +377,9 @@ const ChatWindow = ({
     setEditMessageContent('');
 
     sendingMessageRef.current = true;
+    const tempId = `temp-${Date.now()}`;
     const optimisticMessage = {
-      id: null,
+      id: tempId,
       senderId: currentUser.id,
       receiverId: selectedUser.id,
       content: newMessage.trim(),
@@ -396,12 +394,21 @@ const ChatWindow = ({
 
       const result = await messageService.sendMessage(selectedUser.id, optimisticMessage.content);
       
-      // Remove optimistic message once confirmed
-      setLocalMessages(prev => prev.filter(msg => msg !== optimisticMessage));
+      // Remove optimistic message and add the real message
+      setLocalMessages(prev => {
+        const filtered = prev.filter(msg => msg.id !== tempId);
+        if (result) {
+          return [...filtered, {
+            ...result,
+            isOptimistic: false
+          }];
+        }
+        return filtered;
+      });
     } catch (error) {
       console.error('Failed to send message:', error);
       // Remove failed optimistic message
-      setLocalMessages(prev => prev.filter(msg => msg !== optimisticMessage));
+      setLocalMessages(prev => prev.filter(msg => msg.id !== tempId));
       toast.error(error.message || 'Failed to send message');
     } finally {
       sendingMessageRef.current = false;
@@ -636,8 +643,6 @@ const ChatWindow = ({
           New Messages ↓
         </button>
       )}
-
-
 
       <Toaster position="top-center" />
     </div>
