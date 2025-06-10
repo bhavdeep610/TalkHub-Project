@@ -4,16 +4,53 @@ import signalRService from '../services/signalRService';
 export function useSignalR(token) {
     const [isConnected, setIsConnected] = useState(false);
     const [messages, setMessages] = useState([]);
+    const [conversations, setConversations] = useState([]);
     const messagesRef = useRef(messages);
     const [typingUsers, setTypingUsers] = useState(new Map());
     const [onlineUsers, setOnlineUsers] = useState(new Map());
     const connectionRef = useRef(null);
     const reconnectTimeoutRef = useRef(null);
+    const messageQueueRef = useRef([]);
+    const processingQueueRef = useRef(false);
 
     // Update messages ref when messages change
     useEffect(() => {
         messagesRef.current = messages;
     }, [messages]);
+
+    // Process message queue
+    const processMessageQueue = useCallback(async () => {
+        if (processingQueueRef.current || messageQueueRef.current.length === 0) return;
+
+        processingQueueRef.current = true;
+        try {
+            const batch = messageQueueRef.current.splice(0, 10); // Process 10 messages at a time
+            const uniqueMessages = new Map();
+
+            // Deduplicate messages in the batch
+            batch.forEach(msg => {
+                const key = msg.id || `${msg.senderId}-${msg.timestamp}-${msg.content}`;
+                if (!uniqueMessages.has(key) || msg.id) {
+                    uniqueMessages.set(key, msg);
+                }
+            });
+
+            setMessages(prev => {
+                const newMessages = [...prev];
+                uniqueMessages.forEach(msg => {
+                    if (!newMessages.some(m => m.id === msg.id)) {
+                        newMessages.push(msg);
+                    }
+                });
+                return newMessages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+            });
+        } finally {
+            processingQueueRef.current = false;
+            if (messageQueueRef.current.length > 0) {
+                setTimeout(processMessageQueue, 100); // Process next batch after 100ms
+            }
+        }
+    }, []);
 
     // Connect to SignalR hub with reconnection logic
     useEffect(() => {
@@ -49,34 +86,31 @@ export function useSignalR(token) {
         };
     }, [token]);
 
-    // Message handling with deduplication
+    // Message handling with batched updates
     useEffect(() => {
-        const messageIds = new Set();
-
         const unsubscribe = signalRService.onReceiveMessage((message) => {
-            // Deduplicate messages
-            if (messageIds.has(message.id)) {
-                return;
-            }
-            messageIds.add(message.id);
+            messageQueueRef.current.push(message);
+            processMessageQueue();
+        });
 
-            setMessages(prev => {
-                // Check if message already exists
-                if (prev.some(m => m.id === message.id)) {
-                    return prev;
+        return () => unsubscribe();
+    }, [processMessageQueue]);
+
+    // Conversation updates handling
+    useEffect(() => {
+        const unsubscribe = signalRService.onConversationUpdate((conversation) => {
+            setConversations(prev => {
+                const newConversations = [...prev];
+                const index = newConversations.findIndex(c => c.user.id === conversation.userId);
+                
+                if (index !== -1) {
+                    newConversations[index] = {
+                        ...newConversations[index],
+                        lastMessage: conversation.lastMessage
+                    };
                 }
-
-                // Sort messages by timestamp
-                const newMessages = [...prev, message].sort((a, b) => 
-                    new Date(a.timestamp) - new Date(b.timestamp)
-                );
-
-                // Limit the number of messages in memory
-                if (newMessages.length > 200) {
-                    return newMessages.slice(-200);
-                }
-
-                return newMessages;
+                
+                return newConversations;
             });
         });
 
@@ -192,6 +226,7 @@ export function useSignalR(token) {
     const returnValue = {
         isConnected,
         messages,
+        conversations,
         sendMessage,
         typingUsers: Array.from(typingUsers.entries()),
         sendTypingNotification,

@@ -2,6 +2,7 @@ import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import API from '../src/services/api';
 import { profilePictureService } from '../src/services/profilePictureService';
+import signalRService from '../src/services/signalRService';
 
 /**
  * ChatSidebar component for displaying and managing conversations
@@ -17,12 +18,22 @@ const ChatSidebar = ({
   onSelectUser, 
   onStartNewChat = () => {},
   onRefreshUsers = () => {},
-  formatDate = (date) => new Date(date).toLocaleDateString() 
+  formatDate = (date) => new Date(date).toLocaleDateString(),
+  onConversationUpdate = () => {} // Add callback for conversation updates
 }) => {
   const [showUserList, setShowUserList] = useState(false);
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [userProfilePictures, setUserProfilePictures] = useState({});
   const [loadingPictures, setLoadingPictures] = useState(false);
+
+  // Subscribe to SignalR conversation updates
+  useEffect(() => {
+    const unsubscribe = signalRService.onConversationUpdate((updatedConversation) => {
+      onConversationUpdate(updatedConversation);
+    });
+
+    return () => unsubscribe();
+  }, [onConversationUpdate]);
 
   // Fetch profile pictures for all users
   const fetchProfilePictures = async () => {
@@ -237,7 +248,8 @@ ChatSidebar.propTypes = {
   onSelectUser: PropTypes.func.isRequired,
   onStartNewChat: PropTypes.func,
   onRefreshUsers: PropTypes.func,
-  formatDate: PropTypes.func
+  formatDate: PropTypes.func,
+  onConversationUpdate: PropTypes.func
 };
 
 // Wrap with React.memo to prevent unnecessary re-renders

@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useSignalR } from '../hooks/useSignalR';
 
-const Chat = ({ token, currentUser, selectedUser }) => {
+const Chat = ({ token, currentUser, selectedUser, onConversationUpdate }) => {
     const [messageInput, setMessageInput] = useState('');
     const [isTyping, setIsTyping] = useState(false);
+    const [localMessages, setLocalMessages] = useState([]);
     const typingTimeoutRef = useRef(null);
     const messagesEndRef = useRef(null);
     const previousMessagesLengthRef = useRef(0);
+    const messageMapRef = useRef(new Map());
 
     const {
         isConnected,
@@ -17,14 +19,35 @@ const Chat = ({ token, currentUser, selectedUser }) => {
         onlineUsers
     } = useSignalR(token);
 
-    // Memoize filtered messages
-    const chatMessages = useMemo(() => 
-        messages.filter(msg => 
+    // Memoize filtered messages with deduplication
+    const chatMessages = useMemo(() => {
+        const messageMap = new Map();
+        const allMessages = [...messages, ...localMessages];
+        
+        // Deduplicate messages
+        allMessages.forEach(msg => {
+            const key = msg.id || `${msg.senderId}-${msg.timestamp}-${msg.content}`;
+            if (!messageMap.has(key) || msg.id) { // Prefer messages with IDs
+                messageMap.set(key, msg);
+            }
+        });
+
+        // Filter messages for current chat
+        const filteredMessages = Array.from(messageMap.values()).filter(msg =>
             (msg.senderId === currentUser?.id && msg.receiverId === selectedUser?.id) ||
             (msg.senderId === selectedUser?.id && msg.receiverId === currentUser?.id)
-        ),
-        [messages, currentUser?.id, selectedUser?.id]
-    );
+        );
+
+        // Sort by timestamp
+        return filteredMessages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+    }, [messages, localMessages, currentUser?.id, selectedUser?.id]);
+
+    // Update message map for optimistic updates
+    useEffect(() => {
+        messageMapRef.current = new Map(
+            chatMessages.map(msg => [msg.id || `${msg.senderId}-${msg.timestamp}-${msg.content}`, msg])
+        );
+    }, [chatMessages]);
 
     // Memoize user status
     const { isUserOnline, lastSeen } = useMemo(() => {
@@ -41,7 +64,7 @@ const Chat = ({ token, currentUser, selectedUser }) => {
         [typingUsers, selectedUser?.id]
     );
 
-    // Optimize scroll behavior
+    // Optimize scroll behavior with debouncing
     const scrollToBottom = useCallback((force = false) => {
         if (!messagesEndRef.current) return;
 
@@ -49,11 +72,13 @@ const Chat = ({ token, currentUser, selectedUser }) => {
         const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;
 
         if (force || isNearBottom) {
-            messagesEndRef.current.scrollIntoView({ behavior: force ? 'auto' : 'smooth' });
+            requestAnimationFrame(() => {
+                messagesEndRef.current?.scrollIntoView({ behavior: force ? 'auto' : 'smooth' });
+            });
         }
     }, []);
 
-    // Handle new messages
+    // Handle new messages with optimistic updates
     useEffect(() => {
         const hasNewMessages = chatMessages.length > previousMessagesLengthRef.current;
         previousMessagesLengthRef.current = chatMessages.length;
@@ -63,7 +88,7 @@ const Chat = ({ token, currentUser, selectedUser }) => {
         }
     }, [chatMessages.length, scrollToBottom]);
 
-    // Optimize typing handler
+    // Optimize typing handler with debouncing
     const handleTyping = useCallback(() => {
         if (!isTyping && selectedUser?.id) {
             setIsTyping(true);
@@ -82,13 +107,22 @@ const Chat = ({ token, currentUser, selectedUser }) => {
         }, 2000);
     }, [isTyping, selectedUser?.id, sendTypingNotification]);
 
-    // Optimize message sending
+    // Optimize message sending with optimistic updates
     const handleSendMessage = useCallback(async (e) => {
         e.preventDefault();
         if (!messageInput.trim() || !selectedUser?.id || !isConnected) return;
 
+        const optimisticMessage = {
+            id: null,
+            senderId: currentUser.id,
+            receiverId: selectedUser.id,
+            content: messageInput.trim(),
+            timestamp: new Date().toISOString(),
+            isOptimistic: true
+        };
+
         try {
-            await sendMessage(selectedUser.id, messageInput.trim());
+            setLocalMessages(prev => [...prev, optimisticMessage]);
             setMessageInput('');
             
             if (typingTimeoutRef.current) {
@@ -96,10 +130,25 @@ const Chat = ({ token, currentUser, selectedUser }) => {
                 setIsTyping(false);
                 sendTypingNotification(selectedUser.id, false);
             }
+
+            const result = await sendMessage(selectedUser.id, optimisticMessage.content);
+            
+            // Update conversation
+            if (result && onConversationUpdate) {
+                onConversationUpdate({
+                    userId: selectedUser.id,
+                    lastMessage: result
+                });
+            }
+
+            // Remove optimistic message once confirmed
+            setLocalMessages(prev => prev.filter(msg => msg !== optimisticMessage));
         } catch (error) {
             console.error('Failed to send message:', error);
+            // Remove failed optimistic message
+            setLocalMessages(prev => prev.filter(msg => msg !== optimisticMessage));
         }
-    }, [messageInput, selectedUser?.id, isConnected, sendMessage, sendTypingNotification]);
+    }, [messageInput, selectedUser?.id, isConnected, sendMessage, sendTypingNotification, currentUser?.id, onConversationUpdate]);
 
     // Cleanup on unmount
     useEffect(() => {

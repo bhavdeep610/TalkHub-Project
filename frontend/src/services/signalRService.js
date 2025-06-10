@@ -8,6 +8,7 @@ class SignalRService {
         this.typingHandlers = new Set();
         this.userStatusHandlers = new Set();
         this.connectionHandlers = new Set();
+        this.conversationHandlers = new Set();
         this.messageQueue = [];
         this.isReconnecting = false;
         this.connectionStarted = false;
@@ -147,6 +148,11 @@ class SignalRService {
             this.messageHandlers.forEach(handler => handler(message));
         });
 
+        this.connection.on('ConversationUpdated', (conversation) => {
+            console.log('Conversation update received:', conversation);
+            this.conversationHandlers.forEach(handler => handler(conversation));
+        });
+
         this.connection.on('UserTyping', (notification) => {
             this.typingHandlers.forEach(handler => handler(notification));
         });
@@ -254,6 +260,11 @@ class SignalRService {
     onConnectionChange(handler) {
         this.connectionHandlers.add(handler);
         return () => this.connectionHandlers.delete(handler);
+    }
+
+    onConversationUpdate(handler) {
+        this.conversationHandlers.add(handler);
+        return () => this.conversationHandlers.delete(handler);
     }
 
     notifyConnectionChange(state) {
