@@ -97,7 +97,7 @@ const MessageBubble = memo(({
           }`}
         >
           {isEditing ? (
-            <div className="flex flex-col space-y-2">
+            <div className="flex flex-col space-y-2 min-w-[200px]">
               <input
                 ref={editInputRef}
                 type="text"
@@ -110,13 +110,13 @@ const MessageBubble = memo(({
               <div className="flex justify-end space-x-2">
                 <button
                   onClick={onEditSubmit}
-                  className="text-xs text-green-500 hover:text-green-600 transition-colors"
+                  className="text-xs text-green-500 hover:text-green-600 transition-colors px-2 py-1 rounded"
                 >
                   Save
                 </button>
                 <button
                   onClick={cancelEditing}
-                  className="text-xs text-gray-500 hover:text-gray-600 transition-colors"
+                  className="text-xs text-gray-500 hover:text-gray-600 transition-colors px-2 py-1 rounded"
                 >
                   Cancel
                 </button>

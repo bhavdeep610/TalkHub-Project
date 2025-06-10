@@ -375,6 +375,10 @@ const ChatWindow = ({
     e.preventDefault();
     if (!newMessage.trim() || !selectedUser?.id || sendingMessageRef.current) return;
 
+    // Clear any existing edit state
+    setEditingMessageId(null);
+    setEditMessageContent('');
+
     sendingMessageRef.current = true;
     const optimisticMessage = {
       id: null,
