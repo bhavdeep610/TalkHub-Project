@@ -98,14 +98,7 @@ public class ChatController : ControllerBase
         int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
         var message = await _context.Messages.FindAsync(id);
 
-        if (message == null)
-                return NotFound("Message not found");
-
-        if (message.SenderId != userId)
-                return Forbid("You can only edit your own messages");
-
-            if (string.IsNullOrWhiteSpace(dto.NewContent))
-                return BadRequest("Message content cannot be empty");
+            
 
         message.Content = dto.NewContent;
         await _context.SaveChangesAsync();
@@ -143,11 +136,7 @@ public class ChatController : ControllerBase
         int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
         var message = await _context.Messages.FindAsync(id);
 
-        if (message == null)
-            return NotFound();
-
-        if (message.SenderId != userId)
-            return Forbid();
+        
 
         _context.Messages.Remove(message);
         await _context.SaveChangesAsync();
@@ -272,96 +261,6 @@ public class ChatController : ControllerBase
         catch (Exception ex)
         {
             return StatusCode(500, new { message = ex.Message });
-        }
-    }
-
-    [HttpGet("debug/messages/{userId}")]
-    public async Task<IActionResult> GetMessagesDebug(int userId)
-    {
-        try
-        {
-            int currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-
-            var messages = await _context.Messages
-                .Include(m => m.Sender)
-                .Include(m => m.Receiver)
-                .Where(m => (m.SenderId == currentUserId && m.ReceiverId == userId) ||
-                           (m.SenderId == userId && m.ReceiverId == currentUserId))
-                .OrderByDescending(m => m.Created)
-                .Take(10)
-                .Select(m => new
-                {
-                    MessageId = m.MessageId,
-                    Content = m.Content,
-                    Created = m.Created,
-                    Sender = new { m.SenderId, Username = m.Sender.UserName },
-                    Receiver = new { m.ReceiverId, Username = m.Receiver.UserName }
-                })
-                .ToListAsync();
-
-            return Ok(new
-            {
-                CurrentUserId = currentUserId,
-                PartnerUserId = userId,
-                MessageCount = messages.Count,
-                Messages = messages
-            });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, $"Error getting messages: {ex.Message}");
-        }
-    }
-
-    [HttpGet("debug/conversations")]
-    public async Task<IActionResult> GetConversationsDebug()
-    {
-        try
-        {
-            int currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-
-            var messages = await _context.Messages
-                .Include(m => m.Sender)
-                .Include(m => m.Receiver)
-                .Where(m => m.SenderId == currentUserId || m.ReceiverId == currentUserId)
-                .OrderByDescending(m => m.Created)
-                .ToListAsync();
-
-            var conversations = messages
-                .GroupBy(m => m.SenderId == currentUserId ? m.ReceiverId : m.SenderId)
-                .Select(g =>
-                {
-                    var partnerId = g.Key;
-                    var lastMessage = g.First();
-                    var partner = lastMessage.SenderId == partnerId ? lastMessage.Sender : lastMessage.Receiver;
-
-                    return new
-                    {
-                        PartnerId = partnerId,
-                        PartnerUsername = partner?.UserName,
-                        LastMessage = new
-                        {
-                            lastMessage.MessageId,
-                            lastMessage.Content,
-                            lastMessage.Created,
-                            SenderName = lastMessage.Sender?.UserName,
-                            ReceiverName = lastMessage.Receiver?.UserName
-                        },
-                        MessageCount = g.Count()
-                    };
-                })
-                .ToList();
-
-            return Ok(new
-            {
-                CurrentUserId = currentUserId,
-                ConversationCount = conversations.Count,
-                Conversations = conversations
-            });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, $"Error getting conversations: {ex.Message}");
         }
     }
 
