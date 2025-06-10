@@ -79,7 +79,8 @@ const MessageBubble = memo(({
   handleDeleteMessage,
   editInputRef,
   selectedUser,
-  profilePicture
+  profilePicture,
+  isOptimistic
 }) => {
   return (
     <div className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'} items-end space-x-2`}>
@@ -170,14 +171,44 @@ const MessageBubble = memo(({
 MessageBubble.displayName = 'MessageBubble';
 
 // Memoized Message List component to prevent unnecessary re-renders
-const MessageList = memo(({ messages, currentUser, selectedUser, editingMessageId, editMessageContent, setEditMessageContent, handleEditMessage, startEditing, cancelEditing, handleDeleteMessage, editInputRef, selectedUserProfilePicture, currentUserProfilePicture }) => {
-  const stableMessages = useMemo(() => messages, [messages]);
+const MessageList = memo(({ 
+  messages, 
+  currentUser, 
+  selectedUser, 
+  editingMessageId, 
+  editMessageContent, 
+  setEditMessageContent, 
+  handleEditMessage, 
+  startEditing, 
+  cancelEditing, 
+  handleDeleteMessage, 
+  editInputRef, 
+  selectedUserProfilePicture, 
+  currentUserProfilePicture 
+}) => {
+  // Create a stable message map for deduplication
+  const messageMap = useMemo(() => {
+    const map = new Map();
+    messages.forEach(msg => {
+      const key = msg.id || `${msg.senderId}-${msg.timestamp}-${msg.content}`;
+      if (!map.has(key) || msg.id) { // Prefer messages with IDs
+        map.set(key, msg);
+      }
+    });
+    return map;
+  }, [messages]);
+
+  // Convert map to sorted array
+  const sortedMessages = useMemo(() => {
+    return Array.from(messageMap.values())
+      .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+  }, [messageMap]);
 
   return (
-    <>
-      {stableMessages.map((message) => (
+    <div className="flex flex-col space-y-4">
+      {sortedMessages.map((message) => (
         <MessageBubble
-          key={`${message.id}-${message.timestamp}`}
+          key={message.id || `${message.senderId}-${message.timestamp}-${message.content}`}
           messageId={message.id}
           content={message.content}
           timestamp={message.timestamp}
@@ -186,21 +217,16 @@ const MessageList = memo(({ messages, currentUser, selectedUser, editingMessageI
           editMessageContent={editMessageContent}
           setEditMessageContent={setEditMessageContent}
           handleEditMessage={handleEditMessage}
-          startEditing={(messageId, content) => {
-            setEditingMessageId(messageId);
-            setEditMessageContent(content);
-          }}
-          cancelEditing={() => {
-            setEditingMessageId(null);
-            setEditMessageContent('');
-          }}
+          startEditing={startEditing}
+          cancelEditing={cancelEditing}
           handleDeleteMessage={handleDeleteMessage}
           editInputRef={editInputRef}
           selectedUser={selectedUser}
           profilePicture={message.senderId === currentUser?.id ? currentUserProfilePicture : selectedUserProfilePicture}
+          isOptimistic={message.isOptimistic}
         />
       ))}
-    </>
+    </div>
   );
 });
 
@@ -223,6 +249,7 @@ const ChatWindow = ({
   const [newMessage, setNewMessage] = useState('');
   const [editingMessageId, setEditingMessageId] = useState(null);
   const [editMessageContent, setEditMessageContent] = useState('');
+  const [localMessages, setLocalMessages] = useState([]);
   const [shouldAutoScroll, setShouldAutoScroll] = useState(true);
   const [isUserScrolling, setIsUserScrolling] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState('disconnected');
@@ -234,6 +261,82 @@ const ChatWindow = ({
   const scrollTimeoutRef = useRef(null);
   const previousMessagesRef = useRef(messages);
   const messageUpdateTimeoutRef = useRef(null);
+  const scrollDebounceRef = useRef(null);
+
+  // Combine server messages with local optimistic messages
+  const allMessages = useMemo(() => {
+    const combined = [...messages, ...localMessages];
+    const messageMap = new Map();
+    
+    // Deduplicate messages, preferring server messages over optimistic ones
+    combined.forEach(msg => {
+      const key = msg.id || `${msg.senderId}-${msg.timestamp}-${msg.content}`;
+      if (!messageMap.has(key) || msg.id) {
+        messageMap.set(key, msg);
+      }
+    });
+    
+    return Array.from(messageMap.values())
+      .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+  }, [messages, localMessages]);
+
+  // Optimized scroll handling with debouncing
+  const handleScroll = useCallback((e) => {
+    if (scrollDebounceRef.current) {
+      clearTimeout(scrollDebounceRef.current);
+    }
+
+    scrollDebounceRef.current = setTimeout(() => {
+      const container = e.target;
+      const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+      setShouldAutoScroll(isNearBottom);
+      setIsUserScrolling(!isNearBottom);
+    }, 100);
+  }, []);
+
+  // Optimized scroll to bottom with animation frame
+  const scrollToBottom = useCallback((force = false) => {
+    if (!messagesEndRef.current) return;
+
+    const container = messagesEndRef.current.parentElement;
+    const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+
+    if (force || isNearBottom) {
+      requestAnimationFrame(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: force ? 'auto' : 'smooth' });
+      });
+    }
+  }, []);
+
+  // Handle new messages with optimistic updates
+  const handleSendMessage = useCallback(async (e) => {
+    e.preventDefault();
+    if (!newMessage.trim() || !selectedUser?.id) return;
+
+    const optimisticMessage = {
+      id: null,
+      senderId: currentUser.id,
+      receiverId: selectedUser.id,
+      content: newMessage.trim(),
+      timestamp: new Date().toISOString(),
+      isOptimistic: true
+    };
+
+    try {
+      setLocalMessages(prev => [...prev, optimisticMessage]);
+      setNewMessage('');
+      scrollToBottom(true);
+
+      const result = await onSendMessage(selectedUser.id, optimisticMessage.content);
+      
+      // Remove optimistic message once confirmed
+      setLocalMessages(prev => prev.filter(msg => msg !== optimisticMessage));
+    } catch (error) {
+      console.error('Failed to send message:', error);
+      // Remove failed optimistic message
+      setLocalMessages(prev => prev.filter(msg => msg !== optimisticMessage));
+    }
+  }, [newMessage, selectedUser?.id, currentUser?.id, onSendMessage, scrollToBottom]);
 
   // Fetch profile pictures when users change
   useEffect(() => {
@@ -385,27 +488,6 @@ const ChatWindow = ({
     }
   }, [messages, onMessageDeleted]);
 
-  // Optimized scroll handling
-  const scrollToBottom = useCallback((force = false) => {
-    if (!messagesEndRef.current || !chatContainerRef.current) return;
-
-    const container = chatContainerRef.current;
-    const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;
-
-    if (force || isNearBottom || !isUserScrolling) {
-      if (messageUpdateTimeoutRef.current) {
-        clearTimeout(messageUpdateTimeoutRef.current);
-      }
-
-      messageUpdateTimeoutRef.current = setTimeout(() => {
-        messagesEndRef.current?.scrollIntoView({
-          behavior: force ? 'auto' : 'smooth',
-          block: 'end'
-        });
-      }, 50);
-    }
-  }, [isUserScrolling]);
-
   // Handle message updates with debouncing
   useEffect(() => {
     if (messages !== previousMessagesRef.current) {
@@ -431,28 +513,14 @@ const ChatWindow = ({
     };
   }, []);
 
-  const handleScroll = useCallback(() => {
-    if (!chatContainerRef.current) return;
-
-    const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
-    const isAtBottom = scrollHeight - scrollTop - clientHeight < 100;
-
-    setIsUserScrolling(!isAtBottom);
-    setShouldAutoScroll(isAtBottom);
-
-    if (isAtBottom) {
-      setHasNewMessages(false);
-    }
-  }, [setHasNewMessages]);
-
   if (!selectedUser) {
     return null;
   }
 
   return (
-    <div className="flex flex-col h-full bg-white">
+    <div className="flex flex-col h-full bg-gray-50">
       {/* Chat Header */}
-      <div className="flex items-center px-6 py-3 border-b border-gray-200 bg-white">
+      <div className="bg-white border-b p-4 flex items-center justify-between">
         <div className="flex items-center flex-1">
           {selectedUser.profilePicture || selectedUserProfilePicture ? (
             <img 
@@ -474,77 +542,51 @@ const ChatWindow = ({
         </div>
       </div>
 
-      {/* Chat Messages */}
-      <div
+      {/* Messages Area */}
+      <div 
         ref={chatContainerRef}
-        className="flex-1 overflow-y-auto p-4 space-y-4 bg-white scrollbar-thin scrollbar-thumb-purple-500 scrollbar-track-gray-100"
+        className="flex-1 overflow-y-auto p-4"
         onScroll={handleScroll}
       >
-        {isLoadingMessages ? (
-          <div className="flex justify-center items-center h-full">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
-          </div>
-        ) : (
-          <MessageList
-            messages={messages}
-            currentUser={currentUser}
-            selectedUser={selectedUser}
-            editingMessageId={editingMessageId}
-            editMessageContent={editMessageContent}
-            setEditMessageContent={setEditMessageContent}
-            handleEditMessage={handleEditMessage}
-            startEditing={(messageId, content) => {
-              setEditingMessageId(messageId);
-              setEditMessageContent(content);
-            }}
-            cancelEditing={() => {
-              setEditingMessageId(null);
-              setEditMessageContent('');
-            }}
-            handleDeleteMessage={handleDeleteMessage}
-            editInputRef={editInputRef}
-            selectedUserProfilePicture={selectedUserProfilePicture}
-            currentUserProfilePicture={currentUserProfilePicture}
-          />
-        )}
+        <MessageList
+          messages={allMessages}
+          currentUser={currentUser}
+          selectedUser={selectedUser}
+          editingMessageId={editingMessageId}
+          editMessageContent={editMessageContent}
+          setEditMessageContent={setEditMessageContent}
+          handleEditMessage={handleEditMessage}
+          startEditing={startEditing}
+          cancelEditing={cancelEditing}
+          handleDeleteMessage={handleDeleteMessage}
+          editInputRef={editInputRef}
+          selectedUserProfilePicture={selectedUserProfilePicture}
+          currentUserProfilePicture={currentUserProfilePicture}
+        />
         <div ref={messagesEndRef} />
       </div>
 
       {/* Message Input */}
-      <div className="px-4 py-3 border-t border-gray-200 bg-white">
-        <form onSubmit={async (e) => {
-          e.preventDefault();
-          if (!newMessage.trim()) return;
-
-          try {
-            await sendMessage(selectedUser.id, newMessage.trim());
-            setNewMessage('');
-            scrollToBottom(true);
-          } catch (error) {
-            console.error('Failed to send message:', error);
-            toast.error('Failed to send message');
-          }
-        }}>
-          <div className="flex items-center space-x-2">
-            <input
-              type="text"
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              placeholder="Type a message..."
-              className="flex-1 rounded-full border border-gray-300 px-4 py-2 focus:outline-none focus:border-purple-500"
-            />
-            <button
-              type="submit"
-              disabled={!newMessage.trim() || connectionStatus !== 'connected'}
-              className="bg-purple-600 text-white rounded-full p-2 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                <path d="M3.478 2.404a.75.75 0 00-.926.941l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.404z" />
-              </svg>
-            </button>
-          </div>
-        </form>
-      </div>
+      <form onSubmit={handleSendMessage} className="border-t p-4 bg-white">
+        <div className="flex items-center space-x-2">
+          <input
+            type="text"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder="Type a message..."
+            className="flex-1 rounded-full border border-gray-300 px-4 py-2 focus:outline-none focus:border-purple-500"
+          />
+          <button
+            type="submit"
+            disabled={!newMessage.trim() || connectionStatus !== 'connected'}
+            className="bg-purple-600 text-white rounded-full p-2 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+              <path d="M3.478 2.404a.75.75 0 00-.926.941l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.404z" />
+            </svg>
+          </button>
+        </div>
+      </form>
 
       {/* New Messages Notification */}
       {hasNewMessages && !shouldAutoScroll && (
@@ -579,4 +621,4 @@ ChatWindow.propTypes = {
   token: PropTypes.string.isRequired
 };
 
-export default React.memo(ChatWindow); 
+export default memo(ChatWindow); 
