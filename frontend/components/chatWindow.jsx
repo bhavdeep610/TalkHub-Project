@@ -233,6 +233,12 @@ const MessageList = memo(({
 
 MessageList.displayName = 'MessageList';
 
+
+          >
+            Cancel
+          </button>
+
+
 const ChatWindow = ({
   selectedUser,
   messages,
@@ -263,6 +269,7 @@ const ChatWindow = ({
   const previousMessagesRef = useRef(messages);
   const messageUpdateTimeoutRef = useRef(null);
   const scrollDebounceRef = useRef(null);
+  const sendingMessageRef = useRef(false);
 
   // Add startEditing and cancelEditing functions
   const startEditing = useCallback((messageId, content) => {
@@ -348,10 +355,6 @@ const ChatWindow = ({
 
   // Handle message deletion
   const handleDeleteMessage = useCallback(async (messageId) => {
-    if (!window.confirm('Are you sure you want to delete this message?')) {
-      return;
-    }
-
     try {
       await messageService.deleteMessage(messageId);
       
@@ -373,8 +376,9 @@ const ChatWindow = ({
   // Handle sending messages
   const handleSendMessage = useCallback(async (e) => {
     e.preventDefault();
-    if (!newMessage.trim() || !selectedUser?.id) return;
+    if (!newMessage.trim() || !selectedUser?.id || sendingMessageRef.current) return;
 
+    sendingMessageRef.current = true;
     const optimisticMessage = {
       id: null,
       senderId: currentUser.id,
@@ -398,6 +402,8 @@ const ChatWindow = ({
       // Remove failed optimistic message
       setLocalMessages(prev => prev.filter(msg => msg !== optimisticMessage));
       toast.error(error.message || 'Failed to send message');
+    } finally {
+      sendingMessageRef.current = false;
     }
   }, [newMessage, selectedUser?.id, currentUser?.id, scrollToBottom]);
 
@@ -587,7 +593,7 @@ const ChatWindow = ({
           handleEditMessage={handleEditMessage}
           startEditing={startEditing}
           cancelEditing={cancelEditing}
-          handleDeleteMessage={handleDeleteMessage}
+          handleDeleteMessage={(messageId) => setDeleteConfirmation({ isOpen: true, messageId })}
           editInputRef={editInputRef}
           selectedUserProfilePicture={selectedUserProfilePicture}
           currentUserProfilePicture={currentUserProfilePicture}
@@ -629,6 +635,13 @@ const ChatWindow = ({
           New Messages ↓
         </button>
       )}
+
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmation
+        isOpen={deleteConfirmation.isOpen}
+        onConfirm={() => handleDeleteMessage(deleteConfirmation.messageId)}
+        onCancel={() => setDeleteConfirmation({ isOpen: false, messageId: null })}
+      />
 
       <Toaster position="top-center" />
     </div>
