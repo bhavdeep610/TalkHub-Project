@@ -234,9 +234,6 @@ const MessageList = memo(({
 MessageList.displayName = 'MessageList';
 
 
-          >
-            Cancel
-          </button>
 
 
 const ChatWindow = ({
@@ -593,7 +590,7 @@ const ChatWindow = ({
           handleEditMessage={handleEditMessage}
           startEditing={startEditing}
           cancelEditing={cancelEditing}
-          handleDeleteMessage={(messageId) => setDeleteConfirmation({ isOpen: true, messageId })}
+          handleDeleteMessage={handleDeleteMessage}
           editInputRef={editInputRef}
           selectedUserProfilePicture={selectedUserProfilePicture}
           currentUserProfilePicture={currentUserProfilePicture}
@@ -636,12 +633,7 @@ const ChatWindow = ({
         </button>
       )}
 
-      {/* Delete Confirmation Modal */}
-      <DeleteConfirmation
-        isOpen={deleteConfirmation.isOpen}
-        onConfirm={() => handleDeleteMessage(deleteConfirmation.messageId)}
-        onCancel={() => setDeleteConfirmation({ isOpen: false, messageId: null })}
-      />
+
 
       <Toaster position="top-center" />
     </div>
