@@ -367,6 +367,35 @@ const ChatWindow = ({
     }
   }, [onMessageDeleted]);
 
+  // Memoize the time formatter
+  const getFormattedTime = useMemo(() => {
+    const timeCache = new Map();
+    
+    return (timestamp) => {
+      if (!timestamp) return '';
+      
+      const cacheKey = String(timestamp);
+      if (timeCache.has(cacheKey)) {
+        return timeCache.get(cacheKey);
+      }
+      
+      try {
+        const date = new Date(timestamp);
+        const formatted = new Intl.DateTimeFormat('en-IN', {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true,
+          timeZone: 'Asia/Kolkata'
+        }).format(date);
+        timeCache.set(cacheKey, formatted);
+        return formatted;
+      } catch (error) {
+        console.error('Error formatting time:', error);
+        return '';
+      }
+    };
+  }, []);
+
   // Handle sending messages
   const handleSendMessage = useCallback(async (e) => {
     e.preventDefault();
@@ -379,13 +408,19 @@ const ChatWindow = ({
     sendingMessageRef.current = true;
     const tempId = `temp-${Date.now()}`;
     const now = new Date();
+    
+    // Convert to IST for consistent timestamp storage
+    const istOptions = { timeZone: 'Asia/Kolkata' };
+    const istTimestamp = now.toLocaleString('en-US', istOptions);
+    const istDate = new Date(istTimestamp);
+    
     const optimisticMessage = {
       id: tempId,
       senderId: currentUser.id,
       receiverId: selectedUser.id,
       content: newMessage.trim(),
-      timestamp: now.toISOString(),
-      created: now.toISOString(), // Add created field for consistency
+      timestamp: istDate.toISOString(),
+      created: istDate.toISOString(),
       isOptimistic: true
     };
 
@@ -402,7 +437,7 @@ const ChatWindow = ({
         if (result) {
           return [...filtered, {
             ...result,
-            timestamp: result.created || result.timestamp, // Ensure timestamp is set
+            timestamp: result.created || result.timestamp,
             isOptimistic: false
           }];
         }
@@ -510,36 +545,6 @@ const ChatWindow = ({
     
     return Array.from(groups.entries()).sort((a, b) => a[0] - b[0]);
   }, [messages]);
-
-  // Memoize the time formatter
-  const getFormattedTime = useMemo(() => {
-    const timeCache = new Map();
-    
-    return (timestamp) => {
-      if (!timestamp) return '';
-      
-      const cacheKey = String(timestamp);
-      if (timeCache.has(cacheKey)) {
-        return timeCache.get(cacheKey);
-      }
-      
-      try {
-        const date = new Date(timestamp);
-        // Add IST offset (5 hours and 30 minutes)
-        date.setMinutes(date.getMinutes() + 330);
-        const formatted = new Intl.DateTimeFormat('en-IN', {
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: true
-        }).format(date);
-        timeCache.set(cacheKey, formatted);
-        return formatted;
-      } catch (error) {
-        console.error('Error formatting time:', error);
-        return '';
-      }
-    };
-  }, []);
 
   // Handle message updates with debouncing
   useEffect(() => {
