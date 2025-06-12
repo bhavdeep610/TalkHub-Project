@@ -5,10 +5,13 @@ const Chat = ({ token, currentUser, selectedUser, onConversationUpdate }) => {
     const [messageInput, setMessageInput] = useState('');
     const [isTyping, setIsTyping] = useState(false);
     const [localMessages, setLocalMessages] = useState([]);
+    const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
     const typingTimeoutRef = useRef(null);
     const messagesEndRef = useRef(null);
+    const scrollTimeoutRef = useRef(null);
     const previousMessagesLengthRef = useRef(0);
     const messageMapRef = useRef(new Map());
+    const containerRef = useRef(null);
 
     const {
         isConnected,
@@ -85,29 +88,77 @@ const Chat = ({ token, currentUser, selectedUser, onConversationUpdate }) => {
         [typingUsers, selectedUser?.id]
     );
 
-    // Optimize scroll behavior with debouncing
-    const scrollToBottom = useCallback((force = false) => {
-        if (!messagesEndRef.current) return;
-
-        const container = messagesEndRef.current.parentElement;
-        const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;
-
-        if (force || isNearBottom) {
-            requestAnimationFrame(() => {
-                messagesEndRef.current?.scrollIntoView({ behavior: force ? 'auto' : 'smooth' });
-            });
-        }
+    // Improved scroll position management
+    const handleScroll = useCallback(() => {
+        if (!containerRef.current) return;
+        
+        const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+        const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
+        
+        setShouldScrollToBottom(isNearBottom);
     }, []);
 
-    // Handle new messages with optimistic updates
+    // Enhanced scroll to bottom with position preservation
+    const scrollToBottom = useCallback((force = false) => {
+        if (!messagesEndRef.current || !containerRef.current) return;
+
+        // Clear any pending scroll timeouts
+        if (scrollTimeoutRef.current) {
+            clearTimeout(scrollTimeoutRef.current);
+        }
+
+        const performScroll = () => {
+            if (!messagesEndRef.current || !containerRef.current) return;
+
+            const { scrollHeight, scrollTop, clientHeight } = containerRef.current;
+            const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
+
+            if (force || shouldScrollToBottom || isNearBottom) {
+                messagesEndRef.current.scrollIntoView({
+                    behavior: force ? 'auto' : 'smooth',
+                    block: 'end'
+                });
+            }
+        };
+
+        // Delay scroll to ensure DOM is updated
+        scrollTimeoutRef.current = setTimeout(performScroll, 100);
+    }, [shouldScrollToBottom]);
+
+    // Initialize scroll listener
+    useEffect(() => {
+        const container = containerRef.current;
+        if (container) {
+            container.addEventListener('scroll', handleScroll);
+            return () => container.removeEventListener('scroll', handleScroll);
+        }
+    }, [handleScroll]);
+
+    // Handle new messages with improved scroll behavior
     useEffect(() => {
         const hasNewMessages = chatMessages.length > previousMessagesLengthRef.current;
+        const isNewMessage = hasNewMessages && previousMessagesLengthRef.current > 0;
         previousMessagesLengthRef.current = chatMessages.length;
         
         if (hasNewMessages) {
-            scrollToBottom(true);
+            // For new conversations or initial load, force scroll
+            if (!isNewMessage) {
+                scrollToBottom(true);
+            } else {
+                // For new messages, respect scroll position
+                scrollToBottom(false);
+            }
         }
     }, [chatMessages.length, scrollToBottom]);
+
+    // Cleanup scroll timeout
+    useEffect(() => {
+        return () => {
+            if (scrollTimeoutRef.current) {
+                clearTimeout(scrollTimeoutRef.current);
+            }
+        };
+    }, []);
 
     // Optimize typing handler with debouncing
     const handleTyping = useCallback(() => {
@@ -220,11 +271,14 @@ const Chat = ({ token, currentUser, selectedUser, onConversationUpdate }) => {
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-4">
+            <div 
+                ref={containerRef}
+                className="flex-1 overflow-y-auto p-4 scroll-smooth"
+            >
                 <div className="flex flex-col space-y-6">
                     {chatMessages.map((message) => (
                         <div
-                            key={message.id || `${message.senderId}-${message.timestamp}`}
+                            key={message.key || message.id || `${message.senderId}-${message.timestamp}`}
                             className={`flex ${message.senderId === currentUser.id ? 'justify-end' : 'justify-start'} items-end space-x-2`}
                         >
                             {message.senderId !== currentUser.id && (
@@ -270,7 +324,7 @@ const Chat = ({ token, currentUser, selectedUser, onConversationUpdate }) => {
                         </div>
                     </div>
                 )}
-                <div ref={messagesEndRef} />
+                <div ref={messagesEndRef} className="h-0" />
             </div>
 
             {/* Message Input */}
@@ -309,4 +363,11 @@ const Chat = ({ token, currentUser, selectedUser, onConversationUpdate }) => {
     );
 };
 
-export default React.memo(Chat); 
+// Prevent unnecessary re-renders
+export default React.memo(Chat, (prevProps, nextProps) => {
+    return (
+        prevProps.token === nextProps.token &&
+        prevProps.currentUser?.id === nextProps.currentUser?.id &&
+        prevProps.selectedUser?.id === nextProps.selectedUser?.id
+    );
+}); 
