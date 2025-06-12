@@ -1,10 +1,11 @@
-import React, { useState, useRef, useEffect, useMemo, memo } from 'react';
+import React, { useState, useRef, useEffect, useMemo, memo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import API from '../src/services/api';
 import { toast, Toaster } from 'react-hot-toast';
-import { useSignalR } from '../src/hooks/useSignalR';
+import { useSignalR } from '../hooks/useSignalR';
 import signalRService from '../src/services/signalRService';
 import { profilePictureService } from '../src/services/profilePictureService';
+import { messageService } from '../src/services/messageService';
 
 // Create a stable time formatter
 const createTimeFormatter = () => {
@@ -79,7 +80,8 @@ const MessageBubble = memo(({
   handleDeleteMessage,
   editInputRef,
   selectedUser,
-  profilePicture
+  profilePicture,
+  isOptimistic
 }) => {
   return (
     <div className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'} items-end space-x-2`}>
@@ -169,6 +171,76 @@ const MessageBubble = memo(({
 
 MessageBubble.displayName = 'MessageBubble';
 
+// Memoized Message List component to prevent unnecessary re-renders
+const MessageList = memo(({ 
+  messages, 
+  currentUser, 
+  selectedUser, 
+  editingMessageId, 
+  editMessageContent, 
+  setEditMessageContent, 
+  handleEditMessage, 
+  startEditing, 
+  cancelEditing, 
+  handleDeleteMessage, 
+  editInputRef, 
+  selectedUserProfilePicture, 
+  currentUserProfilePicture 
+}) => {
+  // Create a stable message map for deduplication and sorting
+  const sortedMessages = useMemo(() => {
+    const messageMap = new Map();
+    
+    // Sort messages by timestamp first
+    const sortedArray = [...messages].sort((a, b) => {
+      const timeA = new Date(a.timestamp).getTime();
+      const timeB = new Date(b.timestamp).getTime();
+      if (timeA === timeB) {
+        // If timestamps are equal, maintain order based on ID
+        return (a.id || '').localeCompare(b.id || '');
+      }
+      return timeA - timeB;
+    });
+
+    // Store messages in map, preferring ones with IDs
+    sortedArray.forEach(msg => {
+      const key = msg.id || `${msg.senderId}-${msg.timestamp}-${msg.content}`;
+      if (!messageMap.has(key) || msg.id) {
+        messageMap.set(key, msg);
+      }
+    });
+
+    return Array.from(messageMap.values());
+  }, [messages]);
+
+  return (
+    <div className="flex flex-col space-y-6">
+      {sortedMessages.map((message) => (
+        <MessageBubble
+          key={message.id || `${message.senderId}-${message.timestamp}-${message.content}`}
+          messageId={message.id}
+          content={message.content}
+          timestamp={message.timestamp}
+          isCurrentUser={message.senderId === currentUser?.id}
+          isEditing={message.id === editingMessageId}
+          editMessageContent={editMessageContent}
+          setEditMessageContent={setEditMessageContent}
+          handleEditMessage={handleEditMessage}
+          startEditing={startEditing}
+          cancelEditing={cancelEditing}
+          handleDeleteMessage={handleDeleteMessage}
+          editInputRef={editInputRef}
+          selectedUser={selectedUser}
+          profilePicture={message.senderId === currentUser?.id ? currentUserProfilePicture : selectedUserProfilePicture}
+          isOptimistic={message.isOptimistic}
+        />
+      ))}
+    </div>
+  );
+});
+
+MessageList.displayName = 'MessageList';
+
 const ChatWindow = ({
   selectedUser,
   messages,
@@ -186,6 +258,7 @@ const ChatWindow = ({
   const [newMessage, setNewMessage] = useState('');
   const [editingMessageId, setEditingMessageId] = useState(null);
   const [editMessageContent, setEditMessageContent] = useState('');
+  const [localMessages, setLocalMessages] = useState([]);
   const [shouldAutoScroll, setShouldAutoScroll] = useState(true);
   const [isUserScrolling, setIsUserScrolling] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState('disconnected');
@@ -195,6 +268,205 @@ const ChatWindow = ({
   const chatContainerRef = useRef(null);
   const editInputRef = useRef(null);
   const scrollTimeoutRef = useRef(null);
+  const previousMessagesRef = useRef(messages);
+  const messageUpdateTimeoutRef = useRef(null);
+  const scrollDebounceRef = useRef(null);
+  const sendingMessageRef = useRef(false);
+
+  // Add startEditing and cancelEditing functions
+  const startEditing = useCallback((messageId, content) => {
+    setEditingMessageId(messageId);
+    setEditMessageContent(content);
+  }, []);
+
+  const cancelEditing = useCallback(() => {
+    setEditingMessageId(null);
+    setEditMessageContent('');
+  }, []);
+
+  // Combine server messages with local optimistic messages
+  const allMessages = useMemo(() => {
+    const combined = [...messages, ...localMessages];
+    const messageMap = new Map();
+    
+    // Deduplicate messages, preferring server messages over optimistic ones
+    combined.forEach(msg => {
+      const key = msg.id || `${msg.senderId}-${msg.timestamp}-${msg.content}`;
+      if (!messageMap.has(key) || msg.id) {
+        messageMap.set(key, msg);
+      }
+    });
+    
+    return Array.from(messageMap.values())
+      .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+  }, [messages, localMessages]);
+
+  // Optimized scroll handling with debouncing
+  const handleScroll = useCallback((e) => {
+    if (scrollDebounceRef.current) {
+      clearTimeout(scrollDebounceRef.current);
+    }
+
+    scrollDebounceRef.current = setTimeout(() => {
+      const container = e.target;
+      const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+      setShouldAutoScroll(isNearBottom);
+      setIsUserScrolling(!isNearBottom);
+    }, 100);
+  }, []);
+
+  // Optimized scroll to bottom with animation frame
+  const scrollToBottom = useCallback((force = false) => {
+    if (!messagesEndRef.current) return;
+
+    const container = messagesEndRef.current.parentElement;
+    const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+
+    if (force || isNearBottom) {
+      requestAnimationFrame(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: force ? 'auto' : 'smooth' });
+      });
+    }
+  }, []);
+
+  // Handle message editing
+  const handleEditMessage = useCallback(async (messageId) => {
+    if (!editMessageContent.trim()) {
+      toast.error('Message cannot be empty');
+      return;
+    }
+
+    try {
+      const updatedMessage = await messageService.editMessage(messageId, editMessageContent.trim());
+      
+      // Update local messages
+      setLocalMessages(prev => prev.map(msg => 
+        msg.id === messageId ? { ...msg, content: editMessageContent.trim() } : msg
+      ));
+
+      // Clear edit state
+      setEditingMessageId(null);
+      setEditMessageContent('');
+      
+      toast.success('Message updated successfully');
+    } catch (error) {
+      console.error('Failed to edit message:', error);
+      toast.error(error.message || 'Failed to edit message');
+    }
+  }, [editMessageContent]);
+
+  // Handle message deletion
+  const handleDeleteMessage = useCallback(async (messageId) => {
+    try {
+      await messageService.deleteMessage(messageId);
+      
+      // Update local messages
+      setLocalMessages(prev => prev.filter(msg => msg.id !== messageId));
+      
+      // Notify parent component
+      if (onMessageDeleted) {
+        onMessageDeleted(messageId);
+      }
+      
+      toast.success('Message deleted successfully');
+    } catch (error) {
+      console.error('Failed to delete message:', error);
+      toast.error(error.message || 'Failed to delete message');
+    }
+  }, [onMessageDeleted]);
+
+  // Memoize the time formatter
+  const getFormattedTime = useMemo(() => {
+    const timeCache = new Map();
+    
+    return (timestamp) => {
+      if (!timestamp) return '';
+      
+      const cacheKey = String(timestamp);
+      if (timeCache.has(cacheKey)) {
+        return timeCache.get(cacheKey);
+      }
+      
+      try {
+        const date = new Date(timestamp);
+        // Add 6 hours and 30 minutes for IST offset
+        date.setHours(date.getHours() + 6);
+        date.setMinutes(date.getMinutes() + 30);
+        const formatted = new Intl.DateTimeFormat('en-IN', {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true
+        }).format(date);
+        timeCache.set(cacheKey, formatted);
+        return formatted;
+      } catch (error) {
+        console.error('Error formatting time:', error);
+        return '';
+      }
+    };
+  }, []);
+
+  // Handle sending messages
+  const handleSendMessage = useCallback(async (e) => {
+    e.preventDefault();
+    if (!newMessage.trim() || !selectedUser?.id || sendingMessageRef.current) return;
+
+    // Clear any existing edit state
+    setEditingMessageId(null);
+    setEditMessageContent('');
+
+    sendingMessageRef.current = true;
+    const tempId = `temp-${Date.now()}`;
+    const now = new Date();
+    
+    // Adjust the timestamp for IST
+    const istDate = new Date(now);
+    istDate.setHours(istDate.getHours() + 6);
+    istDate.setMinutes(istDate.getMinutes() + 30);
+    
+    const optimisticMessage = {
+      id: tempId,
+      senderId: currentUser.id,
+      receiverId: selectedUser.id,
+      content: newMessage.trim(),
+      timestamp: istDate.toISOString(),
+      created: istDate.toISOString(),
+      isOptimistic: true
+    };
+
+    try {
+      setLocalMessages(prev => [...prev, optimisticMessage]);
+      setNewMessage('');
+      scrollToBottom(true);
+
+      const result = await messageService.sendMessage(selectedUser.id, optimisticMessage.content);
+      
+      // Remove optimistic message and add the real message with adjusted timestamp
+      setLocalMessages(prev => {
+        const filtered = prev.filter(msg => msg.id !== tempId);
+        if (result) {
+          const timestamp = result.created || result.timestamp;
+          const adjustedDate = new Date(timestamp);
+          adjustedDate.setHours(adjustedDate.getHours() + 6);
+          adjustedDate.setMinutes(adjustedDate.getMinutes() + 30);
+          
+          return [...filtered, {
+            ...result,
+            timestamp: adjustedDate.toISOString(),
+            isOptimistic: false
+          }];
+        }
+        return filtered;
+      });
+    } catch (error) {
+      console.error('Failed to send message:', error);
+      // Remove failed optimistic message
+      setLocalMessages(prev => prev.filter(msg => msg.id !== tempId));
+      toast.error(error.message || 'Failed to send message');
+    } finally {
+      sendingMessageRef.current = false;
+    }
+  }, [newMessage, selectedUser?.id, currentUser?.id, scrollToBottom]);
 
   // Fetch profile pictures when users change
   useEffect(() => {
@@ -289,252 +561,39 @@ const ChatWindow = ({
     return Array.from(groups.entries()).sort((a, b) => a[0] - b[0]);
   }, [messages]);
 
-  // Memoize the time formatter
-  const getFormattedTime = useMemo(() => {
-    const timeCache = new Map();
-    
-    return (timestamp) => {
-      if (!timestamp) return '';
-      
-      const cacheKey = String(timestamp);
-      if (timeCache.has(cacheKey)) {
-        return timeCache.get(cacheKey);
+  // Handle message updates with debouncing
+  useEffect(() => {
+    if (messages !== previousMessagesRef.current) {
+      previousMessagesRef.current = messages;
+      if (messageUpdateTimeoutRef.current) {
+        clearTimeout(messageUpdateTimeoutRef.current);
       }
-      
-      try {
-        const formatted = formatTime(new Date(timestamp));
-        timeCache.set(cacheKey, formatted);
-        return formatted;
-      } catch (error) {
-        console.error('Error formatting time:', error);
-        return '';
-      }
-    };
-  }, [formatTime]);
-
-  // Scroll to bottom when new messages arrive
-  const scrollToBottom = (force = false) => {
-    if (messagesEndRef.current && (shouldAutoScroll || force)) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+      messageUpdateTimeoutRef.current = setTimeout(() => {
+        scrollToBottom(true);
+      }, 50);
     }
-  };
+  }, [messages, scrollToBottom]);
 
-  // Handle scroll events
-  const handleScroll = () => {
-    if (!chatContainerRef.current) return;
-
-    const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
-    const isAtBottom = Math.abs(scrollHeight - scrollTop - clientHeight) < 30;
-    
-    // Clear any existing scroll timeout
-    if (scrollTimeoutRef.current) {
-      clearTimeout(scrollTimeoutRef.current);
-    }
-
-    if (isAtBottom) {
-      setShouldAutoScroll(true);
-      setHasNewMessages(false);
-    } else {
-      setShouldAutoScroll(false);
-    }
-
-    setIsUserScrolling(true);
-    
-    // Reset user scrolling flag after 100ms of no scroll events
-    scrollTimeoutRef.current = setTimeout(() => {
-      setIsUserScrolling(false);
-    }, 100);
-  };
-
-  // Cleanup scroll timeout
+  // Cleanup
   useEffect(() => {
     return () => {
+      if (messageUpdateTimeoutRef.current) {
+        clearTimeout(messageUpdateTimeoutRef.current);
+      }
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current);
       }
     };
   }, []);
-  // Add scroll event listener
-  useEffect(() => {
-    const container = chatContainerRef.current;
-    if (container) {
-      container.addEventListener('scroll', handleScroll);
-      return () => container.removeEventListener('scroll', handleScroll);
-    }
-  }, []);
-
-  // Scroll to bottom only for new messages and initial load
-  useEffect(() => {
-    if (!isUserScrolling) {
-      scrollToBottom();
-    }
-  }, [messages]);
-
-  // Handle message submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const trimmedMessage = newMessage.trim();
-    
-    if (!trimmedMessage) return;
-  
-    try {
-      setNewMessage('');
-      
-      // Optimistically add message to UI
-      const optimisticMessage = {
-        id: `temp-${Date.now()}`,
-        senderId: currentUser.id,
-        senderName: currentUser.username,
-        receiverId: selectedUser.id,
-        receiverName: selectedUser.username,
-        content: trimmedMessage,
-        timestamp: new Date().toISOString(),
-        pending: true
-      };
-  
-      // Add optimistic message to UI
-      onSendMessage(optimisticMessage);
-      
-      // Attempt to send message through SignalR
-      try {
-        const result = await sendMessage(selectedUser.id.toString(), trimmedMessage);
-        
-        if (result?.queued) {
-          toast('Message queued - Will be sent when connection is restored', {
-            duration: 3000,
-            position: 'top-center',
-            icon: '🕒'
-          });
-        }
-      } catch (sendError) {
-        console.error('Failed to send via SignalR:', sendError);
-        // The optimistic message will remain in the UI as "pending"
-        toast.error('Message will be sent when connection is restored', {
-          duration: 3000,
-          position: 'top-center'
-        });
-      }
-      
-      // Scroll to bottom after sending
-      scrollToBottom(true);
-    } catch (error) {
-      console.error('Failed to process message:', error);
-      toast.error('Failed to send message. Please try again.', {
-        duration: 3000,
-        position: 'top-center'
-      });
-      setNewMessage(trimmedMessage); // Restore message on failure
-    }
-  };
-  const handleEditMessage = async (messageId) => {
-    const updatedContent = editMessageContent.trim();
-    
-    // Optimistically update the UI
-    const updatedMessages = messages.map(msg => {
-      if ((msg.id || msg.Id) === messageId) {
-        return {
-          ...msg,
-          content: updatedContent,
-          Content: updatedContent
-        };
-      }
-      return msg;
-    });
-    
-    setEditingMessageId(null);
-    setEditMessageContent('');
-    
-    if (onMessageDeleted) {
-      onMessageDeleted(messageId, updatedMessages);
-    }
-
-    try {
-      await API.put(`/Chat/update/${messageId}`, {
-        newContent: updatedContent
-      });
-      
-      toast.success('Message updated successfully', {
-        duration: 2000,
-        position: 'top-center',
-        style: {
-          background: '#10B981',
-          color: '#fff',
-          padding: '12px',
-          borderRadius: '8px',
-        },
-      });
-    } catch (error) {
-      console.error('Error updating message:', error);
-      if (onMessageDeleted) {
-        onMessageDeleted(messageId, messages); // Revert to original messages
-      }
-      toast.error('Failed to update message', {
-        duration: 2000,
-        position: 'top-center',
-        style: {
-          background: '#EF4444',
-          color: '#fff',
-          padding: '12px',
-          borderRadius: '8px',
-        },
-      });
-    }
-  };
-
-  const handleDeleteMessage = async (messageId) => {
-    try {
-      await API.delete(`/Chat/delete/${messageId}`);
-      if (onMessageDeleted) {
-        onMessageDeleted(messageId);
-      }
-      toast.success('Message deleted successfully', {
-        duration: 2000,
-        position: 'top-center',
-        style: {
-          background: '#10B981',
-          color: '#fff',
-          padding: '12px',
-          borderRadius: '8px',
-        },
-      });
-    } catch (error) {
-      console.error('Error deleting message:', error);
-      toast.error('Failed to delete message', {
-        duration: 2000,
-        position: 'top-center',
-        style: {
-          background: '#EF4444',
-          color: '#fff',
-          padding: '12px',
-          borderRadius: '8px',
-        },
-      });
-    }
-  };
-
-  const startEditing = (messageId, content) => {
-    setEditingMessageId(messageId);
-    setEditMessageContent(content);
-    setTimeout(() => {
-      if (editInputRef.current) {
-        editInputRef.current.focus();
-      }
-    }, 0);
-  };
-
-  const cancelEditing = () => {
-    setEditingMessageId(null);
-    setEditMessageContent('');
-  };
 
   if (!selectedUser) {
     return null;
   }
 
   return (
-    <div className="flex flex-col h-full bg-white">
+    <div className="flex flex-col h-full bg-gray-50">
       {/* Chat Header */}
-      <div className="flex items-center px-6 py-3 border-b border-gray-200 bg-white">
+      <div className="bg-white border-b p-4 flex items-center justify-between">
         <div className="flex items-center flex-1">
           {selectedUser.profilePicture || selectedUserProfilePicture ? (
             <img 
@@ -556,68 +615,51 @@ const ChatWindow = ({
         </div>
       </div>
 
-      {/* Chat Messages */}
-      <div
+      {/* Messages Area */}
+      <div 
         ref={chatContainerRef}
-        className="flex-1 overflow-y-auto p-4 space-y-4 bg-white scrollbar-thin scrollbar-thumb-purple-500 scrollbar-track-gray-100"
+        className="flex-1 overflow-y-auto p-4"
         onScroll={handleScroll}
       >
-        {isLoadingMessages ? (
-          <div className="flex justify-center items-center h-full">
-            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-500"></div>
-          </div>
-        ) : messages.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-gray-400">
-            <p>No messages yet</p>
-            <p className="text-sm">Send a message to start the conversation!</p>
-          </div>
-        ) : (
-          messages.map((message) => (
-            <MessageBubble
-              key={message.id}
-              messageId={message.id}
-              content={message.content}
-              timestamp={message.timestamp || message.created || message.Created}
-              isCurrentUser={message.senderId === currentUser?.id}
-              isEditing={editingMessageId === message.id}
-              editMessageContent={editMessageContent}
-              setEditMessageContent={setEditMessageContent}
-              handleEditMessage={handleEditMessage}
-              startEditing={startEditing}
-              cancelEditing={cancelEditing}
-              handleDeleteMessage={handleDeleteMessage}
-              editInputRef={editInputRef}
-              selectedUser={selectedUser}
-              profilePicture={message.senderId === currentUser?.id ? currentUserProfilePicture : selectedUserProfilePicture}
-            />
-          ))
-        )}
+        <MessageList
+          messages={allMessages}
+          currentUser={currentUser}
+          selectedUser={selectedUser}
+          editingMessageId={editingMessageId}
+          editMessageContent={editMessageContent}
+          setEditMessageContent={setEditMessageContent}
+          handleEditMessage={handleEditMessage}
+          startEditing={startEditing}
+          cancelEditing={cancelEditing}
+          handleDeleteMessage={handleDeleteMessage}
+          editInputRef={editInputRef}
+          selectedUserProfilePicture={selectedUserProfilePicture}
+          currentUserProfilePicture={currentUserProfilePicture}
+        />
         <div ref={messagesEndRef} />
       </div>
 
       {/* Message Input */}
-      <div className="px-4 py-3 border-t border-gray-200 bg-white">
-        <form onSubmit={handleSubmit} className="flex items-center space-x-2">
+      <form onSubmit={handleSendMessage} className="border-t p-4 bg-white">
+        <div className="flex items-center space-x-2">
           <input
             type="text"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             placeholder="Type a message..."
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors duration-200"
+            className="flex-1 rounded-full border border-gray-300 px-4 py-2 focus:outline-none focus:border-purple-500"
           />
           <button
             type="submit"
-            disabled={!newMessage.trim()}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
-              newMessage.trim()
-                ? 'bg-purple-600 text-white hover:bg-purple-700'
-                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-            }`}
+            disabled={!newMessage.trim() || connectionStatus !== 'connected'}
+            className="bg-purple-600 text-white rounded-full p-2 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Send
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+              <path d="M3.478 2.404a.75.75 0 00-.926.941l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.404z" />
+            </svg>
           </button>
-        </form>
-      </div>
+        </div>
+      </form>
 
       {/* New Messages Notification */}
       {hasNewMessages && !shouldAutoScroll && (
@@ -652,4 +694,4 @@ ChatWindow.propTypes = {
   token: PropTypes.string.isRequired
 };
 
-export default React.memo(ChatWindow);
+export default memo(ChatWindow); 
