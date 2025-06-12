@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-
 namespace ChatApp.Controllers;
 
 [ApiController]
@@ -29,12 +28,23 @@ public class ChatController : ControllerBase
 
         int senderId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
+        // Get sender and receiver info
+        var sender = await _context.Users.FindAsync(senderId);
+        var receiver = await _context.Users.FindAsync(dto.ReceiverID);
+
+        if (sender == null || receiver == null)
+        {
+            return BadRequest("Invalid sender or receiver");
+        }
+
         var message = new Message
         {
             SenderId = senderId,
             ReceiverId = dto.ReceiverID,
             Content = dto.Content,
-            Created = DateTime.UtcNow
+            Created = DateTime.UtcNow,
+            Sender = sender,
+            Receiver = receiver
         };
 
         _context.Messages.Add(message);
@@ -46,15 +56,9 @@ public class ChatController : ControllerBase
             content = message.Content,
             senderId = message.SenderId,
             receiverId = message.ReceiverId,
-            created = message.Created.ToUniversalTime(),
-            senderName = await _context.Users
-                .Where(u => u.Id == message.SenderId)
-                .Select(u => u.UserName)
-                .FirstOrDefaultAsync(),
-            receiverName = await _context.Users
-                .Where(u => u.Id == message.ReceiverId)
-                .Select(u => u.UserName)
-                .FirstOrDefaultAsync()
+            created = message.Created,
+            senderName = sender.UserName,
+            receiverName = receiver.UserName
         };
 
         return Ok(response);
@@ -65,9 +69,12 @@ public class ChatController : ControllerBase
     {
         int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
+        // First get all messages and include sender/receiver info
         var messages = await _context.Messages
+            .Include(m => m.Sender)
+            .Include(m => m.Receiver)
             .Where(m => (m.SenderId == userId && m.ReceiverId == receiverId) ||
-                        (m.SenderId == receiverId && m.ReceiverId == userId))
+                       (m.SenderId == receiverId && m.ReceiverId == userId))
             .OrderBy(m => m.Created)
             .Select(m => new
             {
@@ -75,20 +82,16 @@ public class ChatController : ControllerBase
                 content = m.Content,
                 senderId = m.SenderId,
                 receiverId = m.ReceiverId,
-                created = m.Created.ToUniversalTime(),
-                senderName = _context.Users
-                    .Where(u => u.Id == m.SenderId)
-                    .Select(u => u.UserName)
-                    .FirstOrDefault(),
-                receiverName = _context.Users
-                    .Where(u => u.Id == m.ReceiverId)
-                    .Select(u => u.UserName)
-                    .FirstOrDefault()
+                created = m.Created,
+                senderName = m.Sender.UserName,
+                receiverName = m.Receiver.UserName
             })
             .ToListAsync();
 
+        // Ensure messages are properly sorted by timestamp
         var sortedMessages = messages
             .OrderBy(m => m.created)
+            .ThenBy(m => m.id)
             .ToList();
 
         return Ok(sortedMessages);

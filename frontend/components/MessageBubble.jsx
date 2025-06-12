@@ -54,9 +54,7 @@ const MessageBubble = memo(({
     if (!timestamp) return '';
     try {
       const date = new Date(timestamp);
-      // Add 6 hours and 30 minutes for IST offset
-      date.setHours(date.getHours() + 6);
-      date.setMinutes(date.getMinutes() + 30);
+      // Use local time without adding any offset
       return new Intl.DateTimeFormat('en-IN', {
         hour: '2-digit',
         minute: '2-digit',
