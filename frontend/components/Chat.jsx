@@ -19,51 +19,47 @@ const Chat = ({ token, currentUser, selectedUser, onConversationUpdate }) => {
         onlineUsers
     } = useSignalR(token);
 
-    // Memoize filtered messages with deduplication
+    // Memoize filtered messages with improved ordering
     const chatMessages = useMemo(() => {
+        // Create a map for deduplication while preserving order
         const messageMap = new Map();
         
-        // First, sort all messages by timestamp and ID
-        const allMessages = [...messages, ...localMessages].sort((a, b) => {
-            const timeA = new Date(a.timestamp || a.created).getTime();
-            const timeB = new Date(b.timestamp || b.created).getTime();
-            if (timeA === timeB) {
-                // If timestamps are equal, use message ID as secondary sort
-                const idA = a.id || '';
-                const idB = b.id || '';
-                return idA.localeCompare(idB);
-            }
-            return timeA - timeB;
-        });
-        
-        // Store messages in map, preferring ones with IDs
-        allMessages.forEach(msg => {
-            const key = msg.id || `${msg.senderId}-${msg.timestamp}-${msg.content}`;
-            const existing = messageMap.get(key);
-            
-            // Only replace if the new message has an ID and the existing one doesn't,
-            // or if both have IDs and the new one is more recent
-            if (!existing || 
-                (msg.id && (!existing.id || new Date(msg.timestamp) > new Date(existing.timestamp)))) {
-                messageMap.set(key, msg);
-            }
-        });
-
-        // Filter messages for current chat
-        return Array.from(messageMap.values())
-            .filter(msg =>
+        // Combine and sort all messages
+        const allMessages = [...messages, ...localMessages]
+            .filter(msg => 
                 (msg.senderId === currentUser?.id && msg.receiverId === selectedUser?.id) ||
                 (msg.senderId === selectedUser?.id && msg.receiverId === currentUser?.id)
             )
+            .map(msg => ({
+                ...msg,
+                // Ensure consistent timestamp format
+                sortTime: new Date(msg.timestamp || msg.created).getTime(),
+                // Generate unique key that includes sender and time for proper ordering
+                key: msg.id || `${msg.senderId}-${msg.timestamp || msg.created}-${msg.content}`
+            }));
+
+        // First pass: deduplicate messages while preserving order
+        allMessages.forEach(msg => {
+            const existing = messageMap.get(msg.key);
+            // Only replace if the new message has an ID and the existing one doesn't
+            if (!existing || (msg.id && !existing.id)) {
+                messageMap.set(msg.key, msg);
+            }
+        });
+
+        // Convert back to array and sort
+        return Array.from(messageMap.values())
             .sort((a, b) => {
-                const timeA = new Date(a.timestamp || a.created).getTime();
-                const timeB = new Date(b.timestamp || b.created).getTime();
-                if (timeA === timeB) {
-                    const idA = a.id || '';
-                    const idB = b.id || '';
-                    return idA.localeCompare(idB);
+                // Primary sort by timestamp
+                if (a.sortTime !== b.sortTime) {
+                    return a.sortTime - b.sortTime;
                 }
-                return timeA - timeB;
+                // Secondary sort by sender ID to maintain conversation flow
+                if (a.senderId !== b.senderId) {
+                    return a.senderId.localeCompare(b.senderId);
+                }
+                // Final sort by content to maintain stable order
+                return a.content.localeCompare(b.content);
             });
     }, [messages, localMessages, currentUser?.id, selectedUser?.id]);
 
@@ -144,7 +140,9 @@ const Chat = ({ token, currentUser, selectedUser, onConversationUpdate }) => {
             content: messageInput.trim(),
             timestamp,
             created: timestamp,
-            isOptimistic: true
+            isOptimistic: true,
+            // Add a temporary ID for proper ordering
+            tempId: `temp-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
         };
 
         // Add optimistic message to local state
@@ -153,22 +151,30 @@ const Chat = ({ token, currentUser, selectedUser, onConversationUpdate }) => {
 
         try {
             const result = await sendMessage(messageInput.trim(), selectedUser.id);
-            // Remove optimistic message after successful send
-            setLocalMessages(prev => prev.filter(msg => msg !== optimisticMessage));
             
             if (result) {
-                // Add the confirmed message with server timestamp
-                const confirmedMessage = {
-                    ...result,
-                    timestamp: result.created,
-                    isOptimistic: false
-                };
-                setLocalMessages(prev => [...prev.filter(msg => msg !== optimisticMessage), confirmedMessage]);
+                // Remove optimistic message and add confirmed message atomically
+                setLocalMessages(prev => {
+                    const filtered = prev.filter(msg => msg.tempId !== optimisticMessage.tempId);
+                    const confirmedMessage = {
+                        ...result,
+                        timestamp: result.created,
+                        isOptimistic: false
+                    };
+                    return [...filtered, confirmedMessage];
+                });
+            } else {
+                // Remove optimistic message if no result
+                setLocalMessages(prev => 
+                    prev.filter(msg => msg.tempId !== optimisticMessage.tempId)
+                );
             }
         } catch (error) {
             console.error('Failed to send message:', error);
             // Remove failed optimistic message
-            setLocalMessages(prev => prev.filter(msg => msg !== optimisticMessage));
+            setLocalMessages(prev => 
+                prev.filter(msg => msg.tempId !== optimisticMessage.tempId)
+            );
         }
     }, [messageInput, selectedUser?.id, isConnected, sendMessage, currentUser?.id]);
 
