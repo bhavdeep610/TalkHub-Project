@@ -246,21 +246,12 @@ export const useChatAPI = () => {
   };
 
   const fetchMessages = async (userId) => {
-    if (!currentUser || !userId) return;
+    if (!userId) return [];
     
-    // Don't set loading state immediately to prevent flickering on fast responses
-    const loadingTimeout = setTimeout(() => {
-      setIsLoadingMessages(true);
-    }, 300);
+    const loadingTimeout = setTimeout(() => setIsLoadingMessages(true), 500);
     
-    setError(null);
-
     try {
-      const response = await retryWithDelay(async () => {
-        const res = await API.get(`/Chat/get/${userId}`);
-        if (!res.data) throw new Error('No data received');
-        return res;
-      });
+      const response = await API.get(`/Chat/get/${userId}`);
       
       if (response.data && Array.isArray(response.data)) {
         const formattedMessages = response.data.map(msg => ({
@@ -273,51 +264,49 @@ export const useChatAPI = () => {
           timestamp: msg.created || msg.Created
         }));
 
-        // Sort messages by timestamp before updating state
+        // Sort messages by timestamp
         const sortedMessages = formattedMessages.sort((a, b) => {
           const timeA = new Date(a.timestamp).getTime();
           const timeB = new Date(b.timestamp).getTime();
+          if (timeA === timeB) {
+            // If timestamps are equal, use message ID as secondary sort
+            return (a.id || '').localeCompare(b.id || '');
+          }
           return timeA - timeB;
         });
 
-        // Update messages state
+        // Update messages state atomically
         setMessages(prevMessages => {
           const messageMap = new Map();
           
-          // First add existing messages with IDs
-          prevMessages.forEach(msg => {
+          // First add messages with IDs from both previous and new messages
+          [...prevMessages, ...sortedMessages].forEach(msg => {
             if (msg.id) {
               messageMap.set(msg.id, msg);
             }
           });
           
-          // Then add new messages, overwriting any duplicates
-          sortedMessages.forEach(msg => {
-            messageMap.set(msg.id, msg);
+          // Then add messages without IDs if they don't exist
+          [...prevMessages, ...sortedMessages].forEach(msg => {
+            if (!msg.id) {
+              const key = `${msg.senderId}-${msg.timestamp}-${msg.content}`;
+              if (!messageMap.has(key)) {
+                messageMap.set(key, msg);
+              }
+            }
           });
           
-          return Array.from(messageMap.values());
+          // Convert back to array and sort
+          return Array.from(messageMap.values())
+            .sort((a, b) => {
+              const timeA = new Date(a.timestamp).getTime();
+              const timeB = new Date(b.timestamp).getTime();
+              if (timeA === timeB) {
+                return (a.id || '').localeCompare(b.id || '');
+              }
+              return timeA - timeB;
+            });
         });
-        
-        // Update conversations if needed
-        if (sortedMessages.length > 0) {
-          setConversations(prevConversations => {
-            const existingConvIndex = prevConversations.findIndex(
-              conv => conv.user.id === userId
-            );
-            
-            if (existingConvIndex !== -1) {
-              const newConversations = [...prevConversations];
-              newConversations[existingConvIndex] = {
-                ...newConversations[existingConvIndex],
-                messages: sortedMessages,
-                lastMessage: sortedMessages[sortedMessages.length - 1]
-              };
-              return newConversations;
-            }
-            return prevConversations;
-          });
-        }
         
         return sortedMessages;
       }
@@ -636,7 +625,7 @@ export const useChatAPI = () => {
     }
   }, [selectedUser?.id, currentUser?.id]);
 
-  // Add polling for new messages
+  // Add polling for new messages with proper timestamp handling
   useEffect(() => {
     let mounted = true;
     let pollInterval;
@@ -666,16 +655,45 @@ export const useChatAPI = () => {
             timestamp: msg.created || msg.Created
           }));
 
-          // Only update if there are new messages
-          if (formattedMessages.length > lastMessageCount) {
-            lastMessageCount = formattedMessages.length;
-            setMessages(formattedMessages);
-            
-            // Update the conversation with new messages
-            if (formattedMessages.length > 0) {
-              const lastMessage = formattedMessages[formattedMessages.length - 1];
-              updateConversationWithNewMessage(selectedUser.id, lastMessage);
+          // Sort messages before updating state
+          const sortedMessages = formattedMessages.sort((a, b) => {
+            const timeA = new Date(a.timestamp).getTime();
+            const timeB = new Date(b.timestamp).getTime();
+            if (timeA === timeB) {
+              return (a.id || '').localeCompare(b.id || '');
             }
+            return timeA - timeB;
+          });
+
+          // Only update if there are new messages
+          if (sortedMessages.length > lastMessageCount) {
+            lastMessageCount = sortedMessages.length;
+            setMessages(prevMessages => {
+              const messageMap = new Map();
+              
+              // Add all messages to map, preferring ones with IDs
+              [...prevMessages, ...sortedMessages].forEach(msg => {
+                if (msg.id) {
+                  messageMap.set(msg.id, msg);
+                } else {
+                  const key = `${msg.senderId}-${msg.timestamp}-${msg.content}`;
+                  if (!messageMap.has(key)) {
+                    messageMap.set(key, msg);
+                  }
+                }
+              });
+              
+              // Convert back to sorted array
+              return Array.from(messageMap.values())
+                .sort((a, b) => {
+                  const timeA = new Date(a.timestamp).getTime();
+                  const timeB = new Date(b.timestamp).getTime();
+                  if (timeA === timeB) {
+                    return (a.id || '').localeCompare(b.id || '');
+                  }
+                  return timeA - timeB;
+                });
+            });
           }
         }
       } catch (error) {
@@ -687,8 +705,8 @@ export const useChatAPI = () => {
       // Initial fetch
       pollMessages();
       
-      // Set up polling with increasing intervals
-      pollInterval = setInterval(pollMessages, 3000);
+      // Set up polling with a shorter interval for more responsive updates
+      pollInterval = setInterval(pollMessages, 2000);
     }
 
     return () => {
@@ -697,7 +715,7 @@ export const useChatAPI = () => {
         clearInterval(pollInterval);
       }
     };
-  }, [selectedUser, currentUser]);
+  }, [selectedUser, currentUser, messages.length]);
 
   // Add effect to fetch conversations periodically
   useEffect(() => {

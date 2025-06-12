@@ -46,7 +46,7 @@ public class ChatController : ControllerBase
             content = message.Content,
             senderId = message.SenderId,
             receiverId = message.ReceiverId,
-            created = message.Created,
+            created = message.Created.ToUniversalTime(),
             senderName = await _context.Users
                 .Where(u => u.Id == message.SenderId)
                 .Select(u => u.UserName)
@@ -75,7 +75,7 @@ public class ChatController : ControllerBase
                 content = m.Content,
                 senderId = m.SenderId,
                 receiverId = m.ReceiverId,
-                created = m.Created,
+                created = m.Created.ToUniversalTime(),
                 senderName = _context.Users
                     .Where(u => u.Id == m.SenderId)
                     .Select(u => u.UserName)
@@ -87,7 +87,11 @@ public class ChatController : ControllerBase
             })
             .ToListAsync();
 
-        return Ok(messages);
+        var sortedMessages = messages
+            .OrderBy(m => m.created)
+            .ToList();
+
+        return Ok(sortedMessages);
     }
 
     [HttpPut("update/{id}")]
