@@ -259,7 +259,7 @@ const Profile = () => {
                         {/* Profile Information */}
                         <div className="space-y-6">
                             <div>
-                                <label className="block text-sm font-medium text-gray-600 mb-2">Full Name</label>
+                                <label className="block text-sm font-medium text-gray-600 mb-2">Username</label>
                                 <div className="flex items-center space-x-4">
                                     <input
                                         type="text"

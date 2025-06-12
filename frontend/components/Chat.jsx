@@ -24,11 +24,20 @@ const Chat = ({ token, currentUser, selectedUser, onConversationUpdate }) => {
         const messageMap = new Map();
         const allMessages = [...messages, ...localMessages];
         
-        // Deduplicate messages
+        // First pass: Store messages with IDs
         allMessages.forEach(msg => {
-            const key = msg.id || `${msg.senderId}-${msg.timestamp}-${msg.content}`;
-            if (!messageMap.has(key) || msg.id) { // Prefer messages with IDs
-                messageMap.set(key, msg);
+            if (msg.id) {
+                messageMap.set(msg.id, msg);
+            }
+        });
+        
+        // Second pass: Add messages without IDs only if they don't exist
+        allMessages.forEach(msg => {
+            if (!msg.id) {
+                const key = `${msg.senderId}-${msg.timestamp}-${msg.content}`;
+                if (!messageMap.has(key)) {
+                    messageMap.set(key, msg);
+                }
             }
         });
 
@@ -38,8 +47,12 @@ const Chat = ({ token, currentUser, selectedUser, onConversationUpdate }) => {
             (msg.senderId === selectedUser?.id && msg.receiverId === currentUser?.id)
         );
 
-        // Sort by timestamp
-        return filteredMessages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+        // Sort by timestamp, ensuring proper order
+        return filteredMessages.sort((a, b) => {
+            const timeA = new Date(a.timestamp).getTime();
+            const timeB = new Date(b.timestamp).getTime();
+            return timeA - timeB;
+        });
     }, [messages, localMessages, currentUser?.id, selectedUser?.id]);
 
     // Update message map for optimistic updates

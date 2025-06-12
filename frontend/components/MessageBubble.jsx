@@ -139,7 +139,7 @@ const MessageBubble = memo(({
         </div>
 
         {/* Message Actions */}
-        {isCurrentUser && !isEditing && !isOptimistic && !messageId.toString().startsWith('temp-') && (
+        {isCurrentUser && !isEditing && !isOptimistic && (
           <div className="absolute bottom-full right-0 mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex space-x-2">
             <button
               onClick={onStartEditing}

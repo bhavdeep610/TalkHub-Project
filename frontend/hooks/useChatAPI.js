@@ -273,33 +273,53 @@ export const useChatAPI = () => {
           timestamp: msg.created || msg.Created
         }));
 
-        // Batch state updates
-        const updates = () => {
-          setMessages(formattedMessages);
+        // Sort messages by timestamp before updating state
+        const sortedMessages = formattedMessages.sort((a, b) => {
+          const timeA = new Date(a.timestamp).getTime();
+          const timeB = new Date(b.timestamp).getTime();
+          return timeA - timeB;
+        });
+
+        // Update messages state
+        setMessages(prevMessages => {
+          const messageMap = new Map();
           
-          if (formattedMessages.length > 0) {
-            setConversations(prevConversations => {
-              const existingConvIndex = prevConversations.findIndex(
-                conv => conv.user.id === userId
-              );
-              
-              if (existingConvIndex !== -1) {
-                const newConversations = [...prevConversations];
-                newConversations[existingConvIndex] = {
-                  ...newConversations[existingConvIndex],
-                  messages: formattedMessages,
-                  lastMessage: formattedMessages[formattedMessages.length - 1]
-                };
-                return newConversations;
-              }
-              return prevConversations;
-            });
-          }
-        };
+          // First add existing messages with IDs
+          prevMessages.forEach(msg => {
+            if (msg.id) {
+              messageMap.set(msg.id, msg);
+            }
+          });
+          
+          // Then add new messages, overwriting any duplicates
+          sortedMessages.forEach(msg => {
+            messageMap.set(msg.id, msg);
+          });
+          
+          return Array.from(messageMap.values());
+        });
         
-        // Use requestAnimationFrame for smoother UI updates
-        requestAnimationFrame(updates);
-        return formattedMessages;
+        // Update conversations if needed
+        if (sortedMessages.length > 0) {
+          setConversations(prevConversations => {
+            const existingConvIndex = prevConversations.findIndex(
+              conv => conv.user.id === userId
+            );
+            
+            if (existingConvIndex !== -1) {
+              const newConversations = [...prevConversations];
+              newConversations[existingConvIndex] = {
+                ...newConversations[existingConvIndex],
+                messages: sortedMessages,
+                lastMessage: sortedMessages[sortedMessages.length - 1]
+              };
+              return newConversations;
+            }
+            return prevConversations;
+          });
+        }
+        
+        return sortedMessages;
       }
       return [];
     } catch (error) {
