@@ -206,7 +206,7 @@ const MessageList = memo(({
   }, [messageMap]);
 
   return (
-    <div className="flex flex-col space-y-4">
+    <div className="flex flex-col space-y-6">
       {sortedMessages.map((message) => (
         <MessageBubble
           key={message.id || `${message.senderId}-${message.timestamp}-${message.content}`}
