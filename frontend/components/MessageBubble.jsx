@@ -178,4 +178,4 @@ MessageBubble.propTypes = {
   isOptimistic: PropTypes.bool
 };
 
-export default MessageBubble; 
+export default MessageBubble;
