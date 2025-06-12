@@ -187,23 +187,31 @@ const MessageList = memo(({
   selectedUserProfilePicture, 
   currentUserProfilePicture 
 }) => {
-  // Create a stable message map for deduplication
-  const messageMap = useMemo(() => {
-    const map = new Map();
-    messages.forEach(msg => {
+  // Create a stable message map for deduplication and sorting
+  const sortedMessages = useMemo(() => {
+    const messageMap = new Map();
+    
+    // Sort messages by timestamp first
+    const sortedArray = [...messages].sort((a, b) => {
+      const timeA = new Date(a.timestamp).getTime();
+      const timeB = new Date(b.timestamp).getTime();
+      if (timeA === timeB) {
+        // If timestamps are equal, maintain order based on ID
+        return (a.id || '').localeCompare(b.id || '');
+      }
+      return timeA - timeB;
+    });
+
+    // Store messages in map, preferring ones with IDs
+    sortedArray.forEach(msg => {
       const key = msg.id || `${msg.senderId}-${msg.timestamp}-${msg.content}`;
-      if (!map.has(key) || msg.id) { // Prefer messages with IDs
-        map.set(key, msg);
+      if (!messageMap.has(key) || msg.id) {
+        messageMap.set(key, msg);
       }
     });
-    return map;
-  }, [messages]);
 
-  // Convert map to sorted array
-  const sortedMessages = useMemo(() => {
-    return Array.from(messageMap.values())
-      .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-  }, [messageMap]);
+    return Array.from(messageMap.values());
+  }, [messages]);
 
   return (
     <div className="flex flex-col space-y-6">

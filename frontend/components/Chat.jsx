@@ -22,7 +22,12 @@ const Chat = ({ token, currentUser, selectedUser, onConversationUpdate }) => {
     // Memoize filtered messages with deduplication
     const chatMessages = useMemo(() => {
         const messageMap = new Map();
-        const allMessages = [...messages, ...localMessages];
+        // Combine and sort all messages first
+        const allMessages = [...messages, ...localMessages].sort((a, b) => {
+            const timeA = new Date(a.timestamp).getTime();
+            const timeB = new Date(b.timestamp).getTime();
+            return timeA - timeB;
+        });
         
         // First pass: Store messages with IDs
         allMessages.forEach(msg => {
@@ -41,18 +46,21 @@ const Chat = ({ token, currentUser, selectedUser, onConversationUpdate }) => {
             }
         });
 
-        // Filter messages for current chat
-        const filteredMessages = Array.from(messageMap.values()).filter(msg =>
-            (msg.senderId === currentUser?.id && msg.receiverId === selectedUser?.id) ||
-            (msg.senderId === selectedUser?.id && msg.receiverId === currentUser?.id)
-        );
-
-        // Sort by timestamp, ensuring proper order
-        return filteredMessages.sort((a, b) => {
-            const timeA = new Date(a.timestamp).getTime();
-            const timeB = new Date(b.timestamp).getTime();
-            return timeA - timeB;
-        });
+        // Filter messages for current chat and maintain chronological order
+        return Array.from(messageMap.values())
+            .filter(msg =>
+                (msg.senderId === currentUser?.id && msg.receiverId === selectedUser?.id) ||
+                (msg.senderId === selectedUser?.id && msg.receiverId === currentUser?.id)
+            )
+            .sort((a, b) => {
+                const timeA = new Date(a.timestamp).getTime();
+                const timeB = new Date(b.timestamp).getTime();
+                if (timeA === timeB) {
+                    // If timestamps are equal, maintain the order based on message ID
+                    return (a.id || '').localeCompare(b.id || '');
+                }
+                return timeA - timeB;
+            });
     }, [messages, localMessages, currentUser?.id, selectedUser?.id]);
 
     // Update message map for optimistic updates
@@ -125,43 +133,29 @@ const Chat = ({ token, currentUser, selectedUser, onConversationUpdate }) => {
         e.preventDefault();
         if (!messageInput.trim() || !selectedUser?.id || !isConnected) return;
 
+        const timestamp = new Date().toISOString();
         const optimisticMessage = {
-            id: null,
             senderId: currentUser.id,
             receiverId: selectedUser.id,
             content: messageInput.trim(),
-            timestamp: new Date().toISOString(),
+            timestamp,
             isOptimistic: true
         };
 
+        // Add optimistic message to local state
+        setLocalMessages(prev => [...prev, optimisticMessage]);
+        setMessageInput('');
+
         try {
-            setLocalMessages(prev => [...prev, optimisticMessage]);
-            setMessageInput('');
-            
-            if (typingTimeoutRef.current) {
-                clearTimeout(typingTimeoutRef.current);
-                setIsTyping(false);
-                sendTypingNotification(selectedUser.id, false);
-            }
-
-            const result = await sendMessage(selectedUser.id, optimisticMessage.content);
-            
-            // Update conversation
-            if (result && onConversationUpdate) {
-                onConversationUpdate({
-                    userId: selectedUser.id,
-                    lastMessage: result
-                });
-            }
-
-            // Remove optimistic message once confirmed
+            await sendMessage(messageInput.trim(), selectedUser.id);
+            // Remove optimistic message after successful send
             setLocalMessages(prev => prev.filter(msg => msg !== optimisticMessage));
         } catch (error) {
             console.error('Failed to send message:', error);
             // Remove failed optimistic message
             setLocalMessages(prev => prev.filter(msg => msg !== optimisticMessage));
         }
-    }, [messageInput, selectedUser?.id, isConnected, sendMessage, sendTypingNotification, currentUser?.id, onConversationUpdate]);
+    }, [messageInput, selectedUser?.id, isConnected, sendMessage, currentUser?.id]);
 
     // Cleanup on unmount
     useEffect(() => {
