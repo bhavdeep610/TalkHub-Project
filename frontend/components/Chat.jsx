@@ -33,36 +33,51 @@ const Chat = ({ token, currentUser, selectedUser, onConversationUpdate }) => {
                 (msg.senderId === currentUser?.id && msg.receiverId === selectedUser?.id) ||
                 (msg.senderId === selectedUser?.id && msg.receiverId === currentUser?.id)
             )
-            .map(msg => ({
-                ...msg,
-                // Ensure consistent timestamp format
-                sortTime: new Date(msg.timestamp || msg.created).getTime(),
-                // Generate unique key that includes sender and time for proper ordering
-                key: msg.id || `${msg.senderId}-${msg.timestamp || msg.created}-${msg.content}`
-            }));
+            .map(msg => {
+                // Ensure consistent timestamp handling
+                const timestamp = msg.timestamp || msg.created;
+                const sortTime = new Date(timestamp).getTime();
+                
+                return {
+                    ...msg,
+                    sortTime,
+                    // Ensure consistent key generation
+                    key: msg.id || `${msg.senderId}-${sortTime}-${msg.content}`
+                };
+            });
 
         // First pass: deduplicate messages while preserving order
         allMessages.forEach(msg => {
             const existing = messageMap.get(msg.key);
-            // Only replace if the new message has an ID and the existing one doesn't
-            if (!existing || (msg.id && !existing.id)) {
+            // Only replace if:
+            // 1. Message doesn't exist, or
+            // 2. New message has an ID and old one doesn't, or
+            // 3. Both have IDs but new one is more recent
+            if (!existing || 
+                (msg.id && !existing.id) || 
+                (msg.id && existing.id && msg.sortTime > existing.sortTime)) {
                 messageMap.set(msg.key, msg);
             }
         });
 
-        // Convert back to array and sort
+        // Convert back to array and ensure strict chronological sorting
         return Array.from(messageMap.values())
             .sort((a, b) => {
                 // Primary sort by timestamp
-                if (a.sortTime !== b.sortTime) {
-                    return a.sortTime - b.sortTime;
+                const timeDiff = a.sortTime - b.sortTime;
+                if (timeDiff !== 0) {
+                    return timeDiff;
                 }
-                // Secondary sort by sender ID to maintain conversation flow
-                if (a.senderId !== b.senderId) {
-                    return a.senderId.localeCompare(b.senderId);
+                
+                // If timestamps are exactly equal (rare but possible)
+                // Use message ID or creation order as tiebreaker
+                if (a.id && b.id) {
+                    return a.id.localeCompare(b.id);
                 }
-                // Final sort by content to maintain stable order
-                return a.content.localeCompare(b.content);
+                
+                // For messages without IDs, maintain stable order
+                return allMessages.findIndex(m => m.key === a.key) - 
+                       allMessages.findIndex(m => m.key === b.key);
             });
     }, [messages, localMessages, currentUser?.id, selectedUser?.id]);
 
@@ -179,21 +194,25 @@ const Chat = ({ token, currentUser, selectedUser, onConversationUpdate }) => {
         }, 2000);
     }, [isTyping, selectedUser?.id, sendTypingNotification]);
 
-    // Handle sending messages
+    // Handle sending messages with improved timestamp handling
     const handleSendMessage = useCallback(async (e) => {
         e.preventDefault();
         if (!messageInput.trim() || !selectedUser?.id || !isConnected) return;
 
-        const timestamp = new Date().toISOString();
+        const now = new Date();
+        const timestamp = now.toISOString();
+        const sortTime = now.getTime();
+        
         const optimisticMessage = {
             senderId: currentUser.id,
             receiverId: selectedUser.id,
             content: messageInput.trim(),
             timestamp,
             created: timestamp,
+            sortTime,
             isOptimistic: true,
-            // Add a temporary ID for proper ordering
-            tempId: `temp-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+            // Add a temporary ID that includes timestamp for proper ordering
+            tempId: `temp-${sortTime}-${Math.random().toString(36).substr(2, 9)}`
         };
 
         // Add optimistic message to local state
@@ -210,6 +229,7 @@ const Chat = ({ token, currentUser, selectedUser, onConversationUpdate }) => {
                     const confirmedMessage = {
                         ...result,
                         timestamp: result.created,
+                        sortTime: new Date(result.created).getTime(),
                         isOptimistic: false
                     };
                     return [...filtered, confirmedMessage];
