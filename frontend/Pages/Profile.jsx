@@ -7,16 +7,13 @@ const Profile = () => {
     const navigate = useNavigate();
     const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
     const [isEditing, setIsEditing] = useState({
-        fullName: false,
-        email: false
+        fullName: false
     });
     const [editData, setEditData] = useState({
-        fullName: '',
-        email: ''
+        fullName: ''
     });
     const [errors, setErrors] = useState({
-        fullName: '',
-        email: ''
+        fullName: ''
     });
     const [profileData, setProfileData] = useState({
         fullName: '',
@@ -61,8 +58,7 @@ const Profile = () => {
 
             // Set edit data
             setEditData({
-                fullName: userResponse.data.userName || '',
-                email: userResponse.data.email || ''
+                fullName: userResponse.data.userName || ''
             });
 
             // Load profile picture
@@ -124,14 +120,6 @@ const Profile = () => {
                     error = 'Full name must be at least 2 characters';
                 }
                 break;
-            case 'email':
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!value.trim()) {
-                    error = 'Email is required';
-                } else if (!emailRegex.test(value)) {
-                    error = 'Please enter a valid email address';
-                }
-                break;
             default:
                 break;
         }
@@ -171,8 +159,6 @@ const Profile = () => {
             // Update local storage if needed
             if (field === 'fullName') {
                 localStorage.setItem('username', editData[field]);
-            } else if (field === 'email') {
-                localStorage.setItem('email', editData[field]);
             }
 
             // Update profile data
@@ -301,45 +287,15 @@ const Profile = () => {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-600 mb-2">Email Address</label>
-                                <div className="flex items-center space-x-4">
-                                    <input
-                                        type="email"
-                                        value={isEditing.email ? editData.email : profileData.email}
-                                        onChange={(e) => handleChange('email', e.target.value)}
-                                        readOnly={!isEditing.email}
-                                        className={`flex-1 px-4 py-2 ${isEditing.email ? 'bg-white' : 'bg-gray-50'} border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors duration-200`}
-                                    />
-                                    <div className="flex space-x-2">
-                                        {isEditing.email ? (
-                                            <>
-                                                <button
-                                                    onClick={() => handleSave('email')}
-                                                    disabled={!!errors.email}
-                                                    className="text-green-600 hover:text-green-700 disabled:text-gray-400 px-3 py-2"
-                                                >
-                                                    Save
-                                                </button>
-                                                <button
-                                                    onClick={() => handleCancel('email')}
-                                                    className="text-red-600 hover:text-red-700 px-3 py-2"
-                                                >
-                                                    Cancel
-                                                </button>
-                                            </>
-                                        ) : (
-                                            <button
-                                                onClick={() => handleEdit('email')}
-                                                className="text-purple-600 hover:text-purple-700 px-3 py-2"
-                                            >
-                                                Edit
-                                            </button>
-                                        )}
+                                <div className="flex items-center">
+                                    <label className="block text-sm font-medium text-gray-600 mb-2">Email Address</label>
+                                    <span className="ml-2 text-xs text-gray-500">(Read-only)</span>
+                                </div>
+                                <div className="flex items-center">
+                                    <div className="flex-1 px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-600">
+                                        {profileData.email}
                                     </div>
                                 </div>
-                                {errors.email && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.email}</p>
-                                )}
                             </div>
 
                             {/* Account Information */}
