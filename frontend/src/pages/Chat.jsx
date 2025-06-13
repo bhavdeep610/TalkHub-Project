@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API from '@services/api';
 import ChatSidebar from '@components/ChatSidebar';
@@ -15,6 +15,27 @@ const Chat = () => {
     username: localStorage.getItem('username'),
     id: localStorage.getItem('userId')
   };
+
+  // Add message caching
+  const messageCache = useRef(new Map());
+  
+  useEffect(() => {
+    if (selectedUser) {
+      // Check cache first
+      const cachedMessages = messageCache.current.get(selectedUser.id);
+      if (cachedMessages) {
+        setMessages(cachedMessages);
+      }
+      fetchMessages(selectedUser.id);
+    }
+  }, [selectedUser?.id]);
+
+  // Update cache when messages change
+  useEffect(() => {
+    if (selectedUser && messages.length > 0) {
+      messageCache.current.set(selectedUser.id, messages);
+    }
+  }, [selectedUser?.id, messages]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -60,13 +81,22 @@ const Chat = () => {
 
   const fetchMessages = async (userId) => {
     if (!userId) return;
+    
     try {
       setIsLoading(true);
       setError(null);
+      
+      // Keep existing messages while loading new ones
       const response = await API.get(`/Chat/get/${userId}`);
       
       if (response.data) {
-        setMessages(response.data);
+        // Ensure we have unique messages
+        const uniqueMessages = response.data.reduce((acc, message) => {
+          acc[message.id] = message;
+          return acc;
+        }, {});
+        
+        setMessages(Object.values(uniqueMessages));
       }
     } catch (error) {
       console.error('Error fetching messages:', error);
@@ -144,7 +174,10 @@ const Chat = () => {
   };
 
   const handleUserSelect = (user) => {
+    if (user.id === selectedUser?.id) return; // Don't reload if same user
+    
     setSelectedUser(user);
+    setMessages([]); // Clear messages only when explicitly changing users
     fetchMessages(user.id);
   };
 

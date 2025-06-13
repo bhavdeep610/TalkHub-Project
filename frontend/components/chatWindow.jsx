@@ -191,10 +191,25 @@ const ChatWindow = ({
   const [connectionStatus, setConnectionStatus] = useState('disconnected');
   const [selectedUserProfilePicture, setSelectedUserProfilePicture] = useState(null);
   const [currentUserProfilePicture, setCurrentUserProfilePicture] = useState(null);
+  const [localMessages, setLocalMessages] = useState(messages);
   const messagesEndRef = useRef(null);
   const chatContainerRef = useRef(null);
   const editInputRef = useRef(null);
   const scrollTimeoutRef = useRef(null);
+
+  // Update local messages when props messages change
+  useEffect(() => {
+    if (messages && messages.length > 0) {
+      setLocalMessages(messages);
+    }
+  }, [messages]);
+
+  // Prevent clearing messages on re-render
+  useEffect(() => {
+    if (selectedUser && localMessages.length === 0 && messages.length > 0) {
+      setLocalMessages(messages);
+    }
+  }, [selectedUser, localMessages.length, messages]);
 
   // Fetch profile pictures when users change
   useEffect(() => {
@@ -275,7 +290,7 @@ const ChatWindow = ({
   const groupedMessages = useMemo(() => {
     const groups = new Map();
     
-    messages.forEach(message => {
+    localMessages.forEach(message => {
       const date = new Date(message.timestamp || message.created || message.Created);
       date.setHours(0, 0, 0, 0);
       const dateKey = date.getTime();
@@ -287,7 +302,7 @@ const ChatWindow = ({
     });
     
     return Array.from(groups.entries()).sort((a, b) => a[0] - b[0]);
-  }, [messages]);
+  }, [localMessages]);
 
   // Memoize the time formatter
   const getFormattedTime = useMemo(() => {
@@ -368,7 +383,7 @@ const ChatWindow = ({
     if (!isUserScrolling) {
       scrollToBottom();
     }
-  }, [messages]);
+  }, [localMessages]);
 
   // Handle message submission
   const handleSubmit = async (e) => {
@@ -430,7 +445,7 @@ const ChatWindow = ({
     const updatedContent = editMessageContent.trim();
     
     // Optimistically update the UI
-    const updatedMessages = messages.map(msg => {
+    const updatedMessages = localMessages.map(msg => {
       if ((msg.id || msg.Id) === messageId) {
         return {
           ...msg,
@@ -466,7 +481,7 @@ const ChatWindow = ({
     } catch (error) {
       console.error('Error updating message:', error);
       if (onMessageDeleted) {
-        onMessageDeleted(messageId, messages); // Revert to original messages
+        onMessageDeleted(messageId, localMessages); // Revert to original messages
       }
       toast.error('Failed to update message', {
         duration: 2000,
@@ -562,24 +577,24 @@ const ChatWindow = ({
         className="flex-1 overflow-y-auto p-4 space-y-4 bg-white scrollbar-thin scrollbar-thumb-purple-500 scrollbar-track-gray-100"
         onScroll={handleScroll}
       >
-        {isLoadingMessages ? (
+        {isLoadingMessages && localMessages.length === 0 ? (
           <div className="flex justify-center items-center h-full">
             <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-500"></div>
           </div>
-        ) : messages.length === 0 ? (
+        ) : localMessages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-gray-400">
             <p>No messages yet</p>
             <p className="text-sm">Send a message to start the conversation!</p>
           </div>
         ) : (
-          messages.map((message) => (
+          localMessages.map((message) => (
             <MessageBubble
-              key={message.id}
-              messageId={message.id}
-              content={message.content}
+              key={message.id || message.Id || `temp-${message.timestamp}`}
+              messageId={message.id || message.Id}
+              content={message.content || message.Content}
               timestamp={message.timestamp || message.created || message.Created}
               isCurrentUser={message.senderId === currentUser?.id}
-              isEditing={editingMessageId === message.id}
+              isEditing={editingMessageId === (message.id || message.Id)}
               editMessageContent={editMessageContent}
               setEditMessageContent={setEditMessageContent}
               handleEditMessage={handleEditMessage}
