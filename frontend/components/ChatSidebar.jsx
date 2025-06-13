@@ -30,6 +30,18 @@ const ChatSidebar = ({
   const lastFetchTimeRef = useRef(0);
   const FETCH_COOLDOWN = 60000; // 1 minute cooldown between fetches
 
+  // Cache last messages to prevent flickering
+  const lastMessagesCache = useRef(new Map());
+
+  // Update cache when conversations change
+  useEffect(() => {
+    conversations.forEach(conversation => {
+      if (conversation.lastMessage) {
+        lastMessagesCache.current.set(conversation.user.id, conversation.lastMessage);
+      }
+    });
+  }, [conversations]);
+
   // Subscribe to SignalR conversation updates
   useEffect(() => {
     const unsubscribe = signalRService.onConversationUpdate((updatedConversation) => {
@@ -119,8 +131,8 @@ const ChatSidebar = ({
   const conversationList = useMemo(() => {
     return conversations.map(conversation => {
       const user = conversation.user;
-      const lastMessage = conversation.lastMessage;
-      const hasMessages = conversation.hasMessages;
+      const lastMessage = conversation.lastMessage || lastMessagesCache.current.get(user.id);
+      const hasMessages = conversation.hasMessages || lastMessagesCache.current.has(user.id);
       const isSelected = selectedUser && selectedUser.id === user.id;
       const profilePicture = userProfilePictures[user.id];
       
@@ -143,6 +155,16 @@ const ChatSidebar = ({
                 alt={`${user.username}'s profile`}
                 className="w-full h-full object-cover"
                 loading="lazy"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = ''; // Clear the broken image
+                  // Show fallback initial
+                  e.target.parentNode.innerHTML = `<div class="w-full h-full bg-purple-100 flex items-center justify-center">
+                    <span class="text-sm font-medium text-purple-600">
+                      ${user.username.substring(0, 1).toUpperCase()}
+                    </span>
+                  </div>`;
+                }}
               />
             ) : (
               <div className="w-full h-full bg-purple-100 flex items-center justify-center">
@@ -154,20 +176,29 @@ const ChatSidebar = ({
           </div>
           <div className="ml-3 flex-grow min-w-0">
             <p className="font-medium text-gray-900 truncate">{user.username}</p>
-            <div className="h-5"> {/* Fixed height container for message preview */}
-              {hasMessages && lastMessage ? (
-                <p className="text-sm text-gray-500 truncate">
-                  {lastMessage.content || lastMessage.Content}
-                </p>
+            <div className="h-5 flex items-center"> {/* Fixed height container for message preview */}
+              {hasMessages ? (
+                lastMessage ? (
+                  <p className="text-sm text-gray-500 truncate">
+                    {lastMessage.content || lastMessage.Content}
+                  </p>
+                ) : (
+                  <div className="w-24 h-3 bg-gray-100 animate-pulse rounded"></div>
+                )
               ) : (
                 <p className="text-xs text-gray-400">No messages yet</p>
               )}
             </div>
+            {lastMessage && (
+              <p className="text-xs text-gray-400 mt-0.5">
+                {formatDate(lastMessage.timestamp || lastMessage.created || lastMessage.Created)}
+              </p>
+            )}
           </div>
         </div>
       );
     });
-  }, [conversations, selectedUser, userProfilePictures, loadingPictures]);
+  }, [conversations, selectedUser, userProfilePictures, loadingPictures, formatDate]);
 
   // Memoize user list to prevent unnecessary re-renders
   const userList = useMemo(() => {

@@ -83,6 +83,7 @@ export const useChatAPI = () => {
     const handleNewMessage = (message) => {
       if (!isMountedRef.current) return;
 
+      // Update messages if the current conversation is affected
       setMessages(prev => {
         if (message.senderId === selectedUser?.id || message.receiverId === selectedUser?.id) {
           return [...prev, message];
@@ -90,6 +91,7 @@ export const useChatAPI = () => {
         return prev;
       });
 
+      // Update conversations with the new message
       setConversations(prev => {
         const updatedConversations = [...prev];
         const conversationIndex = updatedConversations.findIndex(
@@ -97,27 +99,72 @@ export const useChatAPI = () => {
         );
 
         if (conversationIndex !== -1) {
+          // Preserve existing conversation data
+          const existingConv = updatedConversations[conversationIndex];
           updatedConversations[conversationIndex] = {
-            ...updatedConversations[conversationIndex],
-            lastMessage: message,
-            hasMessages: true
+            ...existingConv,
+            lastMessage: {
+              ...message,
+              // Ensure consistent timestamp format
+              timestamp: message.timestamp || message.created || message.Created || new Date().toISOString()
+            },
+            hasMessages: true,
+            messages: existingConv.messages ? [...existingConv.messages, message] : [message]
           };
+        } else {
+          // Create new conversation if it doesn't exist
+          const otherUserId = message.senderId === currentUser.id ? message.receiverId : message.senderId;
+          const otherUser = registeredUsers.find(u => u.id === otherUserId);
+          
+          if (otherUser) {
+            updatedConversations.unshift({
+              user: otherUser,
+              lastMessage: message,
+              hasMessages: true,
+              messages: [message]
+            });
+          }
         }
 
         return updatedConversations;
       });
     };
 
+    // Format conversations consistently
+    const formatConversation = (conv) => ({
+      user: {
+        id: conv.user.id || conv.user.Id,
+        username: conv.user.username || conv.user.Username || conv.user.userName || conv.user.UserName
+      },
+      lastMessage: conv.lastMessage ? {
+        ...conv.lastMessage,
+        timestamp: conv.lastMessage.timestamp || conv.lastMessage.created || conv.lastMessage.Created
+      } : null,
+      messages: (conv.messages || []).map(msg => ({
+        ...msg,
+        timestamp: msg.timestamp || msg.created || msg.Created
+      })),
+      hasMessages: Boolean(conv.messages?.length || conv.lastMessage)
+    });
+
     const handleConversationUpdate = (conversation) => {
       if (!isMountedRef.current) return;
 
       setConversations(prev => {
-        const index = prev.findIndex(c => c.user.id === conversation.user.id);
+        const formattedConv = formatConversation(conversation);
+        const index = prev.findIndex(c => c.user.id === formattedConv.user.id);
+        
         if (index === -1) {
-          return [...prev, conversation];
+          return [formattedConv, ...prev];
         }
+        
         const updated = [...prev];
-        updated[index] = conversation;
+        updated[index] = {
+          ...updated[index],
+          ...formattedConv,
+          // Preserve existing messages if new update doesn't include them
+          messages: formattedConv.messages.length ? formattedConv.messages : updated[index].messages
+        };
         return updated;
       });
     };
@@ -126,7 +173,7 @@ export const useChatAPI = () => {
     const unsubscribeMessage = signalRService.onReceiveMessage(handleNewMessage);
     const unsubscribeConversation = signalRService.onConversationUpdate(handleConversationUpdate);
 
-    // Initial data fetch
+    // Initial data fetch with consistent formatting
     const fetchInitialData = async () => {
       try {
         setIsLoadingConversations(true);
@@ -138,15 +185,14 @@ export const useChatAPI = () => {
         if (!isMountedRef.current) return;
 
         if (conversationsRes.data) {
-          const formattedConversations = conversationsRes.data.map(conv => ({
-            user: {
-              id: conv.user.id || conv.user.Id,
-              username: conv.user.username || conv.user.Username || conv.user.userName || conv.user.UserName
-            },
-            lastMessage: conv.lastMessage,
-            messages: conv.messages || [],
-            hasMessages: Boolean(conv.messages?.length)
-          }));
+          const formattedConversations = conversationsRes.data
+            .map(formatConversation)
+            .sort((a, b) => {
+              const timeA = a.lastMessage?.timestamp || 0;
+              const timeB = b.lastMessage?.timestamp || 0;
+              return new Date(timeB) - new Date(timeA);
+            });
+          
           setConversations(formattedConversations);
         }
 
@@ -176,7 +222,7 @@ export const useChatAPI = () => {
       unsubscribeMessage();
       unsubscribeConversation();
     };
-  }, [currentUser]);
+  }, [currentUser, selectedUser?.id, registeredUsers]);
 
   // Start a new conversation
   const startNewConversation = useCallback((selectedUserId) => {
