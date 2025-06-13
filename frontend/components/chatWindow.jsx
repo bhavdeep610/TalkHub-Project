@@ -456,17 +456,22 @@ const ChatWindow = ({
       return msg;
     });
     
+    // Update local state first
+    setLocalMessages(updatedMessages);
     setEditingMessageId(null);
     setEditMessageContent('');
-    
-    if (onMessageDeleted) {
-      onMessageDeleted(messageId, updatedMessages);
-    }
 
     try {
-      await API.put(`/Chat/update/${messageId}`, {
+      const response = await API.put(`/Chat/update/${messageId}`, {
         newContent: updatedContent
       });
+      
+      if (response.data) {
+        // Update with server response
+        setLocalMessages(prev => prev.map(msg => 
+          (msg.id || msg.Id) === messageId ? response.data : msg
+        ));
+      }
       
       toast.success('Message updated successfully', {
         duration: 2000,
@@ -480,9 +485,8 @@ const ChatWindow = ({
       });
     } catch (error) {
       console.error('Error updating message:', error);
-      if (onMessageDeleted) {
-        onMessageDeleted(messageId, localMessages); // Revert to original messages
-      }
+      // Revert to original messages on error
+      setLocalMessages(messages);
       toast.error('Failed to update message', {
         duration: 2000,
         position: 'top-center',
