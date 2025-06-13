@@ -289,7 +289,6 @@ const Profile = () => {
                             <div>
                                 <div className="flex items-center">
                                     <label className="block text-sm font-medium text-gray-600 mb-2">Email Address</label>
-                                    <span className="ml-2 text-xs text-gray-500">(Read-only)</span>
                                 </div>
                                 <div className="flex items-center">
                                     <div className="flex-1 px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-600">
