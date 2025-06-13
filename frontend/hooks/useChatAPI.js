@@ -556,93 +556,36 @@ export const useChatAPI = () => {
     return registeredUsers.filter(u => ids.has(u.id));
   }, [conversations, registeredUsers, currentUser]);
 
-  // Update polling mechanism
+  // Update polling mechanism with better coordination
   useEffect(() => {
-    if (selectedUser && currentUser) {
-      let isMounted = true;
-      let initialFetchDone = false;
-      let lastMessageCount = messages.length;
-      let lastFetchTime = Date.now();
-      let pollTimeoutId = null;
-      
-      const pollMessages = async () => {
-        if (!isMounted || !initialFetchDone) return;
-        
-        const now = Date.now();
-        if (now - lastFetchTime < 2000) return; // Reduce polling frequency to 2 seconds
-        
-        try {
-          const msgs = await fetchMessages(selectedUser.id);
-          if (!isMounted) return;
-          
-          if (msgs && msgs.length > lastMessageCount) {
-            lastMessageCount = msgs.length;
-            if (isMounted) {
-              setHasNewMessages(true);
-              // Play notification sound or show visual indicator here if needed
-            }
-          }
-          
-          lastFetchTime = now;
-        } catch (err) {
-          console.error("Polling fetch error:", err);
-        } finally {
-          if (isMounted) {
-            pollTimeoutId = setTimeout(pollMessages, 2000); // Poll every 2 seconds
-          }
-        }
-      };
-      
-      // Initial fetch with retry
-      const doInitialFetch = async () => {
-        if (!initialFetchDone && isMounted) {
-          try {
-            await retryWithDelay(async () => {
-              await fetchMessages(selectedUser.id);
-              if (isMounted) {
-                initialFetchDone = true;
-                pollTimeoutId = setTimeout(pollMessages, 2000);
-              }
-            });
-          } catch (err) {
-            console.error("Initial fetch error:", err);
-            if (isMounted) {
-              // Retry initial fetch after 2 seconds
-              setTimeout(doInitialFetch, 2000);
-            }
-          }
-        }
-      };
-      
-      doInitialFetch();
-      
-      return () => {
-        isMounted = false;
-        if (pollTimeoutId) {
-          clearTimeout(pollTimeoutId);
-        }
-      };
-    }
-  }, [selectedUser?.id, currentUser?.id]);
+    if (!selectedUser || !currentUser) return;
 
-  // Add polling for new messages with proper timestamp handling
-  useEffect(() => {
-    let mounted = true;
-    let pollInterval;
+    let isMounted = true;
+    let pollTimeoutId = null;
     let lastMessageCount = messages.length;
     let lastPollTime = Date.now();
+    let consecutiveEmptyPolls = 0;
 
     const pollMessages = async () => {
-      if (!currentUser || !selectedUser) return;
+      if (!isMounted) return;
 
-      // Throttle polling if no changes
+      // Throttle polling based on activity
       const now = Date.now();
-      if (now - lastPollTime < 2000) return;
-      lastPollTime = now;
+      const timeSinceLastPoll = now - lastPollTime;
+      
+      // Adaptive polling interval:
+      // - 2 seconds if there's recent activity
+      // - Up to 5 seconds if no new messages
+      const minPollInterval = consecutiveEmptyPolls > 5 ? 5000 : 2000;
+      
+      if (timeSinceLastPoll < minPollInterval) {
+        pollTimeoutId = setTimeout(pollMessages, minPollInterval - timeSinceLastPoll);
+        return;
+      }
 
       try {
         const response = await API.get(`/Chat/get/${selectedUser.id}`);
-        if (!mounted) return;
+        if (!isMounted) return;
 
         if (response.data && Array.isArray(response.data)) {
           const formattedMessages = response.data.map(msg => ({
@@ -655,154 +598,135 @@ export const useChatAPI = () => {
             timestamp: msg.created || msg.Created
           }));
 
-          // Sort messages before updating state
-          const sortedMessages = formattedMessages.sort((a, b) => {
-            const timeA = new Date(a.timestamp).getTime();
-            const timeB = new Date(b.timestamp).getTime();
-            if (timeA === timeB) {
-              return (a.id || '').localeCompare(b.id || '');
-            }
-            return timeA - timeB;
-          });
+          // Only update state if there are actual changes
+          if (formattedMessages.length !== lastMessageCount) {
+            lastMessageCount = formattedMessages.length;
+            consecutiveEmptyPolls = 0;
 
-          // Only update if there are new messages
-          if (sortedMessages.length > lastMessageCount) {
-            lastMessageCount = sortedMessages.length;
             setMessages(prevMessages => {
               const messageMap = new Map();
               
-              // Add all messages to map, preferring ones with IDs
-              [...prevMessages, ...sortedMessages].forEach(msg => {
-                if (msg.id) {
-                  messageMap.set(msg.id, msg);
-                } else {
-                  const key = `${msg.senderId}-${msg.timestamp}-${msg.content}`;
-                  if (!messageMap.has(key)) {
-                    messageMap.set(key, msg);
-                  }
+              // Add existing messages to map
+              prevMessages.forEach(msg => {
+                const key = msg.id || `${msg.senderId}-${msg.timestamp}-${msg.content}`;
+                messageMap.set(key, msg);
+              });
+
+              // Add or update new messages
+              formattedMessages.forEach(msg => {
+                const key = msg.id || `${msg.senderId}-${msg.timestamp}-${msg.content}`;
+                if (!messageMap.has(key)) {
+                  messageMap.set(key, msg);
                 }
               });
-              
-              // Convert back to sorted array
+
+              // Convert to sorted array
               return Array.from(messageMap.values())
                 .sort((a, b) => {
                   const timeA = new Date(a.timestamp).getTime();
                   const timeB = new Date(b.timestamp).getTime();
-                  if (timeA === timeB) {
-                    return (a.id || '').localeCompare(b.id || '');
-                  }
-                  return timeA - timeB;
+                  return timeA - timeB || (a.id || '').localeCompare(b.id || '');
                 });
             });
+          } else {
+            consecutiveEmptyPolls++;
           }
         }
       } catch (error) {
         console.error('Error polling messages:', error);
+        consecutiveEmptyPolls++;
+      } finally {
+        lastPollTime = Date.now();
+        if (isMounted) {
+          // Adjust polling interval based on activity
+          const nextPollInterval = Math.min(2000 * Math.pow(1.5, consecutiveEmptyPolls), 5000);
+          pollTimeoutId = setTimeout(pollMessages, nextPollInterval);
+        }
       }
     };
 
-    if (selectedUser) {
-      // Initial fetch
-      pollMessages();
-      
-      // Set up polling with a shorter interval for more responsive updates
-      pollInterval = setInterval(pollMessages, 2000);
-    }
+    // Start polling
+    pollMessages();
 
     return () => {
-      mounted = false;
-      if (pollInterval) {
-        clearInterval(pollInterval);
+      isMounted = false;
+      if (pollTimeoutId) {
+        clearTimeout(pollTimeoutId);
       }
     };
-  }, [selectedUser, currentUser, messages.length]);
+  }, [selectedUser?.id, currentUser?.id]);
 
-  // Add effect to fetch conversations periodically
+  // Optimized conversation polling
   useEffect(() => {
-    let mounted = true;
-    let pollInterval;
-    let lastUpdateTime = 0;
+    if (!currentUser) return;
+
+    let isMounted = true;
+    let pollTimeoutId = null;
+    let lastUpdateTime = Date.now();
+    let consecutiveNoChanges = 0;
 
     const pollConversations = async () => {
-      if (!currentUser) return;
+      if (!isMounted) return;
 
-      // Throttle updates
       const now = Date.now();
-      if (now - lastUpdateTime < 3000) return;
+      const timeSinceLastUpdate = now - lastUpdateTime;
+      
+      // Adaptive polling with exponential backoff
+      const minPollInterval = Math.min(3000 * Math.pow(1.5, consecutiveNoChanges), 10000);
+      
+      if (timeSinceLastUpdate < minPollInterval) {
+        pollTimeoutId = setTimeout(pollConversations, minPollInterval - timeSinceLastUpdate);
+        return;
+      }
 
       try {
         const response = await API.get('/Chat/conversations');
-        if (!mounted) return;
+        if (!isMounted) return;
 
         if (response.data && Array.isArray(response.data)) {
-          const formattedConversations = response.data.map(conv => {
-            const userId = conv.user.id;
-            const existingUser = registeredUsers.find(u => u.id === userId);
-            
-            return {
-              user: existingUser || {
-                id: userId,
-                username: conv.user.username || `User ${userId}`
-              },
-              lastMessage: conv.lastMessage,
-              messages: conv.messages || [],
-              hasMessages: Boolean(conv.messages?.length)
-            };
-          });
+          const formattedConversations = response.data.map(conv => ({
+            user: {
+              id: conv.user.id,
+              username: conv.user.username || `User ${conv.user.id}`
+            },
+            lastMessage: conv.lastMessage,
+            messages: conv.messages || [],
+            hasMessages: Boolean(conv.messages?.length)
+          }));
 
-          setConversations(prevConversations => {
+          setConversations(prev => {
             // Only update if there are actual changes
-            const hasChanges = formattedConversations.some((conv, index) => {
-              const prevConv = prevConversations[index];
-              return !prevConv || 
-                     prevConv.user.id !== conv.user.id ||
-                     prevConv.lastMessage?.id !== conv.lastMessage?.id;
-            });
-
-            if (!hasChanges) {
-              return prevConversations;
+            const hasChanges = JSON.stringify(prev) !== JSON.stringify(formattedConversations);
+            if (hasChanges) {
+              consecutiveNoChanges = 0;
+              return formattedConversations;
             }
-
-            lastUpdateTime = now;
-            
-            // Merge new conversations with existing ones
-            const conversationMap = new Map(
-              prevConversations.map(conv => [conv.user.id, conv])
-            );
-
-            formattedConversations.forEach(conv => {
-              const existing = conversationMap.get(conv.user.id);
-              if (!existing || conv.lastMessage?.timestamp > existing.lastMessage?.timestamp) {
-                conversationMap.set(conv.user.id, conv);
-              }
-            });
-
-            return Array.from(conversationMap.values())
-              .sort((a, b) => {
-                const timeA = a.lastMessage?.timestamp || 0;
-                const timeB = b.lastMessage?.timestamp || 0;
-                return timeB - timeA;
-              });
+            consecutiveNoChanges++;
+            return prev;
           });
         }
       } catch (error) {
         console.error('Error polling conversations:', error);
+        consecutiveNoChanges++;
+      } finally {
+        lastUpdateTime = Date.now();
+        if (isMounted) {
+          const nextPollInterval = Math.min(3000 * Math.pow(1.5, consecutiveNoChanges), 10000);
+          pollTimeoutId = setTimeout(pollConversations, nextPollInterval);
+        }
       }
     };
 
-    // Initial fetch
+    // Start polling
     pollConversations();
-    
-    // Set up polling with a longer interval
-    pollInterval = setInterval(pollConversations, 5000);
 
     return () => {
-      mounted = false;
-      if (pollInterval) {
-        clearInterval(pollInterval);
+      isMounted = false;
+      if (pollTimeoutId) {
+        clearTimeout(pollTimeoutId);
       }
     };
-  }, [currentUser, registeredUsers]);
+  }, [currentUser?.id]);
 
   // Function to update messages after deletion
   const updateMessages = useCallback((updatedMessages) => {

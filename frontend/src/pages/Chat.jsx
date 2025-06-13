@@ -22,28 +22,41 @@ const Chat = () => {
       navigate('/login');
       return;
     }
-    fetchConversations();
-  }, [navigate]);
 
-  const fetchConversations = async () => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      const response = await API.get('/Chat/conversations');
-      
-      if (response.data) {
-        setConversations(response.data);
+    let isSubscribed = true; // For cleanup
+
+    const loadConversations = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const response = await API.get('/Chat/conversations');
+        
+        if (isSubscribed && response.data) {
+          setConversations(response.data);
+        }
+      } catch (error) {
+        if (isSubscribed) {
+          console.error('Error fetching conversations:', error);
+          setError(error.message || 'Failed to load conversations');
+          if (error.status === 401) {
+            navigate('/login');
+          }
+        }
+      } finally {
+        if (isSubscribed) {
+          setIsLoading(false);
+        }
       }
-    } catch (error) {
-      console.error('Error fetching conversations:', error);
-      setError(error.message || 'Failed to load conversations');
-      if (error.status === 401) {
-        navigate('/login');
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    };
+
+    loadConversations();
+
+    // Cleanup function
+    return () => {
+      isSubscribed = false;
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty dependency array - only run on mount
 
   const fetchMessages = async (userId) => {
     if (!userId) return;
@@ -70,21 +83,58 @@ const Chat = () => {
     e.preventDefault();
     if (!newMessage.trim() || !selectedUser) return;
 
+    const messageContent = newMessage.trim();
+    setNewMessage(''); // Clear input immediately for better UX
+
+    // Create optimistic message
+    const optimisticMessage = {
+      id: `temp-${Date.now()}`,
+      content: messageContent,
+      senderId: currentUser.id,
+      receiverId: selectedUser.id,
+      timestamp: new Date().toISOString()
+    };
+
+    // Optimistically update messages
+    setMessages(prev => [...prev, optimisticMessage]);
+
+    // Optimistically update conversations
+    setConversations(prev => {
+      const updatedConversations = [...prev];
+      const conversationIndex = updatedConversations.findIndex(
+        conv => conv.user.id === selectedUser.id
+      );
+
+      if (conversationIndex !== -1) {
+        updatedConversations[conversationIndex] = {
+          ...updatedConversations[conversationIndex],
+          lastMessage: optimisticMessage
+        };
+      }
+
+      return updatedConversations;
+    });
+
     try {
       setIsLoading(true);
       setError(null);
       const response = await API.post(`/Chat/send/${selectedUser.id}`, {
-        content: newMessage.trim()
+        content: messageContent
       });
 
       if (response.data) {
-        setMessages(prev => [...prev, response.data]);
-        setNewMessage('');
-        fetchConversations(); // Refresh conversations to update last message
+        // Replace optimistic message with real one
+        setMessages(prev => 
+          prev.map(msg => msg.id === optimisticMessage.id ? response.data : msg)
+        );
       }
     } catch (error) {
       console.error('Error sending message:', error);
       setError(error.message || 'Failed to send message');
+      
+      // Remove optimistic message on error
+      setMessages(prev => prev.filter(msg => msg.id !== optimisticMessage.id));
+      
       if (error.status === 401) {
         navigate('/login');
       }
