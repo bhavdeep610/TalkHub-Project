@@ -21,12 +21,15 @@ const Chat = () => {
   
   useEffect(() => {
     if (selectedUser) {
-      // Check cache first
+      // Only fetch messages if a user is explicitly selected
       const cachedMessages = messageCache.current.get(selectedUser.id);
       if (cachedMessages) {
         setMessages(cachedMessages);
       }
       fetchMessages(selectedUser.id);
+    } else {
+      // Clear messages when no user is selected
+      setMessages([]);
     }
   }, [selectedUser?.id]);
 
@@ -44,7 +47,7 @@ const Chat = () => {
       return;
     }
 
-    let isSubscribed = true; // For cleanup
+    let isSubscribed = true;
 
     const loadConversations = async () => {
       try {
@@ -54,6 +57,9 @@ const Chat = () => {
         
         if (isSubscribed && response.data) {
           setConversations(response.data);
+          // Remove any auto-selection of conversations
+          setSelectedUser(null);
+          setMessages([]);
         }
       } catch (error) {
         if (isSubscribed) {
@@ -72,11 +78,9 @@ const Chat = () => {
 
     loadConversations();
 
-    // Cleanup function
     return () => {
       isSubscribed = false;
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Empty dependency array - only run on mount
 
   const fetchMessages = async (userId) => {
@@ -177,7 +181,7 @@ const Chat = () => {
     if (user.id === selectedUser?.id) return; // Don't reload if same user
     
     setSelectedUser(user);
-    setMessages([]); // Clear messages only when explicitly changing users
+    setMessages([]); // Clear messages when changing users
     fetchMessages(user.id);
   };
 
