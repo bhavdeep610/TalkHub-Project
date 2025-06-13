@@ -7,18 +7,6 @@ import ProfilePictureUpload from '@components/ProfilePictureUpload';
 const Profile = () => {
     const navigate = useNavigate();
     const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-    const [isEditing, setIsEditing] = useState({
-        fullName: false,
-        email: false
-    });
-    const [editData, setEditData] = useState({
-        fullName: '',
-        email: ''
-    });
-    const [errors, setErrors] = useState({
-        fullName: '',
-        email: ''
-    });
     const [profileData, setProfileData] = useState({
         fullName: '',
         email: '',
@@ -63,12 +51,6 @@ const Profile = () => {
                 memberSince: new Date(userResponse.data.created).toISOString().split('T')[0],
                 accountStatus: 'Active'
             };
-
-            // Set edit data
-            setEditData({
-                fullName: userResponse.data.userName || '',
-                email: userResponse.data.email || ''
-            });
 
             // Load profile picture
             try {
@@ -123,93 +105,6 @@ const Profile = () => {
         }
     };
 
-    const validateField = (name, value) => {
-        let error = '';
-        switch (name) {
-            case 'fullName':
-                if (!value.trim()) {
-                    error = 'Full name is required';
-                } else if (value.length < 2) {
-                    error = 'Full name must be at least 2 characters';
-                }
-                break;
-            case 'email':
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!value.trim()) {
-                    error = 'Email is required';
-                } else if (!emailRegex.test(value)) {
-                    error = 'Please enter a valid email address';
-                }
-                break;
-            default:
-                break;
-        }
-        return error;
-    };
-
-    const handleEdit = (field) => {
-        setIsEditing(prev => ({ ...prev, [field]: true }));
-        setEditData(prev => ({ ...prev, [field]: profileData[field] }));
-    };
-
-    const handleCancel = (field) => {
-        setIsEditing(prev => ({ ...prev, [field]: false }));
-        setEditData(prev => ({ ...prev, [field]: profileData[field] }));
-        setErrors(prev => ({ ...prev, [field]: '' }));
-    };
-
-    const handleChange = (field, value) => {
-        setEditData(prev => ({ ...prev, [field]: value }));
-        const error = validateField(field, value);
-        setErrors(prev => ({ ...prev, [field]: error }));
-    };
-
-    const handleSave = async (field) => {
-        const error = validateField(field, editData[field]);
-        if (error) {
-            setErrors(prev => ({ ...prev, [field]: error }));
-            return;
-        }
-
-        try {
-            const token = localStorage.getItem('token');
-            const userId = localStorage.getItem('userId');
-
-            // Make API call to update the field
-            await axios.put(`https://talkhub-backend-02fc.onrender.com/api/User/update`, {
-                [field]: editData[field]
-            }, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-
-            // Update local storage if needed
-            if (field === 'fullName') {
-                localStorage.setItem('username', editData[field]);
-            } else if (field === 'email') {
-                localStorage.setItem('email', editData[field]);
-            }
-
-            // Update profile data
-            setProfileData(prev => ({
-                ...prev,
-                [field]: editData[field]
-            }));
-
-            // Reset editing state
-            setIsEditing(prev => ({ ...prev, [field]: false }));
-            setErrors(prev => ({ ...prev, [field]: '' }));
-
-        } catch (error) {
-            console.error(`Error updating ${field}:`, error);
-            setErrors(prev => ({ 
-                ...prev, 
-                [field]: error.response?.data?.message || `Failed to update ${field}` 
-            }));
-        }
-    };
-
     return (
         <div className="h-screen flex flex-col bg-gray-50">
             {/* Header - Fixed */}
@@ -254,121 +149,44 @@ const Profile = () => {
                                             }}
                                         />
                                     ) : (
-                                        <div className="w-full h-full flex items-center justify-center text-3xl text-gray-400">
-                                            {profileData.fullName[0]?.toUpperCase()}
+                                        <div className="w-full h-full flex items-center justify-center bg-purple-100">
+                                            <span className="text-3xl font-semibold text-purple-600">
+                                                {profileData.fullName.charAt(0).toUpperCase()}
+                                            </span>
                                         </div>
                                     )}
                                 </div>
-                                <button 
+                                <button
                                     onClick={() => setIsUploadModalOpen(true)}
-                                    className="absolute bottom-0 right-0 bg-purple-600 p-2 rounded-full shadow-lg hover:bg-purple-700 transition-colors duration-200 transform hover:scale-105"
+                                    className="absolute bottom-0 right-0 bg-purple-600 text-white p-2 rounded-full shadow-lg hover:bg-purple-700 transition-colors duration-200"
                                 >
-                                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                                     </svg>
                                 </button>
                             </div>
-                            <p className="mt-4 text-sm text-gray-500">Click the camera icon to update your photo</p>
+                            <h3 className="mt-4 text-xl font-semibold text-gray-800">{profileData.fullName}</h3>
+                            <p className="text-gray-500">{profileData.email}</p>
                         </div>
 
                         {/* Profile Information */}
                         <div className="space-y-6">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-600 mb-2">Full Name</label>
-                                <div className="flex items-center space-x-4">
-                                    <input
-                                        type="text"
-                                        value={isEditing.fullName ? editData.fullName : profileData.fullName}
-                                        onChange={(e) => handleChange('fullName', e.target.value)}
-                                        readOnly={!isEditing.fullName}
-                                        className={`flex-1 px-4 py-2 ${isEditing.fullName ? 'bg-white' : 'bg-gray-50'} border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors duration-200`}
-                                    />
-                                    <div className="flex space-x-2">
-                                        {isEditing.fullName ? (
-                                            <>
-                                                <button
-                                                    onClick={() => handleSave('fullName')}
-                                                    disabled={!!errors.fullName}
-                                                    className="text-green-600 hover:text-green-700 disabled:text-gray-400 px-3 py-2"
-                                                >
-                                                    Save
-                                                </button>
-                                                <button
-                                                    onClick={() => handleCancel('fullName')}
-                                                    className="text-red-600 hover:text-red-700 px-3 py-2"
-                                                >
-                                                    Cancel
-                                                </button>
-                                            </>
-                                        ) : (
-                                            <button
-                                                onClick={() => handleEdit('fullName')}
-                                                className="text-purple-600 hover:text-purple-700 px-3 py-2"
-                                            >
-                                                Edit
-                                            </button>
-                                        )}
-                                    </div>
+                            {/* Member Since */}
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <h4 className="text-sm font-medium text-gray-500">Member Since</h4>
+                                    <p className="text-gray-800">{profileData.memberSince}</p>
                                 </div>
-                                {errors.fullName && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.fullName}</p>
-                                )}
                             </div>
 
-                            <div>
-                                <label className="block text-sm font-medium text-gray-600 mb-2">Email Address</label>
-                                <div className="flex items-center space-x-4">
-                                    <input
-                                        type="email"
-                                        value={isEditing.email ? editData.email : profileData.email}
-                                        onChange={(e) => handleChange('email', e.target.value)}
-                                        readOnly={!isEditing.email}
-                                        className={`flex-1 px-4 py-2 ${isEditing.email ? 'bg-white' : 'bg-gray-50'} border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors duration-200`}
-                                    />
-                                    <div className="flex space-x-2">
-                                        {isEditing.email ? (
-                                            <>
-                                                <button
-                                                    onClick={() => handleSave('email')}
-                                                    disabled={!!errors.email}
-                                                    className="text-green-600 hover:text-green-700 disabled:text-gray-400 px-3 py-2"
-                                                >
-                                                    Save
-                                                </button>
-                                                <button
-                                                    onClick={() => handleCancel('email')}
-                                                    className="text-red-600 hover:text-red-700 px-3 py-2"
-                                                >
-                                                    Cancel
-                                                </button>
-                                            </>
-                                        ) : (
-                                            <button
-                                                onClick={() => handleEdit('email')}
-                                                className="text-purple-600 hover:text-purple-700 px-3 py-2"
-                                            >
-                                                Edit
-                                            </button>
-                                        )}
-                                    </div>
-                                </div>
-                                {errors.email && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.email}</p>
-                                )}
-                            </div>
-
-                            {/* Account Information */}
-                            <div className="pt-6 border-t border-gray-200">
-                                <h3 className="text-lg font-medium text-purple-600 mb-4">Account Information</h3>
-                                <div className="space-y-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
-                                    <div className="flex justify-between">
-                                        <span className="text-gray-600">Member Since</span>
-                                        <span className="text-gray-800">{profileData.memberSince}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span className="text-gray-600">Account Status</span>
-                                        <span className="text-green-600">{profileData.accountStatus}</span>
+                            {/* Account Status */}
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <h4 className="text-sm font-medium text-gray-500">Account Status</h4>
+                                    <div className="flex items-center">
+                                        <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
+                                        <p className="text-gray-800">{profileData.accountStatus}</p>
                                     </div>
                                 </div>
                             </div>
@@ -377,11 +195,13 @@ const Profile = () => {
                 </div>
             </div>
 
-            <ProfilePictureUpload
-                isOpen={isUploadModalOpen}
-                onClose={() => setIsUploadModalOpen(false)}
-                onUploadSuccess={handleUploadSuccess}
-            />
+            {/* Profile Picture Upload Modal */}
+            {isUploadModalOpen && (
+                <ProfilePictureUpload
+                    onClose={() => setIsUploadModalOpen(false)}
+                    onUploadSuccess={handleUploadSuccess}
+                />
+            )}
         </div>
     );
 };
