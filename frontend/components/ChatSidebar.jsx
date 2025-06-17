@@ -299,6 +299,12 @@ const ChatSidebar = ({
       {!hideHeader && (
         <div className="h-12 min-h-[48px] flex-shrink-0 flex items-center justify-between px-6 border-b border-gray-200">
           <h2 className="text-lg font-semibold text-gray-800">Chats</h2>
+          <button
+            onClick={() => onStartNewChat()}
+            className="text-purple-600 hover:text-purple-700 font-medium text-sm transition-colors duration-200"
+          >
+            New Chat
+          </button>
         </div>
       )}
       <div 
