@@ -317,5 +317,61 @@ namespace ChatApp.Hubs
                 throw new HubException($"Failed to update message: {ex.Message}");
             }
         }
+
+        public async Task DeleteMessage(int messageId)
+        {
+            try
+            {
+                _logger.LogInformation($"Received DeleteMessage request - MessageId: {messageId}");
+                
+                var userId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (string.IsNullOrEmpty(userId))
+                {
+                    _logger.LogWarning("DeleteMessage failed - Invalid user");
+                    throw new HubException("Invalid user");
+                }
+
+                _logger.LogInformation($"Processing deletion for MessageId: {messageId} by UserId: {userId}");
+
+                // Find the message
+                var message = await _context.Messages.FindAsync(messageId);
+                if (message == null)
+                {
+                    _logger.LogWarning($"DeleteMessage failed - Message {messageId} not found");
+                    throw new HubException("Message not found");
+                }
+
+                // Verify ownership
+                if (message.SenderId.ToString() != userId)
+                {
+                    _logger.LogWarning($"DeleteMessage failed - User {userId} not authorized to delete message {messageId}");
+                    throw new HubException("Not authorized to delete this message");
+                }
+
+                // Delete message
+                _context.Messages.Remove(message);
+                await _context.SaveChangesAsync();
+
+                // Notify both sender and receiver
+                var messageData = new
+                {
+                    Id = message.MessageId,
+                    SenderId = message.SenderId.ToString(),
+                    ReceiverId = message.ReceiverId.ToString()
+                };
+
+                _logger.LogInformation($"Broadcasting message deletion - MessageId: {messageId}, SenderId: {message.SenderId}, ReceiverId: {message.ReceiverId}");
+
+                await Clients.Group($"User_{message.SenderId}").SendAsync("MessageDeleted", messageData);
+                await Clients.Group($"User_{message.ReceiverId}").SendAsync("MessageDeleted", messageData);
+
+                _logger.LogInformation($"Message {messageId} successfully deleted by user {userId}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error deleting message {messageId}");
+                throw new HubException($"Failed to delete message: {ex.Message}");
+            }
+        }
     }
 }

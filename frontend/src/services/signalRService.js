@@ -25,7 +25,7 @@ class SignalRService {
       }
 
       this.connection = new signalR.HubConnectionBuilder()
-        .withUrl(`${config.API_BASE_URL}/chathub`, {
+        .withUrl(config.WEBSOCKET_ENDPOINT, {
           accessTokenFactory: () => token,
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -205,6 +205,20 @@ class SignalRService {
   // Check if connected
   isConnected() {
     return this.connection?.state === signalR.HubConnectionState.Connected;
+  }
+
+  // Delete a message
+  async deleteMessage(messageId) {
+    if (this.connection?.state !== signalR.HubConnectionState.Connected) {
+      throw new Error('SignalR connection is not established');
+    }
+
+    try {
+      await this.connection.invoke('DeleteMessage', messageId);
+    } catch (error) {
+      console.error('Error deleting message through SignalR:', error);
+      throw error;
+    }
   }
 }
 

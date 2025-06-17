@@ -521,24 +521,69 @@ const ChatWindow = ({
 
   const handleDeleteMessage = async (messageId) => {
     try {
-      await API.delete(`/Chat/delete/${messageId}`);
-      if (onMessageDeleted) {
-        onMessageDeleted(messageId);
+      // Optimistically remove message from UI
+      const updatedMessages = localMessages.filter(msg => 
+        (msg.id || msg.Id) !== messageId
+      );
+      setLocalMessages(updatedMessages);
+
+      // Ensure messageId is a valid number
+      const numericId = parseInt(messageId, 10);
+      if (isNaN(numericId)) {
+        console.error('Invalid message ID:', messageId);
+        toast.error('Invalid message ID');
+        return;
       }
-      toast.success('Message deleted successfully', {
-        duration: 2000,
-        position: 'top-center',
-        style: {
-          background: '#10B981',
-          color: '#fff',
-          padding: '12px',
-          borderRadius: '8px',
-        },
-      });
+
+      try {
+        // Try to delete through SignalR service
+        await signalRService.deleteMessage(numericId);
+        
+        toast.success('Message deleted successfully', {
+          duration: 2000,
+          position: 'top-center',
+          style: {
+            background: '#10B981',
+            color: '#fff',
+            padding: '12px',
+            borderRadius: '8px',
+          },
+        });
+
+        // Notify parent component
+        if (onMessageDeleted) {
+          onMessageDeleted(messageId);
+        }
+      } catch (error) {
+        console.error('SignalR delete failed, trying REST API:', error);
+
+        // Fallback to REST endpoint
+        await API.delete(`/Chat/delete/${numericId}`);
+        
+        toast.success('Message deleted successfully', {
+          duration: 2000,
+          position: 'top-center',
+          style: {
+            background: '#10B981',
+            color: '#fff',
+            padding: '12px',
+            borderRadius: '8px',
+          },
+        });
+
+        // Notify parent component
+        if (onMessageDeleted) {
+          onMessageDeleted(messageId);
+        }
+      }
     } catch (error) {
-      console.error('Error deleting message:', error);
-      toast.error('Failed to delete message', {
-        duration: 2000,
+      console.error('Failed to delete message:', error);
+      
+      // Revert the optimistic update
+      setLocalMessages(messages);
+      
+      toast.error('Failed to delete message. Please try again.', {
+        duration: 3000,
         position: 'top-center',
         style: {
           background: '#EF4444',
