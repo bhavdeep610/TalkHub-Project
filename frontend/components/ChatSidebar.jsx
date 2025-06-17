@@ -1,8 +1,8 @@
 import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import API from '../services/api';
-import { profilePictureService } from '../services/profilePictureService';
-import signalRService from '../services/signalRService';
+import API from '@services/api';
+import { profilePictureService } from '@services/profilePictureService';
+import signalRService from '@services/signalRService';
 
 /**
  * ChatSidebar component for displaying and managing conversations

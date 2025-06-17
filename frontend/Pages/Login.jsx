@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import API from '../services/api';
+import API from '@services/api';
 import { motion } from 'framer-motion';
 import toast, { Toaster } from 'react-hot-toast';
 
