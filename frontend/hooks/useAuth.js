@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
-import API from '../services/api';
+import API from '../src/services/api';
 
 /**
  * Custom hook to handle authentication and user state

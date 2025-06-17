@@ -1,5 +1,5 @@
 import * as signalR from '@microsoft/signalr';
-import { config } from '../src/config';
+import { config } from '../config';
 
 class SignalRService {
   constructor() {
@@ -208,4 +208,6 @@ class SignalRService {
   }
 }
 
-export const signalRService = new SignalRService(); 
+const signalRService = new SignalRService();
+export { signalRService };
+export default signalRService; 

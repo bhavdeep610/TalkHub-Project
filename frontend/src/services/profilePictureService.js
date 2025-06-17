@@ -1,5 +1,5 @@
 import API from './api';
-import { config } from '../src/config';
+import { config } from '../config';
 
 const CACHE_KEY = 'profilePictureCache';
 const CACHE_EXPIRY = 30 * 60 * 1000; // 30 minutes

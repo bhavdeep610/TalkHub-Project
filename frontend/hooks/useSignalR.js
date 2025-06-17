@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import signalRService from '../services/signalRService';
+import signalRService from '../src/services/signalRService';
 
 export function useSignalR(token) {
     const [isConnected, setIsConnected] = useState(false);

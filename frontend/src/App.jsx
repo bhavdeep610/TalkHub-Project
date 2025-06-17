@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Login from '@pages/Login';
-import Register from '@pages/Register';
-import Home from '@pages/Home'; // You need to create this file
-import ChatPage from '@pages/ChatPage'; 
-import Profile from '@pages/Profile';
-import ForgotPassword from '@pages/ForgotPassword';
-import PrivateRoute from '@components/PrivateRoute';
+import Login from '../Pages/Login';
+import Register from '../Pages/Register';
+import Home from '../Pages/Home'; // You need to create this file
+import ChatPage from '../Pages/ChatPage'; 
+import Profile from '../Pages/Profile';
+import ForgotPassword from '../Pages/ForgotPassword';
+import PrivateRoute from '../components/PrivateRoute';
 
 function App() {
   return (

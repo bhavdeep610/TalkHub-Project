@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { profilePictureService } from '../services/profilePictureService';
+import { profilePictureService } from '../src/services/profilePictureService';
 
 const Header = () => {
     const navigate = useNavigate();

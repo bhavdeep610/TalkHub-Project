@@ -6,21 +6,28 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-      '@components': path.resolve(__dirname, './components'),
-      '@pages': path.resolve(__dirname, './Pages'),
-      '@services': path.resolve(__dirname, './services')
-    }
+    alias: [
+      { find: '@', replacement: path.resolve(__dirname, 'src') },
+      { find: '@components', replacement: path.resolve(__dirname, 'components') },
+      { find: '@pages', replacement: path.resolve(__dirname, 'Pages') },
+      { find: '@services', replacement: path.resolve(__dirname, 'services') }
+    ]
   },
   build: {
     outDir: 'dist',
-    sourcemap: true,
+    sourcemap: false,
+    minify: 'esbuild',
     rollupOptions: {
-      input: {
-        main: path.resolve(__dirname, 'index.html')
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          ui: ['framer-motion', 'react-hot-toast']
+        }
       }
     }
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-router-dom', 'framer-motion', 'react-hot-toast']
   },
   server: {
     port: 5175,
