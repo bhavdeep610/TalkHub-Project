@@ -43,9 +43,13 @@ const Login = () => {
 
       if (response.data && response.data.token) {
         // Store token and user data
-        localStorage.setItem('token', response.data.token);
+        const token = response.data.token;
+        localStorage.setItem('token', token);
         localStorage.setItem('username', username.trim());
         localStorage.setItem('userId', response.data.userId.toString());
+        
+        // Update API authorization header immediately
+        API.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         
         // Show success toast
         toast.success('Login successful! Redirecting...', {
@@ -67,6 +71,7 @@ const Login = () => {
         throw new Error('Invalid response from server: No token received');
       }
     } catch (error) {
+      console.error('Login error:', error);
       let errorMessage;
       
       if (error.response) {
