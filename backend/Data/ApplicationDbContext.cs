@@ -133,6 +133,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
             e.Property(m => m.Content).HasColumnName("content").IsRequired();
             e.Property(m => m.Created).HasColumnName("created").IsRequired();
+            e.Property(m => m.Updated).HasColumnName("updated").IsRequired(false);
         });
 
         modelBuilder.Entity<Message>().HasData(

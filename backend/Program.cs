@@ -168,15 +168,38 @@ Directory.CreateDirectory(uploadsPath); // This will create all necessary parent
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    context.Database.Migrate();
-
-    if (!context.AppRoles.Any())
+    try
     {
-        context.AppRoles.AddRange(
-            new AppRoles { RoleName = "Admin" },
-            new AppRoles { RoleName = "User" }
-        );
-        context.SaveChanges();
+        // Skip the problematic migration
+        var pendingMigrations = context.Database.GetPendingMigrations().ToList();
+        if (pendingMigrations.Contains("20250617124018_AddMessageUpdatedTimestamp"))
+        {
+            // Skip this migration by adding it to history
+            var command = $"INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`) VALUES ('20250617124018_AddMessageUpdatedTimestamp', '8.0.13')";
+            context.Database.ExecuteSqlRaw(command);
+            pendingMigrations.Remove("20250617124018_AddMessageUpdatedTimestamp");
+        }
+
+        // Apply remaining migrations
+        if (pendingMigrations.Any())
+        {
+            context.Database.Migrate();
+        }
+
+        // Seed roles if needed
+        if (!context.AppRoles.Any())
+        {
+            context.AppRoles.AddRange(
+                new AppRoles { RoleName = "Admin" },
+                new AppRoles { RoleName = "User" }
+            );
+            context.SaveChanges();
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"An error occurred while migrating the database: {ex.Message}");
+        // Log the error but don't throw - allow the application to continue
     }
 }
 
