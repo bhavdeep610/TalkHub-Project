@@ -266,7 +266,6 @@ const ChatPage = () => {
           <div className="w-80 flex-shrink-0 bg-white border-r border-gray-200">
             <div className="flex flex-col h-full">
               <div className="h-12 min-h-[48px] flex-shrink-0 flex items-center justify-between px-6 border-b border-gray-200">
-                <h2 className="text-lg font-semibold text-gray-800">Chats</h2>
                 <button
                   onClick={() => setShowNewChatDialog(true)}
                   className="text-purple-600 hover:text-purple-700 font-medium text-sm transition-colors duration-200"
@@ -294,7 +293,7 @@ const ChatPage = () => {
                   }}
                   onRefreshUsers={fetchRegisteredUsers}
                   formatDate={formatDate}
-                  hideHeader={true}
+                  hideHeader={false}
                 />
               </div>
             </div>
