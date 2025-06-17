@@ -58,9 +58,9 @@ export function useSignalR(token) {
 
         const connect = async () => {
             try {
-                const success = await signalRService.startConnection(token);
-                setIsConnected(success);
-                if (success) {
+                await signalRService.start();
+                setIsConnected(signalRService.isConnected());
+                if (signalRService.isConnected()) {
                     connectionRef.current = Date.now();
                 }
             } catch (error) {
@@ -82,7 +82,7 @@ export function useSignalR(token) {
             if (reconnectTimeoutRef.current) {
                 clearTimeout(reconnectTimeoutRef.current);
             }
-            signalRService.stopConnection();
+            signalRService.stop();
         };
     }, [token]);
 
@@ -135,7 +135,11 @@ export function useSignalR(token) {
             setMessages(prev => [...prev, tempMessage]);
 
             // Send the actual message
-            await signalRService.sendMessage(receiverId, content);
+            await signalRService.sendMessage({
+                receiverId,
+                content,
+                timestamp: new Date().toISOString()
+            });
 
             // Remove the temporary message (it will be replaced by the real one from the server)
             setMessages(prev => prev.filter(m => m.id !== tempId));
@@ -149,7 +153,7 @@ export function useSignalR(token) {
     useEffect(() => {
         const typingTimeouts = new Map();
 
-        const unsubscribe = signalRService.onTypingNotification(({ userId, username, isTyping }) => {
+        const unsubscribe = signalRService.onUserTyping(({ userId, username, isTyping }) => {
             setTypingUsers(prev => {
                 const newMap = new Map(prev);
                 
@@ -187,7 +191,7 @@ export function useSignalR(token) {
     const sendTypingNotification = useCallback(async (receiverId, isTyping) => {
         if (!isConnected) return;
         try {
-            await signalRService.sendTypingNotification(receiverId, isTyping);
+            await signalRService.sendTypingIndicator(receiverId);
         } catch (error) {
             console.error('Failed to send typing notification:', error);
         }
@@ -195,28 +199,11 @@ export function useSignalR(token) {
 
     // User status handling with timestamp updates
     useEffect(() => {
-        const unsubscribe = signalRService.onUserStatusChange((user) => {
-            setOnlineUsers(prev => {
-                const newMap = new Map(prev);
-                const timestamp = new Date();
-                
-                if (user.status === 'online') {
-                    newMap.set(user.userId, {
-                        username: user.username,
-                        lastSeen: timestamp,
-                        status: 'online'
-                    });
-                } else {
-                    const existing = newMap.get(user.userId);
-                    newMap.set(user.userId, {
-                        username: user.username,
-                        lastSeen: timestamp,
-                        status: 'offline',
-                        previousStatus: existing?.status
-                    });
-                }
-                return newMap;
-            });
+        const unsubscribe = signalRService.onConnectionChange((status) => {
+            setIsConnected(status.status === 'connected');
+            if (status.status === 'connected') {
+                connectionRef.current = Date.now();
+            }
         });
 
         return () => unsubscribe();

@@ -28,7 +28,7 @@ class SignalRService {
         .withUrl(`${config.API_BASE_URL}/chathub`, {
           accessTokenFactory: () => token,
           headers: {
-            'Authorization': token,
+            'Authorization': `Bearer ${token}`,
             'X-Requested-With': 'XMLHttpRequest'
           },
           withCredentials: true
@@ -171,13 +171,13 @@ class SignalRService {
   }
 
   // Send a message
-  async sendMessage(message) {
+  async sendMessage({ receiverId, content }) {
     if (this.connection?.state !== signalR.HubConnectionState.Connected) {
       throw new Error('SignalR connection is not established');
     }
 
     try {
-      await this.connection.invoke('SendMessage', message);
+      await this.connection.invoke('SendMessage', receiverId, content);
     } catch (error) {
       console.error('Error sending message through SignalR:', error);
       throw error;
@@ -191,7 +191,7 @@ class SignalRService {
     }
 
     try {
-      await this.connection.invoke('SendTypingIndicator', receiverId);
+      await this.connection.invoke('TypingNotification', receiverId, true);
     } catch (error) {
       console.error('Error sending typing indicator:', error);
     }
