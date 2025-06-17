@@ -33,6 +33,9 @@ const ChatSidebar = ({
   // Cache last messages to prevent flickering
   const lastMessagesCache = useRef(new Map());
 
+  const [showScrollButton, setShowScrollButton] = useState(false);
+  const sidebarRef = useRef(null);
+
   // Update cache when conversations change
   useEffect(() => {
     conversations.forEach(conversation => {
@@ -263,92 +266,81 @@ const ChatSidebar = ({
     }
   }, [onRefreshUsers, fetchProfilePictures]);
 
-  return (
-    <div className="flex-1 flex flex-col overflow-hidden bg-white">
-      {error && (
-        <div className="bg-red-50 p-4">
-          <div className="flex">
-            <div className="flex-shrink-0">
-              <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-              </svg>
-            </div>
-            <div className="ml-3">
-              <p className="text-sm text-red-700">{error}</p>
-            </div>
-            <div className="ml-auto pl-3">
-              <div className="-mx-1.5 -my-1.5">
-                <button
-                  onClick={() => {
-                    setError(null);
-                    fetchProfilePictures();
-                  }}
-                  className="inline-flex rounded-md p-1.5 text-red-500 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                >
-                  <span className="sr-only">Retry</span>
-                  <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+  // Handle scroll event to show/hide scroll button
+  const handleScroll = useCallback(() => {
+    if (!sidebarRef.current) return;
+    
+    const { scrollTop, scrollHeight, clientHeight } = sidebarRef.current;
+    const scrolledFromTop = scrollTop > 200; // Show button after scrolling 200px
+    setShowScrollButton(scrolledFromTop);
+  }, []);
 
-      {showUserList ? (
-        <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500 scrollbar-track-gray-100">
-          <div className="py-2">
-            <div className="flex items-center justify-between px-6 mb-2">
-              <button
-                onClick={() => setShowUserList(false)}
-                className="text-gray-600 hover:text-gray-900 transition-colors duration-200"
-              >
-                ← Back
-              </button>
-              <button
-                onClick={handleRefresh}
-                className="text-sm text-purple-600 hover:text-purple-700 transition-colors duration-200 flex items-center gap-2"
-                disabled={isLoadingUsers || loadingPictures}
-              >
-                {(isLoadingUsers || loadingPictures) && (
-                  <div className="w-4 h-4 border-2 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
-                )}
-                {isLoadingUsers || loadingPictures ? 'Loading...' : 'Refresh'}
-              </button>
-            </div>
-            <div className="max-h-[calc(100vh-120px)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500 scrollbar-track-gray-100">
-              {isLoadingUsers ? (
-                <div className="px-6 py-4 text-center text-gray-500">Loading users...</div>
-              ) : (
-                userList.length > 0 ? userList : (
-                  <div className="px-6 py-4 text-center text-gray-500">No users found</div>
-                )
-              )}
-            </div>
-          </div>
+  // Scroll to bottom function
+  const scrollToBottom = useCallback(() => {
+    if (!sidebarRef.current) return;
+    sidebarRef.current.scrollTo({
+      top: sidebarRef.current.scrollHeight,
+      behavior: 'smooth'
+    });
+  }, []);
+
+  // Add scroll event listener
+  useEffect(() => {
+    const sidebar = sidebarRef.current;
+    if (sidebar) {
+      sidebar.addEventListener('scroll', handleScroll);
+      return () => sidebar.removeEventListener('scroll', handleScroll);
+    }
+  }, [handleScroll]);
+
+  return (
+    <div className="flex flex-col h-full">
+      <div className="h-12 min-h-[48px] flex-shrink-0 flex items-center justify-between px-6 border-b border-gray-200">
+        <h2 className="text-lg font-semibold text-gray-800">Chats</h2>
+        <button
+          onClick={() => setShowUserList(true)}
+          className="text-purple-600 hover:text-purple-700 font-medium text-sm transition-colors duration-200"
+        >
+          New Chat
+        </button>
+      </div>
+      <div 
+        ref={sidebarRef}
+        className="flex-1 overflow-y-auto relative"
+      >
+        {/* Start a conversation section */}
+        <div className="p-6 text-center border-b border-gray-200">
+          <h3 className="text-lg font-semibold text-gray-800 mb-2">Start a conversation</h3>
+          <p className="text-sm text-gray-500">
+            Select a user from your contacts to start chatting
+          </p>
         </div>
-      ) : (
-        <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 hover:scrollbar-thumb-gray-500 scrollbar-track-gray-100">
-          <div className="py-2">
-            <button
-              onClick={() => setShowUserList(true)}
-              className="w-full px-6 py-3 text-left text-purple-600 hover:text-purple-700 transition-colors duration-200"
+
+        {/* Conversation list */}
+        {conversationList}
+
+        {/* Scroll down button */}
+        {showScrollButton && (
+          <button
+            onClick={scrollToBottom}
+            className="fixed bottom-20 right-4 bg-purple-600 text-white p-2 rounded-full shadow-lg hover:bg-purple-700 transition-colors duration-200 z-10"
+            aria-label="Scroll to bottom"
+          >
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              className="h-5 w-5" 
+              viewBox="0 0 20 20" 
+              fill="currentColor"
             >
-              Start a new conversation
-            </button>
-            {conversationList.length > 0 ? (
-              <div className="py-2">
-                {conversationList}
-              </div>
-            ) : (
-              <div className="px-6 py-4 text-center text-gray-500">
-                <p>No conversations yet</p>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+              <path 
+                fillRule="evenodd" 
+                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" 
+                clipRule="evenodd" 
+              />
+            </svg>
+          </button>
+        )}
+      </div>
     </div>
   );
 };

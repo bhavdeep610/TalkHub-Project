@@ -247,6 +247,21 @@ class SignalRService {
         }
     }
 
+    async updateMessage(messageId, newContent) {
+        if (!this.connectionStarted || this.isReconnecting) {
+            throw new Error('Connection not ready');
+        }
+
+        try {
+            console.log('Attempting to update message via SignalR:', { messageId, newContent });
+            await this.connection.invoke('UpdateMessage', messageId, newContent);
+            return { success: true };
+        } catch (error) {
+            console.error('SignalR message update failed:', error);
+            throw error;
+        }
+    }
+
     onReceiveMessage(handler) {
         this.messageHandlers.add(handler);
         return () => this.messageHandlers.delete(handler);

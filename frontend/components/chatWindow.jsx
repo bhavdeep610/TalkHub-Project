@@ -465,8 +465,8 @@ const ChatWindow = ({
     };
 
     try {
-      // Try to update through SignalR first (real-time)
-      await signalRService.connection.invoke('UpdateMessage', numericId, updatedContent);
+      // Try to update through SignalR service
+      await signalRService.updateMessage(numericId, updatedContent);
       
       toast.success('Message updated successfully', {
         duration: 2000,
@@ -478,8 +478,8 @@ const ChatWindow = ({
           borderRadius: '8px',
         },
       });
-    } catch (hubError) {
-      console.error('SignalR update failed, falling back to REST API', hubError);
+    } catch (error) {
+      console.error('Message update failed:', error);
 
       try {
         // Fallback to REST endpoint
