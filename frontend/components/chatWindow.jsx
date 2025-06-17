@@ -457,9 +457,16 @@ const ChatWindow = ({
     setEditingMessageId(null);
     setEditMessageContent('');
 
+    const numericId = Number(messageId);
+
+    const revertChanges = () => {
+      // Revert to original messages on error
+      setLocalMessages(messages);
+    };
+
     try {
-      // Use SignalR to update the message
-      await signalRService.connection.invoke('UpdateMessage', parseInt(messageId), updatedContent);
+      // Try to update through SignalR first (real-time)
+      await signalRService.connection.invoke('UpdateMessage', numericId, updatedContent);
       
       toast.success('Message updated successfully', {
         duration: 2000,
@@ -471,20 +478,37 @@ const ChatWindow = ({
           borderRadius: '8px',
         },
       });
-    } catch (error) {
-      console.error('Error updating message:', error);
-      // Revert to original messages on error
-      setLocalMessages(messages);
-      toast.error('Failed to update message', {
-        duration: 2000,
-        position: 'top-center',
-        style: {
-          background: '#EF4444',
-          color: '#fff',
-          padding: '12px',
-          borderRadius: '8px',
-        },
-      });
+    } catch (hubError) {
+      console.error('SignalR update failed, falling back to REST API', hubError);
+
+      try {
+        // Fallback to REST endpoint
+        await API.put(`/Chat/update/${numericId}`, { newContent: updatedContent });
+
+        toast.success('Message updated successfully', {
+          duration: 2000,
+          position: 'top-center',
+          style: {
+            background: '#10B981',
+            color: '#fff',
+            padding: '12px',
+            borderRadius: '8px',
+          },
+        });
+      } catch (apiError) {
+        console.error('Error updating message via REST API:', apiError);
+        revertChanges();
+        toast.error('Failed to update message', {
+          duration: 2000,
+          position: 'top-center',
+          style: {
+            background: '#EF4444',
+            color: '#fff',
+            padding: '12px',
+            borderRadius: '8px',
+          },
+        });
+      }
     }
   };
 
