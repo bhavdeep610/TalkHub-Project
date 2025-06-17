@@ -19,7 +19,8 @@ const ChatSidebar = ({
   onStartNewChat = () => {},
   onRefreshUsers = () => {},
   formatDate = (date) => new Date(date).toLocaleDateString(),
-  onConversationUpdate = () => {} // Add callback for conversation updates
+  onConversationUpdate = () => {}, // Add callback for conversation updates
+  hideHeader = false // Add hideHeader prop with default value false
 }) => {
   const [showUserList, setShowUserList] = useState(false);
   const [selectedConversation, setSelectedConversation] = useState(null);
@@ -295,9 +296,11 @@ const ChatSidebar = ({
 
   return (
     <div className="flex flex-col h-full">
-      <div className="h-12 min-h-[48px] flex-shrink-0 flex items-center justify-between px-6 border-b border-gray-200">
-        <h2 className="text-lg font-semibold text-gray-800">Chats</h2>
-      </div>
+      {!hideHeader && (
+        <div className="h-12 min-h-[48px] flex-shrink-0 flex items-center justify-between px-6 border-b border-gray-200">
+          <h2 className="text-lg font-semibold text-gray-800">Chats</h2>
+        </div>
+      )}
       <div 
         ref={sidebarRef}
         className="flex-1 overflow-y-auto relative"
@@ -341,7 +344,8 @@ ChatSidebar.propTypes = {
   onStartNewChat: PropTypes.func,
   onRefreshUsers: PropTypes.func,
   formatDate: PropTypes.func,
-  onConversationUpdate: PropTypes.func
+  onConversationUpdate: PropTypes.func,
+  hideHeader: PropTypes.bool // Add prop type for hideHeader
 };
 
 // Wrap with React.memo to prevent unnecessary re-renders

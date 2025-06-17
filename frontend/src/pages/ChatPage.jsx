@@ -124,6 +124,7 @@ const ChatPage = () => {
                   onStartNewChat={() => {}}
                   onRefreshUsers={fetchRegisteredUsers}
                   formatDate={formatDate}
+                  hideHeader={true}
                 />
               </div>
             </div>
