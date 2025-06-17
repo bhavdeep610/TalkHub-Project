@@ -148,6 +148,11 @@ class SignalRService {
             this.messageHandlers.forEach(handler => handler(message));
         });
 
+        this.connection.on('MessageUpdated', (message) => {
+            console.log('Message update received:', message);
+            this.messageHandlers.forEach(handler => handler(message));
+        });
+
         this.connection.on('ConversationUpdated', (conversation) => {
             console.log('Conversation update received:', conversation);
             this.conversationHandlers.forEach(handler => handler(conversation));

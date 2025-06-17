@@ -257,5 +257,56 @@ namespace ChatApp.Hubs
                 throw new HubException($"Failed to send typing notification: {ex.Message}");
             }
         }
+
+        public async Task UpdateMessage(int messageId, string newContent)
+        {
+            try
+            {
+                var userId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (string.IsNullOrEmpty(userId))
+                {
+                    throw new HubException("Invalid user");
+                }
+
+                // Find the message
+                var message = await _context.Messages.FindAsync(messageId);
+                if (message == null)
+                {
+                    throw new HubException("Message not found");
+                }
+
+                // Verify ownership
+                if (message.SenderId.ToString() != userId)
+                {
+                    throw new HubException("Not authorized to update this message");
+                }
+
+                // Update message
+                message.Content = newContent;
+                message.Updated = DateTime.UtcNow;
+                await _context.SaveChangesAsync();
+
+                // Notify both sender and receiver
+                var messageData = new
+                {
+                    Id = message.MessageId,
+                    SenderId = message.SenderId.ToString(),
+                    ReceiverId = message.ReceiverId.ToString(),
+                    Content = newContent,
+                    Timestamp = message.Created,
+                    Updated = message.Updated
+                };
+
+                await Clients.Group($"User_{message.SenderId}").SendAsync("MessageUpdated", messageData);
+                await Clients.Group($"User_{message.ReceiverId}").SendAsync("MessageUpdated", messageData);
+
+                _logger.LogInformation($"Message {messageId} updated by user {userId}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error updating message {messageId}");
+                throw new HubException($"Failed to update message: {ex.Message}");
+            }
+        }
     }
 }

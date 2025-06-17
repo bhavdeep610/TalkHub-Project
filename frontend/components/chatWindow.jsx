@@ -197,19 +197,14 @@ const ChatWindow = ({
   const editInputRef = useRef(null);
   const scrollTimeoutRef = useRef(null);
 
-  // Update local messages when props messages change
+  // Ensure the displayed messages always correspond to the currently selected user.
+  // Whenever either the selected user changes or the `messages` prop changes, we
+  // sync the local state _even if the list is empty_. This guarantees that when
+  // a user selects a conversation with no history the previous chat does **not**
+  // linger on the screen.
   useEffect(() => {
-    if (messages && messages.length > 0) {
-      setLocalMessages(messages);
-    }
-  }, [messages]);
-
-  // Prevent clearing messages on re-render
-  useEffect(() => {
-    if (selectedUser && localMessages.length === 0 && messages.length > 0) {
-      setLocalMessages(messages);
-    }
-  }, [selectedUser, localMessages.length, messages]);
+    setLocalMessages(messages || []);
+  }, [selectedUser, messages]);
 
   // Fetch profile pictures when users change
   useEffect(() => {
@@ -450,7 +445,8 @@ const ChatWindow = ({
         return {
           ...msg,
           content: updatedContent,
-          Content: updatedContent
+          Content: updatedContent,
+          updated: new Date().toISOString()
         };
       }
       return msg;
@@ -462,16 +458,8 @@ const ChatWindow = ({
     setEditMessageContent('');
 
     try {
-      const response = await API.put(`/Chat/update/${messageId}`, {
-        newContent: updatedContent
-      });
-      
-      if (response.data) {
-        // Update with server response
-        setLocalMessages(prev => prev.map(msg => 
-          (msg.id || msg.Id) === messageId ? response.data : msg
-        ));
-      }
+      // Use SignalR to update the message
+      await signalRService.connection.invoke('UpdateMessage', parseInt(messageId), updatedContent);
       
       toast.success('Message updated successfully', {
         duration: 2000,
