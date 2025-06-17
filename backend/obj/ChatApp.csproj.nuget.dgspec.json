@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\BhavdeepSinghRajora\\OneDrive - Kadel Labs Private Limited\\Documents\\Chatapp_React_complete live\\backend\\ChatApp.csproj": {}
+    "C:\\Users\\BhavdeepSinghRajora\\OneDrive - Kadel Labs Private Limited\\Desktop\\TalkHub-Project\\backend\\ChatApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\BhavdeepSinghRajora\\OneDrive - Kadel Labs Private Limited\\Documents\\Chatapp_React_complete live\\backend\\ChatApp.csproj": {
+    "C:\\Users\\BhavdeepSinghRajora\\OneDrive - Kadel Labs Private Limited\\Desktop\\TalkHub-Project\\backend\\ChatApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\BhavdeepSinghRajora\\OneDrive - Kadel Labs Private Limited\\Documents\\Chatapp_React_complete live\\backend\\ChatApp.csproj",
+        "projectUniqueName": "C:\\Users\\BhavdeepSinghRajora\\OneDrive - Kadel Labs Private Limited\\Desktop\\TalkHub-Project\\backend\\ChatApp.csproj",
         "projectName": "ChatApp",
-        "projectPath": "C:\\Users\\BhavdeepSinghRajora\\OneDrive - Kadel Labs Private Limited\\Documents\\Chatapp_React_complete live\\backend\\ChatApp.csproj",
+        "projectPath": "C:\\Users\\BhavdeepSinghRajora\\OneDrive - Kadel Labs Private Limited\\Desktop\\TalkHub-Project\\backend\\ChatApp.csproj",
         "packagesPath": "C:\\Users\\BhavdeepSinghRajora\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\BhavdeepSinghRajora\\OneDrive - Kadel Labs Private Limited\\Documents\\Chatapp_React_complete live\\backend\\obj\\",
+        "outputPath": "C:\\Users\\BhavdeepSinghRajora\\OneDrive - Kadel Labs Private Limited\\Desktop\\TalkHub-Project\\backend\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

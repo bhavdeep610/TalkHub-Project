@@ -12,4 +12,5 @@ public class Message
 
     public string Content { get; set; }
     public DateTime Created { get; set; }
+    public DateTime? Updated { get; set; }
 }

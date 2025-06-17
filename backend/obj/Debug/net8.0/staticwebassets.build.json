@@ -1,20 +1,12 @@
 {
   "Version": 1,
-  "Hash": "tSE6RjeBTIY6NVd1lTDjF617R2YmuEnBNGOVSNDFsyM=",
+  "Hash": "jlrSrNu/W9bW3XWNHMIMp211ehCzhC6lfOS2bieLv8E=",
   "Source": "ChatApp",
   "BasePath": "_content/ChatApp",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [
-    {
-      "Name": "ChatApp\\wwwroot",
-      "Source": "ChatApp",
-      "ContentRoot": "C:\\Users\\BhavdeepSinghRajora\\OneDrive - Kadel Labs Private Limited\\Documents\\Chatapp_React_complete live\\backend\\wwwroot\\",
-      "BasePath": "_content/ChatApp",
-      "Pattern": "**"
-    }
-  ],
+  "DiscoveryPatterns": [],
   "Assets": [],
   "Endpoints": []
 }
