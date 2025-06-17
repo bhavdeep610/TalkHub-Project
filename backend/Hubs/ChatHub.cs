@@ -262,22 +262,29 @@ namespace ChatApp.Hubs
         {
             try
             {
+                _logger.LogInformation($"Received UpdateMessage request - MessageId: {messageId}, NewContent: {newContent}");
+                
                 var userId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 if (string.IsNullOrEmpty(userId))
                 {
+                    _logger.LogWarning("UpdateMessage failed - Invalid user");
                     throw new HubException("Invalid user");
                 }
+
+                _logger.LogInformation($"Processing update for MessageId: {messageId} by UserId: {userId}");
 
                 // Find the message
                 var message = await _context.Messages.FindAsync(messageId);
                 if (message == null)
                 {
+                    _logger.LogWarning($"UpdateMessage failed - Message {messageId} not found");
                     throw new HubException("Message not found");
                 }
 
                 // Verify ownership
                 if (message.SenderId.ToString() != userId)
                 {
+                    _logger.LogWarning($"UpdateMessage failed - User {userId} not authorized to update message {messageId}");
                     throw new HubException("Not authorized to update this message");
                 }
 
@@ -297,10 +304,12 @@ namespace ChatApp.Hubs
                     Updated = message.Updated
                 };
 
+                _logger.LogInformation($"Broadcasting message update - MessageId: {messageId}, SenderId: {message.SenderId}, ReceiverId: {message.ReceiverId}");
+
                 await Clients.Group($"User_{message.SenderId}").SendAsync("MessageUpdated", messageData);
                 await Clients.Group($"User_{message.ReceiverId}").SendAsync("MessageUpdated", messageData);
 
-                _logger.LogInformation($"Message {messageId} updated by user {userId}");
+                _logger.LogInformation($"Message {messageId} successfully updated by user {userId}");
             }
             catch (Exception ex)
             {

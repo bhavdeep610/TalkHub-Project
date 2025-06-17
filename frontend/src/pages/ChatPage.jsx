@@ -120,16 +120,8 @@ const ChatPage = () => {
                   selectedUser={selectedUser}
                   onSelectUser={setSelectedUser}
                   isLoadingUsers={isLoadingUsers}
-                  newChatUserOptions={registeredUsers.filter(u => u.id !== currentUser?.id)}
-                  onStartNewChat={(userId) => {
-                    const user = registeredUsers.find(u => u.id === userId);
-                    if (user) {
-                      setSelectedUser(user);
-                      setShowNewChatDialog(false);
-                      return true;
-                    }
-                    return false;
-                  }}
+                  newChatUserOptions={[]}
+                  onStartNewChat={() => {}}
                   onRefreshUsers={fetchRegisteredUsers}
                   formatDate={formatDate}
                 />

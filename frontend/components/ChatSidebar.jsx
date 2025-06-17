@@ -297,25 +297,11 @@ const ChatSidebar = ({
     <div className="flex flex-col h-full">
       <div className="h-12 min-h-[48px] flex-shrink-0 flex items-center justify-between px-6 border-b border-gray-200">
         <h2 className="text-lg font-semibold text-gray-800">Chats</h2>
-        <button
-          onClick={() => setShowUserList(true)}
-          className="text-purple-600 hover:text-purple-700 font-medium text-sm transition-colors duration-200"
-        >
-          New Chat
-        </button>
       </div>
       <div 
         ref={sidebarRef}
         className="flex-1 overflow-y-auto relative"
       >
-        {/* Start a conversation section */}
-        <div className="p-6 text-center border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-800 mb-2">Start a conversation</h3>
-          <p className="text-sm text-gray-500">
-            Select a user from your contacts to start chatting
-          </p>
-        </div>
-
         {/* Conversation list */}
         {conversationList}
 

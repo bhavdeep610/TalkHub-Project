@@ -457,7 +457,13 @@ const ChatWindow = ({
     setEditingMessageId(null);
     setEditMessageContent('');
 
-    const numericId = Number(messageId);
+    // Ensure messageId is a valid number
+    const numericId = parseInt(messageId, 10);
+    if (isNaN(numericId)) {
+      console.error('Invalid message ID:', messageId);
+      toast.error('Invalid message ID');
+      return;
+    }
 
     const revertChanges = () => {
       // Revert to original messages on error
@@ -465,6 +471,7 @@ const ChatWindow = ({
     };
 
     try {
+      console.log('Attempting to update message:', { numericId, updatedContent });
       // Try to update through SignalR service
       await signalRService.updateMessage(numericId, updatedContent);
       

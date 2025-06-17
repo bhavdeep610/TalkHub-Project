@@ -248,13 +248,26 @@ class SignalRService {
     }
 
     async updateMessage(messageId, newContent) {
-        if (!this.connectionStarted || this.isReconnecting) {
+        if (!this.connectionStarted) {
+            console.warn('SignalR connection not started, cannot update message');
             throw new Error('Connection not ready');
         }
 
+        if (this.isReconnecting) {
+            console.warn('SignalR is currently reconnecting, cannot update message');
+            throw new Error('Connection is reconnecting');
+        }
+
+        if (!messageId || isNaN(parseInt(messageId, 10))) {
+            console.error('Invalid message ID:', messageId);
+            throw new Error('Invalid message ID');
+        }
+
         try {
-            console.log('Attempting to update message via SignalR:', { messageId, newContent });
-            await this.connection.invoke('UpdateMessage', messageId, newContent);
+            const numericId = parseInt(messageId, 10);
+            console.log('Attempting to update message via SignalR:', { numericId, newContent });
+            await this.connection.invoke('UpdateMessage', numericId, newContent);
+            console.log('Message update successful');
             return { success: true };
         } catch (error) {
             console.error('SignalR message update failed:', error);
