@@ -8,10 +8,20 @@ const getBaseUrl = () => {
 
 const baseUrl = getBaseUrl();
 
+// Ensure URL consistency by removing trailing slashes
+const normalizeUrl = (url) => url.replace(/\/+$/, '');
+
 export const config = {
-  API_BASE_URL: baseUrl,
-  API_ENDPOINT: `${baseUrl}/api`,
-  WEBSOCKET_URL: baseUrl.replace(/^http/, 'ws') + '/chathub',
-  WEBSOCKET_ENDPOINT: `${baseUrl}/chathub`,
-  isDevelopment: process.env.NODE_ENV === 'development'
+  API_BASE_URL: normalizeUrl(baseUrl),
+  API_ENDPOINT: normalizeUrl(`${baseUrl}/api`),
+  WEBSOCKET_URL: normalizeUrl(baseUrl.replace(/^http/, 'ws')) + '/chathub',
+  WEBSOCKET_ENDPOINT: normalizeUrl(`${baseUrl}/chathub`),
+  isDevelopment: process.env.NODE_ENV === 'development',
+  CORS_SETTINGS: {
+    credentials: 'include',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  }
 }; 

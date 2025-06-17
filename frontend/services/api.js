@@ -4,8 +4,9 @@ import { config } from '../src/config';
 const API = axios.create({
   baseURL: config.API_BASE_URL,
   headers: {
-    'Content-Type': 'application/json'
-  }
+    ...config.CORS_SETTINGS.headers
+  },
+  withCredentials: config.CORS_SETTINGS.credentials === 'include'
 });
 
 // Add request interceptor
@@ -13,7 +14,7 @@ API.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = token;
     }
     return config;
   },
@@ -64,7 +65,7 @@ API.interceptors.response.use(
           }
 
           // Update the failed request's Authorization header
-          originalRequest.headers.Authorization = `Bearer ${response.data.token}`;
+          originalRequest.headers.Authorization = response.data.token;
           return API(originalRequest);
         }
       } catch (refreshError) {

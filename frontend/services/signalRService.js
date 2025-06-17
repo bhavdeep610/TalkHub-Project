@@ -26,7 +26,12 @@ class SignalRService {
 
       this.connection = new signalR.HubConnectionBuilder()
         .withUrl(`${config.API_BASE_URL}/chathub`, {
-          accessTokenFactory: () => token
+          accessTokenFactory: () => token,
+          headers: {
+            'Authorization': token,
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          withCredentials: true
         })
         .withAutomaticReconnect({
           nextRetryDelayInMilliseconds: retryContext => {
