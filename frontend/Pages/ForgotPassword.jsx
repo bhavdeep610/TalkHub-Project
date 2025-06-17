@@ -17,15 +17,21 @@ const ForgotPassword = () => {
     setIsLoading(true);
 
     try {
-      await API.post('/Auth/verify-email', { email });
+      const response = await API.post('/auth/verify-email', { email });
+      console.log('Verify email response:', response.data);
       setIsEmailVerified(true);
       toast.success('Email verified! Please set your new password.', {
         duration: 1500,
         position: 'top-center',
       });
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Email not found', {
-        duration: 1500,
+      console.error('Verify email error:', error);
+      const errorMessage = error.response?.data?.message || 
+                          error.response?.data || 
+                          error.message || 
+                          'Failed to verify email';
+      toast.error(errorMessage, {
+        duration: 3000,
         position: 'top-center',
       });
     } finally {
@@ -47,10 +53,11 @@ const ForgotPassword = () => {
     setIsLoading(true);
 
     try {
-      await API.post('/Auth/reset-password', {
+      const response = await API.post('/auth/reset-password', {
         email,
         newPassword
       });
+      console.log('Reset password response:', response.data);
       
       toast.success('Password reset successful! Please login with your new password.', {
         duration: 1500,
@@ -61,8 +68,13 @@ const ForgotPassword = () => {
         navigate('/login');
       }, 2000);
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Failed to reset password', {
-        duration: 1500,
+      console.error('Reset password error:', error);
+      const errorMessage = error.response?.data?.message || 
+                          error.response?.data || 
+                          error.message || 
+                          'Failed to reset password';
+      toast.error(errorMessage, {
+        duration: 3000,
         position: 'top-center',
       });
     } finally {

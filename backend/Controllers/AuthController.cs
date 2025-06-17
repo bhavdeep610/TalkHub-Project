@@ -1,6 +1,7 @@
 ﻿using ChatApp.Models.DTOs;
 using ChatApp.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ChatApp.Controllers
 {
@@ -9,11 +10,13 @@ namespace ChatApp.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly ILogger<AuthController> _logger;
         private static readonly HashSet<string> _verifiedEmails = new();
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, ILogger<AuthController> logger)
         {
             _authService = authService;
+            _logger = logger;
         }
 
         [HttpPost("register")]
@@ -39,19 +42,24 @@ namespace ChatApp.Controllers
         {
             try
             {
+                _logger.LogInformation($"Attempting to verify email: {request.Email}");
+                
                 var user = await _authService.GetUserByEmailAsync(request.Email);
                 if (user == null)
                 {
+                    _logger.LogWarning($"Email not found: {request.Email}");
                     return BadRequest(new { message = "Email not found." });
                 }
 
                 // Store the verified email
                 _verifiedEmails.Add(request.Email);
+                _logger.LogInformation($"Email verified successfully: {request.Email}");
 
                 return Ok(new { message = "Email verified successfully." });
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, $"Failed to verify email: {request.Email}");
                 return StatusCode(500, new { message = "Failed to verify email", error = ex.Message });
             }
         }
@@ -61,9 +69,12 @@ namespace ChatApp.Controllers
         {
             try
             {
+                _logger.LogInformation($"Attempting to reset password for email: {request.Email}");
+
                 // Check if email was verified
                 if (!_verifiedEmails.Contains(request.Email))
                 {
+                    _logger.LogWarning($"Email not verified before password reset attempt: {request.Email}");
                     return BadRequest(new { message = "Please verify your email first." });
                 }
 
@@ -71,16 +82,19 @@ namespace ChatApp.Controllers
                 var result = await _authService.ResetPasswordAsync(request.Email, request.NewPassword);
                 if (!result)
                 {
+                    _logger.LogWarning($"Failed to reset password for email: {request.Email}");
                     return BadRequest(new { message = "Failed to reset password." });
                 }
 
                 // Remove email from verified list after successful reset
                 _verifiedEmails.Remove(request.Email);
+                _logger.LogInformation($"Password reset successful for email: {request.Email}");
 
                 return Ok(new { message = "Password has been reset successfully." });
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, $"Failed to reset password for email: {request.Email}");
                 return StatusCode(500, new { message = "Failed to reset password", error = ex.Message });
             }
         }
