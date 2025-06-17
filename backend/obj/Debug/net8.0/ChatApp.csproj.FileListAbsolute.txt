@@ -900,20 +900,9 @@ C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Cha
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\ChatApp.csproj.Up2Date
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\ChatApp.genruntimeconfig.cache
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\ref\ChatApp.dll
-C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.csproj.AssemblyReference.cache
-C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.AssemblyInfoInputs.cache
-C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.AssemblyInfo.cs
-C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.csproj.CoreCompileInputs.cache
-C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.sourcelink.json
-C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.dll
-C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\refint\ChatApp.dll
-C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.pdb
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\web.config
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\appsettings.json
-C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\web.config
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\package-lock.json
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\package.json
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\ChatApp.staticwebassets.runtime.json
@@ -1031,6 +1020,14 @@ C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkH
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.csproj.AssemblyReference.cache
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.AssemblyInfoInputs.cache
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.AssemblyInfo.cs
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.csproj.CoreCompileInputs.cache
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.sourcelink.json
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\scopedcss\bundle\ChatApp.styles.css
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\staticwebassets.build.json
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\staticwebassets.development.json
@@ -1042,5 +1039,8 @@ C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkH
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.ChatApp.props
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\staticwebassets.pack.json
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.csproj.Up2Date
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\refint\ChatApp.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.pdb
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.genruntimeconfig.cache
 C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ref\ChatApp.dll
