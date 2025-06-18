@@ -11,7 +11,36 @@ function Register() {
   const [showPasswordHint, setShowPasswordHint] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [usernameError, setUsernameError] = useState('');
   const navigate = useNavigate();
+
+  // Username validation function
+  const validateUsername = (username) => {
+    if (!username.trim()) {
+      return 'Username is required';
+    }
+    if (username.length < 3 || username.length > 20) {
+      return 'Username must be between 3 and 20 characters';
+    }
+    if (!/^[a-z][a-z0-9._]*$/.test(username)) {
+      return 'Username must start with a lowercase letter and can only contain lowercase letters, numbers, dots, and underscores';
+    }
+    if (/[._]{2,}/.test(username)) {
+      return 'Username cannot contain consecutive dots or underscores';
+    }
+    if (/[._]$/.test(username)) {
+      return 'Username cannot end with a dot or underscore';
+    }
+    return '';
+  };
+
+  // Handle username change
+  const handleUsernameChange = (e) => {
+    const newUsername = e.target.value.toLowerCase();
+    setUsername(newUsername);
+    const error = validateUsername(newUsername);
+    setUsernameError(error);
+  };
 
   // Password validation function
   const validatePassword = (password) => {
@@ -34,6 +63,13 @@ function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
     setError('');
+
+    // Validate username
+    const usernameValidationError = validateUsername(username);
+    if (usernameValidationError) {
+      setUsernameError(usernameValidationError);
+      return;
+    }
 
     // Validate password before submitting
     const { isValid, errors } = validatePassword(password);
@@ -138,13 +174,24 @@ function Register() {
         )}
 
         <form onSubmit={handleRegister} className="space-y-4">
-          <input
-            className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
+          <div>
+            <input
+              className={`w-full px-4 py-2 border ${usernameError ? 'border-red-300' : 'border-gray-300'} rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700`}
+              placeholder="Username"
+              value={username}
+              onChange={handleUsernameChange}
+              required
+            />
+            {usernameError && (
+              <motion.p
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-1 text-sm text-red-600"
+              >
+                {usernameError}
+              </motion.p>
+            )}
+          </div>
           <input
             className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700"
             placeholder="Email"
