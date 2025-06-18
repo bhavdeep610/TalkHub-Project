@@ -60,7 +60,6 @@ namespace ChatApp.Controllers
                 if (user == null)
                     return NotFound("User not found");
 
-                // Update only the provided fields
                 if (!string.IsNullOrWhiteSpace(request.FullName))
                 {
                     user.UserName = request.FullName;
@@ -68,7 +67,6 @@ namespace ChatApp.Controllers
 
                 if (!string.IsNullOrWhiteSpace(request.Email))
                 {
-                    // Check if email is already taken by another user
                     var emailExists = await _context.Users
                         .AnyAsync(u => u.Email == request.Email && u.Id != userId);
                     

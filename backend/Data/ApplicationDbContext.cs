@@ -16,7 +16,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // ---- ROLES CONFIG ----
         modelBuilder.Entity<AppRoles>(e =>
         {
             e.ToTable("role");
@@ -44,7 +43,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             }
         );
 
-        // ---- USER CONFIG ----
         modelBuilder.Entity<User>(e =>
         {
             e.ToTable("user");
@@ -61,9 +59,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             e.Property(u => u.RoleId).HasColumnName("roleId").IsRequired();
             e.Property(u => u.Created).HasColumnName("created").IsRequired();
 
-            // ✅ Explicitly define the relationship
             e.HasOne(u => u.Role)
-             .WithMany()               // or .WithMany(r => r.Users) if you have a collection
+             .WithMany()              
              .HasForeignKey(u => u.RoleId)
              .OnDelete(DeleteBehavior.Restrict);
 
@@ -85,7 +82,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             {
                 Id = 1,
                 UserName = "admin",
-                PasswordHash = "admin123", // For demo only; hash in real apps
+                PasswordHash = "admin123", 
                 Email = "admin@gmail.com",
                 RoleId = 1,
                 Created = DateTime.UtcNow,
@@ -95,7 +92,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             {
                 Id = 2,
                 UserName = "receiver",
-                PasswordHash = "receiver123", // For demo only; hash in real apps
+                PasswordHash = "receiver123", 
                 Email = "receiver@gmail.com",
                 RoleId = 2,
                 Created = DateTime.UtcNow,
@@ -105,14 +102,13 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             {
                 Id = 3,
                 UserName = "sender",
-                PasswordHash = "sender123", // For demo only; hash in real apps
+                PasswordHash = "sender123", 
                 Email = "sender@gmail.com",
                 RoleId = 2,
                 Created = DateTime.UtcNow,
             }
         );
 
-        // ---- MESSAGE CONFIG ----
         modelBuilder.Entity<Message>(e =>
         {
             e.ToTable("message");

@@ -13,11 +13,9 @@ using ChatApp.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    var connectionString = Environment.GetEnvironmentVariable("MYSQL_URL") ?? 
-                         builder.Configuration.GetConnectionString("ChatAppConnection");
+    var connectionString = builder.Configuration.GetConnectionString("ChatAppConnection");
     
     if (string.IsNullOrEmpty(connectionString))
     {
@@ -26,20 +24,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
     try 
     {
-        // Parse connection string if it's in the mysql:// format
-        if (connectionString.StartsWith("mysql://"))
-        {
-            var uri = new Uri(connectionString);
-            var userInfo = uri.UserInfo.Split(':');
-            var user = userInfo[0];
-            var password = userInfo[1];
-            var host = uri.Host;
-            var port = uri.Port;
-            var database = uri.AbsolutePath.TrimStart('/');
-
-            connectionString = $"Server={host};Port={port};Database={database};User={user};Password={password};";
-        }
-
+        
         var serverVersion = new MySqlServerVersion(new Version(8, 0, 0));
         options.UseMySql(connectionString, serverVersion, mySqlOptions =>
         {
@@ -56,24 +41,20 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     }
 });
 
-// Add SignalR with detailed configuration
 builder.Services.AddSignalR(options =>
 {
     options.EnableDetailedErrors = true;
     options.KeepAliveInterval = TimeSpan.FromSeconds(15);
     options.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
     options.HandshakeTimeout = TimeSpan.FromSeconds(15);
-    options.MaximumReceiveMessageSize = 32 * 1024; // 32KB
+    options.MaximumReceiveMessageSize = 32 * 1024; 
 });
 
-// Custom Auth Service
 builder.Services.AddScoped<IAuthService, AuthService>();
 
-// Profile Picture Service
 builder.Services.AddScoped<CloudinaryService>();
 builder.Services.AddScoped<ProfilePictureService>();
 
-// JWT Auth with SignalR support
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -90,7 +71,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             )
         };
 
-        // Configure JWT Bearer Auth to handle SignalR
         options.Events = new JwtBearerEvents
         {
             OnMessageReceived = context =>
@@ -107,7 +87,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-// Swagger setup
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "ChatApp API", Version = "v1" });
@@ -138,7 +117,6 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// Configure CORS for SignalR
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowViteDevClient", policy =>
@@ -150,7 +128,7 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials()
-              .SetIsOriginAllowed(_ => true); // Be careful with this in production
+              .SetIsOriginAllowed(_ => true); 
     });
 });
 
@@ -159,34 +137,28 @@ builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 
-// Create uploads directory for profile pictures
 string contentRootPath = app.Environment.ContentRootPath;
 var uploadsPath = Path.Combine(contentRootPath, "wwwroot", "uploads", "profile-pictures");
-Directory.CreateDirectory(uploadsPath); // This will create all necessary parent directories
+Directory.CreateDirectory(uploadsPath); 
 
-// Auto migrate & seed roles
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     try
     {
-        // Skip the problematic migration
         var pendingMigrations = context.Database.GetPendingMigrations().ToList();
         if (pendingMigrations.Contains("20250617124018_AddMessageUpdatedTimestamp"))
         {
-            // Skip this migration by adding it to history
             var command = $"INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`) VALUES ('20250617124018_AddMessageUpdatedTimestamp', '8.0.13')";
             context.Database.ExecuteSqlRaw(command);
             pendingMigrations.Remove("20250617124018_AddMessageUpdatedTimestamp");
         }
 
-        // Apply remaining migrations
         if (pendingMigrations.Any())
         {
             context.Database.Migrate();
         }
 
-        // Seed roles if needed
         if (!context.AppRoles.Any())
         {
             context.AppRoles.AddRange(
@@ -199,24 +171,20 @@ using (var scope = app.Services.CreateScope())
     catch (Exception ex)
     {
         Console.WriteLine($"An error occurred while migrating the database: {ex.Message}");
-        // Log the error but don't throw - allow the application to continue
     }
 }
 
-// Dev tools
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// Enable WebSockets
 app.UseWebSockets(new WebSocketOptions
 {
     KeepAliveInterval = TimeSpan.FromSeconds(120),
 });
 
-// Ensure CORS is before routing but after WebSockets
 app.UseCors("AllowViteDevClient");
 
 app.UseRouting();
@@ -224,7 +192,6 @@ app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Map controllers and hub
 app.MapControllers();
 app.MapHub<ChatHub>("/chathub");
 

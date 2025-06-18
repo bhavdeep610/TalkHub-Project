@@ -24,12 +24,10 @@ namespace ChatApp.Services
             if (file == null || file.Length == 0)
                 throw new ArgumentException("No file was uploaded.");
 
-            // Validate file type
             var allowedTypes = new[] { "image/jpeg", "image/png", "image/gif" };
             if (!Array.Exists(allowedTypes, type => type == file.ContentType))
                 throw new ArgumentException("Invalid file type. Only JPEG, PNG, and GIF are allowed.");
 
-            // Delete existing profile picture if any
             var existingPicture = await _context.ProfilePictures.FirstOrDefaultAsync(p => p.UserId == userId);
             if (existingPicture != null)
             {
@@ -37,10 +35,8 @@ namespace ChatApp.Services
                 _context.ProfilePictures.Remove(existingPicture);
             }
 
-            // Upload to Cloudinary
             var uploadResult = await _cloudinaryService.UploadProfilePictureAsync(file, userId);
 
-            // Create database entry
             var profilePicture = new ProfilePicture
             {
                 UserId = userId,

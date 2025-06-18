@@ -44,7 +44,6 @@ namespace ChatApp.Hubs
                     return;
                 }
 
-                // Update user connection info
                 var connection = new UserConnection
                 {
                     ConnectionId = Context.ConnectionId,
@@ -55,10 +54,8 @@ namespace ChatApp.Hubs
 
                 _userConnections.AddOrUpdate(userId, connection, (_, __) => connection);
 
-                // Add user to their personal group
                 await Groups.AddToGroupAsync(Context.ConnectionId, $"User_{userId}");
 
-                // Notify others that user is online
                 await Clients.Others.SendAsync("UserOnline", new
                 {
                     UserId = userId,
@@ -93,10 +90,8 @@ namespace ChatApp.Hubs
                         connection.LastSeen = DateTime.UtcNow;
                         _userConnections.TryUpdate(userId, connection, connection);
 
-                        // Remove from personal group
                         await Groups.RemoveFromGroupAsync(Context.ConnectionId, $"User_{userId}");
 
-                        // Notify others that user is offline
                         await Clients.Others.SendAsync("UserOffline", new
                         {
                             UserId = userId,
@@ -134,13 +129,11 @@ namespace ChatApp.Hubs
                     throw new HubException("Invalid sender or message");
                 }
 
-                // Validate message
                 if (message.Length > 1000)
                 {
                     throw new HubException("Message too long (max 1000 characters)");
                 }
 
-                // Create message entity
                 var chatMessage = new Message
                 {
                     SenderId = int.Parse(senderId),
@@ -149,11 +142,9 @@ namespace ChatApp.Hubs
                     Created = DateTime.UtcNow
                 };
 
-                // Save to database
                 _context.Messages.Add(chatMessage);
                 await _context.SaveChangesAsync();
 
-                // Prepare message data
                 var messageData = new
                 {
                     Id = chatMessage.MessageId,
@@ -166,10 +157,8 @@ namespace ChatApp.Hubs
                                 receiverConnection.IsOnline
                 };
 
-                // Send to receiver
                 await Clients.Group($"User_{receiverId}").SendAsync("ReceiveMessage", messageData);
 
-                // Send confirmation to sender
                 await Clients.Caller.SendAsync("MessageSent", messageData);
 
                 _logger.LogInformation($"Message sent from {senderId} to {receiverId}");
@@ -333,7 +322,6 @@ namespace ChatApp.Hubs
 
                 _logger.LogInformation($"Processing deletion for MessageId: {messageId} by UserId: {userId}");
 
-                // Find the message
                 var message = await _context.Messages.FindAsync(messageId);
                 if (message == null)
                 {
@@ -341,18 +329,15 @@ namespace ChatApp.Hubs
                     throw new HubException("Message not found");
                 }
 
-                // Verify ownership
                 if (message.SenderId.ToString() != userId)
                 {
                     _logger.LogWarning($"DeleteMessage failed - User {userId} not authorized to delete message {messageId}");
                     throw new HubException("Not authorized to delete this message");
                 }
 
-                // Delete message
                 _context.Messages.Remove(message);
                 await _context.SaveChangesAsync();
 
-                // Notify both sender and receiver
                 var messageData = new
                 {
                     Id = message.MessageId,
