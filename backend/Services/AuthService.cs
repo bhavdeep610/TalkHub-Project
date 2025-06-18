@@ -22,19 +22,18 @@ namespace ChatApp.Service
 
         public async Task<string> RegisterAsync(Register dto)
         {
-            // Check if user exists
             if (await _context.Users.AnyAsync(u => u.UserName == dto.Username))
                 return "User already exists";
 
-            // Hash password
+            
             var passwordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
 
-            // Find role
+            
             var role = await _context.AppRoles.FindAsync(dto.RoleId);
             if (role == null)
                 return "Invalid Role";
 
-            // Create user
+            
             var user = new User
             {
                 UserName = dto.Username,
@@ -59,7 +58,6 @@ namespace ChatApp.Service
             if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
                 return new LoginResponse { Token = null, UserId = 0 };
 
-            // Generate JWT token
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_configuration["JWT:Key"]!);
 
@@ -101,7 +99,6 @@ namespace ChatApp.Service
             if (user == null)
                 return false;
 
-            // Hash the new password
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
             await _context.SaveChangesAsync();
             return true;

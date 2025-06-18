@@ -51,7 +51,6 @@ namespace ChatApp.Controllers
                     return BadRequest(new { message = "Email not found." });
                 }
 
-                // Store the verified email
                 _verifiedEmails.Add(request.Email);
                 _logger.LogInformation($"Email verified successfully: {request.Email}");
 
@@ -71,14 +70,12 @@ namespace ChatApp.Controllers
             {
                 _logger.LogInformation($"Attempting to reset password for email: {request.Email}");
 
-                // Check if email was verified
                 if (!_verifiedEmails.Contains(request.Email))
                 {
                     _logger.LogWarning($"Email not verified before password reset attempt: {request.Email}");
                     return BadRequest(new { message = "Please verify your email first." });
                 }
 
-                // Reset the password
                 var result = await _authService.ResetPasswordAsync(request.Email, request.NewPassword);
                 if (!result)
                 {
@@ -86,7 +83,6 @@ namespace ChatApp.Controllers
                     return BadRequest(new { message = "Failed to reset password." });
                 }
 
-                // Remove email from verified list after successful reset
                 _verifiedEmails.Remove(request.Email);
                 _logger.LogInformation($"Password reset successful for email: {request.Email}");
 

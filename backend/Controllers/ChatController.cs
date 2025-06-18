@@ -28,7 +28,6 @@ public class ChatController : ControllerBase
 
         int senderId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-        // Get sender and receiver info
         var sender = await _context.Users.FindAsync(senderId);
         var receiver = await _context.Users.FindAsync(dto.ReceiverID);
 
@@ -69,7 +68,6 @@ public class ChatController : ControllerBase
     {
         int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-        // First get all messages and include sender/receiver info
         var messages = await _context.Messages
             .Include(m => m.Sender)
             .Include(m => m.Receiver)
@@ -88,7 +86,6 @@ public class ChatController : ControllerBase
             })
             .ToListAsync();
 
-        // Ensure messages are properly sorted by timestamp
         var sortedMessages = messages
             .OrderBy(m => m.created)
             .ThenBy(m => m.id)
@@ -104,8 +101,6 @@ public class ChatController : ControllerBase
         {
         int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
         var message = await _context.Messages.FindAsync(id);
-
-            
 
         message.Content = dto.NewContent;
         await _context.SaveChangesAsync();
@@ -158,8 +153,8 @@ public class ChatController : ControllerBase
             int currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
             var users = await _context.Users
-                .Where(u => u.Id != currentUserId) // exclude self
-                .OrderBy(u => u.UserName) // Add consistent ordering
+                .Where(u => u.Id != currentUserId)
+                .OrderBy(u => u.UserName) 
                 .Select(u => new
                 {
                     id = u.Id,
@@ -174,41 +169,8 @@ public class ChatController : ControllerBase
             return StatusCode(500, new { message = "Failed to fetch users", error = ex.Message });
         }
     }
-    [HttpGet("all")]
-    public async Task<ActionResult<IEnumerable<Message>>> GetAllMessages()
-    {
-        try
-        {
-            var messages = await _context.Messages
-                .OrderByDescending(m => m.Created)
-                .ToListAsync();
 
-            return Ok(messages);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, $"Internal server error: {ex.Message}");
-        }
-
-    }
-
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetUserById(int id)
-    {
-        var user = await _context.Users
-            .Where(u => u.Id == id)
-            .Select(u => new
-            {
-                id = u.Id,
-                username = u.UserName
-            })
-            .FirstOrDefaultAsync();
-
-        if (user == null)
-            return NotFound();
-
-        return Ok(user);
-    }
+   
 
     [HttpGet("user/{id}")]
     public async Task<IActionResult> GetUser(int id)
@@ -237,40 +199,6 @@ public class ChatController : ControllerBase
         }
     }
 
-    [HttpGet("debug/current-user")]
-    public async Task<IActionResult> GetCurrentUserDebug()
-    {
-        try
-        {
-            int currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-            var username = User.FindFirst(ClaimTypes.Name)?.Value;
-            
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Id == currentUserId);
-                
-            if (user == null)
-            {
-                return NotFound(new { 
-                    message = "User not found in database",
-                    tokenId = currentUserId,
-                    tokenUsername = username
-                });
-            }
-            
-            return Ok(new {
-                id = user.Id,
-                userName = user.UserName,
-                email = user.Email,
-                tokenId = currentUserId,
-                tokenUsername = username
-            });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { message = ex.Message });
-        }
-    }
-
     [HttpGet("conversations")]
     public async Task<IActionResult> GetConversations()
     {
@@ -279,10 +207,8 @@ public class ChatController : ControllerBase
             int currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             var currentUsername = User.FindFirst(ClaimTypes.Name)?.Value;
             
-            // Log the current user info
             Console.WriteLine($"Getting conversations for user ID: {currentUserId}, Username: {currentUsername}");
             
-            // First verify the user exists
             var currentUser = await _context.Users
                 .FirstOrDefaultAsync(u => u.Id == currentUserId);
                 
@@ -292,35 +218,31 @@ public class ChatController : ControllerBase
                 return NotFound(new { message = "User not found" });
             }
 
-            // Get all messages for the current user
             var messages = await _context.Messages
                 .Include(m => m.Sender)
-                .Include(m => m.Receiver)
+                .Include(m => m.Receiver) 
                 .Where(m => m.SenderId == currentUserId || m.ReceiverId == currentUserId)
                 .OrderByDescending(m => m.Created)
                 .ToListAsync();
 
             Console.WriteLine($"Found {messages.Count} messages for user {currentUserId}");
 
-            // Get all unique user IDs from messages
             var userIds = messages
                 .SelectMany(m => new[] { m.SenderId, m.ReceiverId })
                 .Where(id => id != currentUserId)
                 .Distinct()
                 .ToList();
 
-            // Get all users involved in conversations
             var users = await _context.Users
                 .Where(u => userIds.Contains(u.Id))
                 .ToDictionaryAsync(u => u.Id);
 
-            // Group messages by conversation partner
             var conversations = messages
                 .GroupBy(m => m.SenderId == currentUserId ? m.ReceiverId : m.SenderId)
                 .Select(g =>
                 {
                     var partnerId = g.Key;
-                    var lastMessage = g.First(); // Already ordered by Created desc
+                    var lastMessage = g.First(); 
                     users.TryGetValue(partnerId, out var partner);
 
                     if (partner == null)
@@ -362,43 +284,6 @@ public class ChatController : ControllerBase
         {
             Console.WriteLine($"Error in GetConversations: {ex}");
             return StatusCode(500, new { message = ex.Message });
-        }
-    }
-
-    [HttpGet("history")]
-    public async Task<IActionResult> GetChatHistory()
-    {
-        try
-        {
-            int currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-
-            var messages = await _context.Messages
-                .Where(m => m.SenderId == currentUserId || m.ReceiverId == currentUserId)
-                .OrderByDescending(m => m.Created)
-                .Select(m => new
-                {
-                    id = m.MessageId,
-                    content = m.Content,
-                    senderId = m.SenderId,
-                    receiverId = m.ReceiverId,
-                    created = m.Created,
-                    senderName = _context.Users
-                        .Where(u => u.Id == m.SenderId)
-                        .Select(u => u.UserName)
-                        .FirstOrDefault(),
-                    receiverName = _context.Users
-                        .Where(u => u.Id == m.ReceiverId)
-                        .Select(u => u.UserName)
-                        .FirstOrDefault()
-                })
-                .Take(100)
-                .ToListAsync();
-
-            return Ok(messages);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
 }
