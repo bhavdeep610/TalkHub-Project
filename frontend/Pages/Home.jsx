@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Users, Shield, Zap, Globe } from 'lucide-react';
 import "../src/index.css";
 import { useNavigate } from 'react-router-dom';

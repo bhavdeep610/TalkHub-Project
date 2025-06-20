@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo, memo, useCallback } from 'react';
+import { useState, useRef, useEffect, useMemo, memo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import API from '../src/services/api';
 import { toast, Toaster } from 'react-hot-toast';

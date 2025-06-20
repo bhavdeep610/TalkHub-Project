@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { uploadProfilePicture, getProfilePicture, deleteProfilePicture } from '../src/services/profileService';
 import defaultAvatar from '../src/assets/default-avatar.svg';
 import './ProfilePicture.css';

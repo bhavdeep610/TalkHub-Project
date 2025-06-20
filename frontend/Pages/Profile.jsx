@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API from '../src/services/api';
 import ProfilePictureUpload from '../components/ProfilePictureUpload';

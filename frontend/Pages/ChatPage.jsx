@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import API from '../src/services/api';
 import { useNavigate } from 'react-router-dom';
 import ChatSidebar from '../components/ChatSidebar';
