@@ -1,0 +1,1046 @@
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\appsettings.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ChatApp.staticwebassets.endpoints.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ChatApp.exe
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ChatApp.deps.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ChatApp.runtimeconfig.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ChatApp.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ChatApp.pdb
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\ChatApp.csproj.AssemblyReference.cache
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\ChatApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\ChatApp.AssemblyInfoInputs.cache
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\ChatApp.AssemblyInfo.cs
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\ChatApp.csproj.CoreCompileInputs.cache
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\ChatApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\scopedcss\bundle\ChatApp.styles.css
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\staticwebassets\msbuild.ChatApp.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\staticwebassets\msbuild.ChatApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\staticwebassets\msbuild.build.ChatApp.props
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.ChatApp.props
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.ChatApp.props
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\ChatApp.csproj.Up2Date
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\ChatApp.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\refint\ChatApp.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\ChatApp.pdb
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\ChatApp.genruntimeconfig.cache
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\ref\ChatApp.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Humanizer.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Mono.TextTemplating.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\MySqlConnector.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\System.CodeDom.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\System.Composition.AttributedModel.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\System.Composition.Convention.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\System.Composition.Hosting.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\System.Composition.Runtime.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\System.Composition.TypedParts.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\appsettings.Development.json
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\appsettings.json
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ChatApp.staticwebassets.endpoints.json
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ChatApp.exe
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ChatApp.deps.json
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ChatApp.runtimeconfig.json
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ChatApp.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ChatApp.pdb
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Humanizer.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Mono.TextTemplating.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\MySqlConnector.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\System.CodeDom.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\System.Composition.AttributedModel.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\System.Composition.Convention.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\System.Composition.Hosting.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\System.Composition.Runtime.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\System.Composition.TypedParts.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\ChatApp.csproj.AssemblyReference.cache
+C:\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\ChatApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\ChatApp.AssemblyInfoInputs.cache
+C:\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\ChatApp.AssemblyInfo.cs
+C:\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\ChatApp.csproj.CoreCompileInputs.cache
+C:\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\ChatApp.MvcApplicationPartsAssemblyInfo.cache
+C:\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\scopedcss\bundle\ChatApp.styles.css
+C:\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\staticwebassets.build.json
+C:\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\staticwebassets.development.json
+C:\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\staticwebassets\msbuild.ChatApp.Microsoft.AspNetCore.StaticWebAssets.props
+C:\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\staticwebassets\msbuild.ChatApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\staticwebassets\msbuild.build.ChatApp.props
+C:\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.ChatApp.props
+C:\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.ChatApp.props
+C:\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\staticwebassets.pack.json
+C:\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\ChatApp.csproj.Up2Date
+C:\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\ChatApp.dll
+C:\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\refint\ChatApp.dll
+C:\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\ChatApp.pdb
+C:\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\ChatApp.genruntimeconfig.cache
+C:\ChatApp\ChatApp\ChatApp\obj\Debug\net8.0\ref\ChatApp.dll
+C:\ChatApp\bin\Debug\net8.0\appsettings.Development.json
+C:\ChatApp\bin\Debug\net8.0\appsettings.json
+C:\ChatApp\bin\Debug\net8.0\ChatApp.staticwebassets.endpoints.json
+C:\ChatApp\bin\Debug\net8.0\ChatApp.exe
+C:\ChatApp\bin\Debug\net8.0\ChatApp.deps.json
+C:\ChatApp\bin\Debug\net8.0\ChatApp.runtimeconfig.json
+C:\ChatApp\bin\Debug\net8.0\ChatApp.dll
+C:\ChatApp\bin\Debug\net8.0\ChatApp.pdb
+C:\ChatApp\bin\Debug\net8.0\Humanizer.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\ChatApp\bin\Debug\net8.0\Microsoft.OpenApi.dll
+C:\ChatApp\bin\Debug\net8.0\Mono.TextTemplating.dll
+C:\ChatApp\bin\Debug\net8.0\MySqlConnector.dll
+C:\ChatApp\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\ChatApp\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+C:\ChatApp\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\ChatApp\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\ChatApp\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\ChatApp\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\ChatApp\bin\Debug\net8.0\System.CodeDom.dll
+C:\ChatApp\bin\Debug\net8.0\System.Composition.AttributedModel.dll
+C:\ChatApp\bin\Debug\net8.0\System.Composition.Convention.dll
+C:\ChatApp\bin\Debug\net8.0\System.Composition.Hosting.dll
+C:\ChatApp\bin\Debug\net8.0\System.Composition.Runtime.dll
+C:\ChatApp\bin\Debug\net8.0\System.Composition.TypedParts.dll
+C:\ChatApp\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\ChatApp\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp\obj\Debug\net8.0\ChatApp.csproj.AssemblyReference.cache
+C:\ChatApp\obj\Debug\net8.0\ChatApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\ChatApp\obj\Debug\net8.0\ChatApp.AssemblyInfoInputs.cache
+C:\ChatApp\obj\Debug\net8.0\ChatApp.AssemblyInfo.cs
+C:\ChatApp\obj\Debug\net8.0\ChatApp.csproj.CoreCompileInputs.cache
+C:\ChatApp\obj\Debug\net8.0\ChatApp.MvcApplicationPartsAssemblyInfo.cs
+C:\ChatApp\obj\Debug\net8.0\ChatApp.MvcApplicationPartsAssemblyInfo.cache
+C:\ChatApp\obj\Debug\net8.0\ChatApp.sourcelink.json
+C:\ChatApp\obj\Debug\net8.0\scopedcss\bundle\ChatApp.styles.css
+C:\ChatApp\obj\Debug\net8.0\staticwebassets.build.json
+C:\ChatApp\obj\Debug\net8.0\staticwebassets.development.json
+C:\ChatApp\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\ChatApp\obj\Debug\net8.0\staticwebassets\msbuild.ChatApp.Microsoft.AspNetCore.StaticWebAssets.props
+C:\ChatApp\obj\Debug\net8.0\staticwebassets\msbuild.ChatApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\ChatApp\obj\Debug\net8.0\staticwebassets\msbuild.build.ChatApp.props
+C:\ChatApp\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.ChatApp.props
+C:\ChatApp\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.ChatApp.props
+C:\ChatApp\obj\Debug\net8.0\staticwebassets.pack.json
+C:\ChatApp\obj\Debug\net8.0\ChatApp.csproj.Up2Date
+C:\ChatApp\obj\Debug\net8.0\ChatApp.dll
+C:\ChatApp\obj\Debug\net8.0\refint\ChatApp.dll
+C:\ChatApp\obj\Debug\net8.0\ChatApp.pdb
+C:\ChatApp\obj\Debug\net8.0\ChatApp.genruntimeconfig.cache
+C:\ChatApp\obj\Debug\net8.0\ref\ChatApp.dll
+C:\ChatApp\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\ChatApp\bin\Debug\net8.0\BouncyCastle.Crypto.dll
+C:\ChatApp\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\ChatApp Dotnet\ChatApp\obj\Debug\net8.0\ChatApp.csproj.AssemblyReference.cache
+C:\ChatApp Dotnet\ChatApp\obj\Debug\net8.0\ChatApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\ChatApp Dotnet\ChatApp\obj\Debug\net8.0\ChatApp.AssemblyInfoInputs.cache
+C:\ChatApp Dotnet\ChatApp\obj\Debug\net8.0\ChatApp.AssemblyInfo.cs
+C:\ChatApp Dotnet\ChatApp\obj\Debug\net8.0\ChatApp.csproj.CoreCompileInputs.cache
+C:\ChatApp Dotnet\ChatApp\obj\Debug\net8.0\ChatApp.MvcApplicationPartsAssemblyInfo.cs
+C:\ChatApp Dotnet\ChatApp\obj\Debug\net8.0\ChatApp.MvcApplicationPartsAssemblyInfo.cache
+C:\ChatApp Dotnet\ChatApp\obj\Debug\net8.0\ChatApp.sourcelink.json
+C:\ChatApp Dotnet\ChatApp\obj\Debug\net8.0\ChatApp.dll
+C:\ChatApp Dotnet\ChatApp\obj\Debug\net8.0\refint\ChatApp.dll
+C:\ChatApp Dotnet\ChatApp\obj\Debug\net8.0\ChatApp.pdb
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\appsettings.Development.json
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\ChatApp.staticwebassets.endpoints.json
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\appsettings.json
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\ChatApp.exe
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\ChatApp.deps.json
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\ChatApp.runtimeconfig.json
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\ChatApp.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\ChatApp.pdb
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\BouncyCastle.Crypto.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Humanizer.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\System.Web.Cors.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Microsoft.OpenApi.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Mono.TextTemplating.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\MySqlConnector.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\System.CodeDom.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\System.Composition.AttributedModel.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\System.Composition.Convention.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\System.Composition.Hosting.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\System.Composition.Runtime.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\System.Composition.TypedParts.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\ChatApp Dotnet\ChatApp\obj\Debug\net8.0\scopedcss\bundle\ChatApp.styles.css
+C:\ChatApp Dotnet\ChatApp\obj\Debug\net8.0\staticwebassets.build.json
+C:\ChatApp Dotnet\ChatApp\obj\Debug\net8.0\staticwebassets.development.json
+C:\ChatApp Dotnet\ChatApp\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\ChatApp Dotnet\ChatApp\obj\Debug\net8.0\staticwebassets\msbuild.ChatApp.Microsoft.AspNetCore.StaticWebAssets.props
+C:\ChatApp Dotnet\ChatApp\obj\Debug\net8.0\staticwebassets\msbuild.ChatApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\ChatApp Dotnet\ChatApp\obj\Debug\net8.0\staticwebassets\msbuild.build.ChatApp.props
+C:\ChatApp Dotnet\ChatApp\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.ChatApp.props
+C:\ChatApp Dotnet\ChatApp\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.ChatApp.props
+C:\ChatApp Dotnet\ChatApp\obj\Debug\net8.0\staticwebassets.pack.json
+C:\ChatApp Dotnet\ChatApp\obj\Debug\net8.0\ChatApp.csproj.Up2Date
+C:\ChatApp Dotnet\ChatApp\obj\Debug\net8.0\ChatApp.genruntimeconfig.cache
+C:\ChatApp Dotnet\ChatApp\obj\Debug\net8.0\ref\ChatApp.dll
+C:\ChatApp Dotnet\ChatApp\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\appsettings.json
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\ChatApp.staticwebassets.endpoints.json
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\ChatApp.exe
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\ChatApp.deps.json
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\ChatApp.runtimeconfig.json
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\ChatApp.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\ChatApp.pdb
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\BouncyCastle.Crypto.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Humanizer.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\System.Web.Cors.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Microsoft.OpenApi.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Mono.TextTemplating.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\MySqlConnector.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\System.CodeDom.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\System.Composition.AttributedModel.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\System.Composition.Convention.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\System.Composition.Hosting.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\System.Composition.Runtime.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\System.Composition.TypedParts.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\ChatApp.csproj.AssemblyReference.cache
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\ChatApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\ChatApp.AssemblyInfoInputs.cache
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\ChatApp.AssemblyInfo.cs
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\ChatApp.csproj.CoreCompileInputs.cache
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\ChatApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\ChatApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\ChatApp.sourcelink.json
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\scopedcss\bundle\ChatApp.styles.css
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\staticwebassets\msbuild.ChatApp.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\staticwebassets\msbuild.ChatApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\staticwebassets\msbuild.build.ChatApp.props
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.ChatApp.props
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.ChatApp.props
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\ChatApp.csproj.Up2Date
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\ChatApp.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\refint\ChatApp.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\ChatApp.pdb
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\ChatApp.genruntimeconfig.cache
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\ref\ChatApp.dll
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\package-lock.json
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\bin\Debug\net8.0\package.json
+C:\Users\BhavdeepSinghRajora\Music\vs code\backend\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\appsettings.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\ChatApp.staticwebassets.endpoints.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\ChatApp.exe
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\ChatApp.deps.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\ChatApp.runtimeconfig.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\ChatApp.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\ChatApp.pdb
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\BouncyCastle.Crypto.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Humanizer.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.OpenApi.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Mono.TextTemplating.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\MySqlConnector.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\System.CodeDom.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\System.Composition.AttributedModel.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\System.Composition.Convention.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\System.Composition.Hosting.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\System.Composition.Runtime.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\System.Composition.TypedParts.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\ChatApp.csproj.AssemblyReference.cache
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\ChatApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\ChatApp.AssemblyInfoInputs.cache
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\ChatApp.AssemblyInfo.cs
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\ChatApp.csproj.CoreCompileInputs.cache
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\ChatApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\ChatApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\ChatApp.sourcelink.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\scopedcss\bundle\ChatApp.styles.css
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\staticwebassets\msbuild.ChatApp.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\staticwebassets\msbuild.ChatApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\staticwebassets\msbuild.build.ChatApp.props
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.ChatApp.props
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.ChatApp.props
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\ChatApp.csproj.Up2Date
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\ChatApp.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\refint\ChatApp.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\ChatApp.pdb
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\ChatApp.genruntimeconfig.cache
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\obj\Debug\net8.0\ref\ChatApp.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Http.Connections.Client.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Client.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Client.Core.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\ChatApp.staticwebassets.runtime.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\CloudinaryDotNet.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\dotenv.net.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\package-lock.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\package.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\Chatapp_React\backend\bin\Debug\net8.0\web.config
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\ChatApp.csproj.AssemblyReference.cache
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\ChatApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\ChatApp.AssemblyInfoInputs.cache
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\ChatApp.AssemblyInfo.cs
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\ChatApp.csproj.CoreCompileInputs.cache
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\ChatApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\ChatApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\ChatApp.sourcelink.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\ChatApp.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\refint\ChatApp.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\ChatApp.pdb
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\web.config
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\package-lock.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\package.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\ChatApp.staticwebassets.endpoints.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\appsettings.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\ChatApp.staticwebassets.runtime.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\ChatApp.exe
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\ChatApp.deps.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\ChatApp.runtimeconfig.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\ChatApp.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\ChatApp.pdb
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\BouncyCastle.Crypto.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\CloudinaryDotNet.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\dotenv.net.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Humanizer.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Http.Connections.Client.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Client.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Client.Core.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Microsoft.OpenApi.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Mono.TextTemplating.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\MySqlConnector.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\System.CodeDom.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\System.Composition.AttributedModel.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\System.Composition.Convention.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\System.Composition.Hosting.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\System.Composition.Runtime.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\System.Composition.TypedParts.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\scopedcss\bundle\ChatApp.styles.css
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\staticwebassets\msbuild.ChatApp.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\staticwebassets\msbuild.ChatApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\staticwebassets\msbuild.build.ChatApp.props
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.ChatApp.props
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.ChatApp.props
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\ChatApp.csproj.Up2Date
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\ChatApp.genruntimeconfig.cache
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Documents\Chatapp_React_complete live\backend\obj\Debug\net8.0\ref\ChatApp.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\web.config
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\appsettings.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\package-lock.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\package.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\ChatApp.staticwebassets.runtime.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\ChatApp.staticwebassets.endpoints.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\ChatApp.exe
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\ChatApp.deps.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\ChatApp.runtimeconfig.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\ChatApp.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\ChatApp.pdb
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\BouncyCastle.Crypto.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\CloudinaryDotNet.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\dotenv.net.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Humanizer.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Http.Connections.Client.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Client.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Client.Core.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Microsoft.OpenApi.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Mono.TextTemplating.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\MySqlConnector.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\System.CodeDom.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\System.Composition.AttributedModel.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\System.Composition.Convention.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\System.Composition.Hosting.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\System.Composition.Runtime.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\System.Composition.TypedParts.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.csproj.AssemblyReference.cache
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.AssemblyInfoInputs.cache
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.AssemblyInfo.cs
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.csproj.CoreCompileInputs.cache
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.sourcelink.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\scopedcss\bundle\ChatApp.styles.css
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\staticwebassets\msbuild.ChatApp.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\staticwebassets\msbuild.ChatApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\staticwebassets\msbuild.build.ChatApp.props
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.ChatApp.props
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.ChatApp.props
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.csproj.Up2Date
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\refint\ChatApp.dll
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.pdb
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ChatApp.genruntimeconfig.cache
+C:\Users\BhavdeepSinghRajora\OneDrive - Kadel Labs Private Limited\Desktop\TalkHub-Project\backend\obj\Debug\net8.0\ref\ChatApp.dll

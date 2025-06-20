@@ -1,0 +1,20 @@
+{
+  "Version": 1,
+  "Hash": "/U2DVMjLe39rHlti12qm4FpNcQr6ZD78Lu2RfvBtxdE=",
+  "Source": "ChatApp",
+  "BasePath": "_content/ChatApp",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "ChatApp\\wwwroot",
+      "Source": "ChatApp",
+      "ContentRoot": "C:\\Users\\BhavdeepSinghRajora\\OneDrive - Kadel Labs Private Limited\\Desktop\\TalkHub-Project\\backend\\wwwroot\\",
+      "BasePath": "_content/ChatApp",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [],
+  "Endpoints": []
+}
