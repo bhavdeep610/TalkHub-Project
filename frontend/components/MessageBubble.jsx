@@ -42,22 +42,22 @@ const MessageBubble = ({
   }, [handleEditMessage, message, onCancelEdit]);
   
   return (
-    <div className={`my-2 flex ${isCurrentUser ? 'justify-end' : 'justify-start'}`}>
+    <div className={`my-3 flex items-start ${isCurrentUser ? 'justify-end' : 'justify-start'}`}>
       {!isCurrentUser && (
         <div className="flex flex-col items-center mr-2">
           <div className="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center text-white font-bold text-sm">
             {senderName.substring(0, 1).toUpperCase()}
           </div>
-          <span className="text-xs text-gray-500 mt-1">{senderName}</span>
+          <span className="text-[10px] text-gray-500 mt-1">{senderName}</span>
         </div>
       )}
       
-      <div className="flex flex-col max-w-[45%]">
+      <div className="flex flex-col max-w-[35%]">
         {isCurrentUser && !isEditing && (
           <div className="flex justify-end mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
             <button
               onClick={() => onEdit(message.id || message.Id, content)}
-              className="text-xs bg-white border border-gray-200 text-gray-600 hover:text-blue-500 hover:border-blue-500 px-3 py-1 rounded-full shadow-sm transition-all duration-200 mr-2"
+              className="text-xs bg-white border border-gray-200 text-gray-600 hover:text-blue-500 hover:border-blue-500 px-3 py-0.5 rounded-full shadow-sm transition-all duration-200 mr-2"
               title="Edit message"
             >
               Edit
@@ -68,7 +68,7 @@ const MessageBubble = ({
                   onDelete(message.id || message.Id);
                 }
               }}
-              className="text-xs bg-white border border-gray-200 text-gray-600 hover:text-red-500 hover:border-red-500 px-3 py-1 rounded-full shadow-sm transition-all duration-200"
+              className="text-xs bg-white border border-gray-200 text-gray-600 hover:text-red-500 hover:border-red-500 px-3 py-0.5 rounded-full shadow-sm transition-all duration-200"
               title="Delete message"
             >
               Delete
@@ -77,7 +77,7 @@ const MessageBubble = ({
         )}
         
         <div 
-          className={`relative group px-4 py-2 rounded-lg ${
+          className={`relative group px-3 py-1.5 rounded-lg ${
             isCurrentUser 
               ? 'bg-purple-600 text-white rounded-br-none' 
               : 'bg-gray-100 text-gray-800 rounded-bl-none'
@@ -112,13 +112,13 @@ const MessageBubble = ({
             </div>
           ) : (
             <>
-              <p className="whitespace-pre-wrap break-words text-sm">{content}</p>
-              <div className="flex items-center mt-1 gap-2">
-                <span className={`text-[11px] ${isCurrentUser ? 'text-purple-200' : 'text-gray-500'}`}>
+              <p className="whitespace-pre-wrap break-words text-[13px] leading-snug">{content}</p>
+              <div className="flex items-center mt-0.5 gap-1">
+                <span className={`text-[10px] ${isCurrentUser ? 'text-purple-200' : 'text-gray-500'}`}>
                   {formattedTime}
                 </span>
                 {isEdited && (
-                  <span className={`text-[11px] ${isCurrentUser ? 'text-purple-200' : 'text-gray-500'}`}>
+                  <span className={`text-[10px] ${isCurrentUser ? 'text-purple-200' : 'text-gray-500'}`}>
                     (edited)
                   </span>
                 )}
@@ -133,7 +133,7 @@ const MessageBubble = ({
           <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold text-sm">
             {senderName.substring(0, 1).toUpperCase()}
           </div>
-          <span className="text-xs text-gray-500 mt-1">You</span>
+          <span className="text-[10px] text-gray-500 mt-1">You</span>
         </div>
       )}
     </div>
