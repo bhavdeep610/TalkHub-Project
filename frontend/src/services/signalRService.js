@@ -2,21 +2,33 @@ import * as signalR from '@microsoft/signalr';
 import { config } from '../config';
 
 class SignalRService {
+  static _instance = null;
+
   constructor() {
-    if (!SignalRService.instance) {
-      this.connection = null;
-      this.messageCallbacks = new Set();
-      this.conversationCallbacks = new Set();
-      this.typingCallbacks = new Set();
-      this.connectionCallbacks = new Set();
-      this.reconnectAttempts = 0;
-      this.maxReconnectAttempts = 5;
-      this.reconnectDelay = 2000;
-      this.isInitialized = false;
-      this.connectionPromise = null;
-      SignalRService.instance = this;
+    if (SignalRService._instance) {
+      return SignalRService._instance;
     }
-    return SignalRService.instance;
+
+    this._connection = null;
+    this.messageCallbacks = new Set();
+    this.conversationCallbacks = new Set();
+    this.typingCallbacks = new Set();
+    this.connectionCallbacks = new Set();
+    this.reconnectAttempts = 0;
+    this.maxReconnectAttempts = 5;
+    this.reconnectDelay = 2000;
+    this.isInitialized = false;
+    this.connectionPromise = null;
+
+    SignalRService._instance = this;
+  }
+
+  get connection() {
+    return this._connection;
+  }
+
+  set connection(value) {
+    this._connection = value;
   }
 
   async initialize() {
@@ -27,7 +39,7 @@ class SignalRService {
       throw new Error('No authentication token found');
     }
 
-    this.connection = new signalR.HubConnectionBuilder()
+    this._connection = new signalR.HubConnectionBuilder()
       .withUrl(config.WEBSOCKET_ENDPOINT, {
         accessTokenFactory: () => token,
         headers: {
@@ -245,7 +257,4 @@ class SignalRService {
   }
 }
 
-const instance = new SignalRService();
-Object.freeze(instance);
-
-export default instance; 
+export default new SignalRService(); 

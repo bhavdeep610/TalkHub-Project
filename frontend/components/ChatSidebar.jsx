@@ -34,14 +34,16 @@ const ChatSidebar = ({
   const mountedRef = useRef(true);
 
   const handleSelectConversation = useCallback((conversation) => {
-    if (conversation && conversation.user) {
+    if (conversation?.user) {
       onSelectUser(conversation.user);
     }
   }, [onSelectUser]);
 
   const handleStartChat = useCallback((userId) => {
-    onStartNewChat(userId);
-    setShowUserList(false);
+    if (userId) {
+      onStartNewChat(userId);
+      setShowUserList(false);
+    }
   }, [onStartNewChat]);
 
   useEffect(() => {
@@ -54,7 +56,9 @@ const ChatSidebar = ({
 
   useEffect(() => {
     const unsubscribe = signalRService.onConversationUpdate((updatedConversation) => {
-      onConversationUpdate(updatedConversation);
+      if (mountedRef.current) {
+        onConversationUpdate(updatedConversation);
+      }
     });
 
     return () => unsubscribe();
@@ -87,12 +91,14 @@ const ChatSidebar = ({
       }
 
       const pictures = await profilePictureService.getProfilePictures(uncachedUserIds);
-      setUserProfilePictures(prev => ({
-        ...prev,
-        ...pictures
-      }));
-      setError(null);
-      lastFetchTimeRef.current = now;
+      if (mountedRef.current) {
+        setUserProfilePictures(prev => ({
+          ...prev,
+          ...pictures
+        }));
+        setError(null);
+        lastFetchTimeRef.current = now;
+      }
     } catch (error) {
       console.error('Error in fetchProfilePictures:', error);
       
@@ -101,18 +107,23 @@ const ChatSidebar = ({
           clearTimeout(retryTimeoutRef.current);
         }
         retryTimeoutRef.current = setTimeout(() => {
-          fetchProfilePictures(retryCount + 1);
+          if (mountedRef.current) {
+            fetchProfilePictures(retryCount + 1);
+          }
         }, 2000 * (retryCount + 1));
       } else {
         setError('Failed to load profile pictures. Please try again later.');
       }
     } finally {
-      setLoadingPictures(false);
+      if (mountedRef.current) {
+        setLoadingPictures(false);
+      }
     }
   }, [conversations, newChatUserOptions, userProfilePictures]);
 
   useEffect(() => {
     return () => {
+      mountedRef.current = false;
       if (retryTimeoutRef.current) {
         clearTimeout(retryTimeoutRef.current);
       }
@@ -127,7 +138,7 @@ const ChatSidebar = ({
     const uniqueUserIds = [...new Set(userIds)];
     const hasUncachedUsers = uniqueUserIds.some(id => !userProfilePictures[id]);
 
-    if (hasUncachedUsers) {
+    if (hasUncachedUsers && mountedRef.current) {
       fetchProfilePictures();
     }
   }, [conversations, newChatUserOptions, userProfilePictures, fetchProfilePictures]);
