@@ -5,6 +5,7 @@ import { toast, Toaster } from 'react-hot-toast';
 import { useSignalR } from '../hooks/useSignalR';
 import signalRService from '../src/services/signalRService';
 import { profilePictureService } from '../src/services/profilePictureService';
+import { messageService } from '../src/services/messageService';
 
 const createTimeFormatter = () => {
   const cache = new Map();
@@ -406,148 +407,64 @@ const ChatWindow = ({
     }
   };
   const handleEditMessage = async (messageId) => {
-    const updatedContent = editMessageContent.trim();
-    
-    const updatedMessages = localMessages.map(msg => {
-      if ((msg.id || msg.Id) === messageId) {
-        return {
-          ...msg,
-          content: updatedContent,
-          Content: updatedContent,
-          updated: new Date().toISOString()
-        };
-      }
-      return msg;
-    });
-    
-    setLocalMessages(updatedMessages);
-    setEditingMessageId(null);
-    setEditMessageContent('');
-
-    const numericId = parseInt(messageId, 10);
-    if (isNaN(numericId)) {
-      console.error('Invalid message ID:', messageId);
-      toast.error('Invalid message ID');
+    if (!editMessageContent.trim()) {
+      cancelEditing();
       return;
     }
 
-    const revertChanges = () => {
-      setLocalMessages(messages);
+    const originalMessage = localMessages.find(m => m.id === messageId);
+    if (!originalMessage) return;
+
+    const optimisticMessage = {
+      ...originalMessage,
+      content: editMessageContent,
+      isOptimistic: true
     };
 
+    // Optimistically update the UI
+    setLocalMessages(messages => 
+      messages.map(m => m.id === messageId ? optimisticMessage : m)
+    );
+
     try {
-      console.log('Attempting to update message:', { numericId, updatedContent });
-      await signalRService.updateMessage(numericId, updatedContent);
+      const updatedMessage = await messageService.updateMessage(messageId, editMessageContent.trim());
       
-      toast.success('Message updated successfully', {
-        duration: 2000,
-        position: 'top-center',
-        style: {
-          background: '#10B981',
-          color: '#fff',
-          padding: '12px',
-          borderRadius: '8px',
-        },
-      });
+      // Update with the server response
+      setLocalMessages(messages =>
+        messages.map(m => m.id === messageId ? updatedMessage : m)
+      );
+      
+      cancelEditing();
+      toast.success('Message updated successfully');
     } catch (error) {
       console.error('Message update failed:', error);
-
-      try {
-        await API.put(`/Chat/update/${numericId}`, { newContent: updatedContent });
-
-        toast.success('Message updated successfully', {
-          duration: 2000,
-          position: 'top-center',
-          style: {
-            background: '#10B981',
-            color: '#fff',
-            padding: '12px',
-            borderRadius: '8px',
-          },
-        });
-      } catch (apiError) {
-        console.error('Error updating message via REST API:', apiError);
-        revertChanges();
-        toast.error('Failed to update message', {
-          duration: 2000,
-          position: 'top-center',
-          style: {
-            background: '#EF4444',
-            color: '#fff',
-            padding: '12px',
-            borderRadius: '8px',
-          },
-        });
-      }
+      toast.error('Failed to update message');
+      
+      // Revert to original message
+      setLocalMessages(messages =>
+        messages.map(m => m.id === messageId ? originalMessage : m)
+      );
     }
   };
 
   const handleDeleteMessage = async (messageId) => {
+    const originalMessages = [...localMessages];
+    
+    // Optimistically remove the message
+    setLocalMessages(messages => messages.filter(m => m.id !== messageId));
+
     try {
-      const updatedMessages = localMessages.filter(msg => 
-        (msg.id || msg.Id) !== messageId
-      );
-      setLocalMessages(updatedMessages);
-
-      const numericId = parseInt(messageId, 10);
-      if (isNaN(numericId)) {
-        console.error('Invalid message ID:', messageId);
-        toast.error('Invalid message ID');
-        return;
+      await messageService.deleteMessage(messageId);
+      if (onMessageDeleted) {
+        onMessageDeleted(messageId);
       }
-
-      try {
-        await signalRService.deleteMessage(numericId);
-        
-        toast.success('Message deleted successfully', {
-          duration: 2000,
-          position: 'top-center',
-          style: {
-            background: '#10B981',
-            color: '#fff',
-            padding: '12px',
-            borderRadius: '8px',
-          },
-        });
-
-        if (onMessageDeleted) {
-          onMessageDeleted(messageId);
-        }
-      } catch (error) {
-        console.error('SignalR delete failed, trying REST API:', error);
-
-        await API.delete(`/Chat/delete/${numericId}`);
-        
-        toast.success('Message deleted successfully', {
-          duration: 2000,
-          position: 'top-center',
-          style: {
-            background: '#10B981',
-            color: '#fff',
-            padding: '12px',
-            borderRadius: '8px',
-          },
-        });
-
-        if (onMessageDeleted) {
-          onMessageDeleted(messageId);
-        }
-      }
+      toast.success('Message deleted successfully');
     } catch (error) {
-      console.error('Failed to delete message:', error);
+      console.error('Message deletion failed:', error);
+      toast.error('Failed to delete message');
       
-      setLocalMessages(messages);
-      
-      toast.error('Failed to delete message. Please try again.', {
-        duration: 3000,
-        position: 'top-center',
-        style: {
-          background: '#EF4444',
-          color: '#fff',
-          padding: '12px',
-          borderRadius: '8px',
-        },
-      });
+      // Revert to original messages
+      setLocalMessages(originalMessages);
     }
   };
 

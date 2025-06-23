@@ -85,6 +85,14 @@ class SignalRService {
       this.notifyMessageCallbacks(message);
     });
 
+    this.connection.on('MessageDeleted', messageId => {
+      this.notifyMessageCallbacks({ type: 'delete', messageId });
+    });
+
+    this.connection.on('MessageUpdated', message => {
+      this.notifyMessageCallbacks({ type: 'update', message });
+    });
+
     this.connection.on('ConversationUpdate', conversation => {
       this.notifyConversationCallbacks(conversation);
     });
