@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 /**
@@ -9,7 +9,15 @@ import PropTypes from 'prop-types';
 const MessageBubble = ({ 
   message, 
   isCurrentUser,
-  formatTime 
+  formatTime,
+  onEdit,
+  onDelete,
+  isEditing,
+  editMessageContent,
+  setEditMessageContent,
+  handleEditMessage,
+  editInputRef,
+  onCancelEdit
 }) => {
   const formattedTime = useMemo(() => {
     const timestamp = message.timestamp || message.created || message.Created || message.updatedAt;
@@ -23,6 +31,15 @@ const MessageBubble = ({
   const isEdited = message.updated || message.Updated || message.updatedAt;
   const senderName = message.senderName || message.SenderName || 
     (isCurrentUser ? "You" : "Unknown User");
+
+  const handleKeyDown = useCallback((e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleEditMessage(message.id || message.Id);
+    } else if (e.key === 'Escape') {
+      onCancelEdit();
+    }
+  }, [handleEditMessage, message, onCancelEdit]);
   
   return (
     <div 
@@ -49,7 +66,7 @@ const MessageBubble = ({
       )}
       
       <div 
-        className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg transition-all duration-200 ease-in-out ${
+        className={`relative group max-w-xs lg:max-w-md px-4 py-2 rounded-lg transition-all duration-200 ease-in-out ${
           isCurrentUser 
             ? 'bg-purple-600 text-white rounded-br-none' 
             : 'bg-white text-gray-800 rounded-bl-none shadow'
@@ -63,19 +80,69 @@ const MessageBubble = ({
           WebkitBackfaceVisibility: 'hidden'
         }}
       >
-        <p className="whitespace-pre-wrap break-words">{content}</p>
-        <div className="flex justify-between items-center mt-1">
-          <div className="flex items-center gap-1">
-            <p className={`text-xs ${isCurrentUser ? 'text-purple-200' : 'text-gray-500'}`}>
-              {formattedTime}
-            </p>
-            {isEdited && (
-              <span className={`text-xs ${isCurrentUser ? 'text-purple-200' : 'text-gray-500'}`}>
-                (edited)
-              </span>
-            )}
+        {isEditing ? (
+          <div className="flex flex-col space-y-2">
+            <input
+              ref={editInputRef}
+              type="text"
+              value={editMessageContent}
+              onChange={(e) => setEditMessageContent(e.target.value)}
+              onKeyDown={handleKeyDown}
+              className="w-full px-2 py-1 text-sm text-gray-800 bg-white rounded border border-gray-300 focus:outline-none focus:border-purple-500"
+            />
+            <div className="flex justify-end space-x-2">
+              <button
+                onClick={() => handleEditMessage(message.id || message.Id)}
+                className="text-xs text-green-500 hover:text-green-600"
+              >
+                Save
+              </button>
+              <button
+                onClick={onCancelEdit}
+                className="text-xs text-gray-500 hover:text-gray-600"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
-        </div>
+        ) : (
+          <>
+            <p className="whitespace-pre-wrap break-words">{content}</p>
+            <div className="flex justify-between items-center mt-1">
+              <div className="flex items-center gap-1">
+                <p className={`text-xs ${isCurrentUser ? 'text-purple-200' : 'text-gray-500'}`}>
+                  {formattedTime}
+                </p>
+                {isEdited && (
+                  <span className={`text-xs ${isCurrentUser ? 'text-purple-200' : 'text-gray-500'}`}>
+                    (edited)
+                  </span>
+                )}
+              </div>
+            </div>
+          </>
+        )}
+
+        {isCurrentUser && !isEditing && (
+          <div className="absolute bottom-full right-0 mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex space-x-2">
+            <button
+              onClick={() => onEdit(message.id || message.Id, content)}
+              className="text-xs bg-white text-gray-600 hover:text-blue-500 px-2 py-1 rounded shadow-sm transition-colors duration-200"
+            >
+              Edit
+            </button>
+            <button
+              onClick={() => {
+                if (window.confirm('Are you sure you want to delete this message?')) {
+                  onDelete(message.id || message.Id);
+                }
+              }}
+              className="text-xs bg-white text-gray-600 hover:text-red-500 px-2 py-1 rounded shadow-sm transition-colors duration-200"
+            >
+              Delete
+            </button>
+          </div>
+        )}
       </div>
       
       {isCurrentUser && (
@@ -92,6 +159,8 @@ const MessageBubble = ({
 
 MessageBubble.propTypes = {
   message: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    Id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     content: PropTypes.string,
     Content: PropTypes.string,
     created: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -104,11 +173,20 @@ MessageBubble.propTypes = {
     SenderName: PropTypes.string
   }).isRequired,
   isCurrentUser: PropTypes.bool.isRequired,
-  formatTime: PropTypes.func.isRequired
+  formatTime: PropTypes.func.isRequired,
+  onEdit: PropTypes.func,
+  onDelete: PropTypes.func,
+  isEditing: PropTypes.bool,
+  editMessageContent: PropTypes.string,
+  setEditMessageContent: PropTypes.func,
+  handleEditMessage: PropTypes.func,
+  editInputRef: PropTypes.object,
+  onCancelEdit: PropTypes.func
 };
 
 export default React.memo(MessageBubble, (prevProps, nextProps) => {
   if (prevProps.isCurrentUser !== nextProps.isCurrentUser) return false;
+  if (prevProps.isEditing !== nextProps.isEditing) return false;
   
   const prevContent = prevProps.message.content || prevProps.message.Content;
   const nextContent = nextProps.message.content || nextProps.message.Content;

@@ -58,7 +58,15 @@ MessageContent.displayName = 'MessageContent';
 const MessageBubble = memo(({
   message,
   isCurrentUser,
-  formatTime
+  formatTime,
+  onEdit,
+  onDelete,
+  isEditing,
+  editMessageContent,
+  setEditMessageContent,
+  handleEditMessage,
+  editInputRef,
+  onCancelEdit
 }) => {
   const { id, content, timestamp, updated, updatedAt, senderName } = message;
 
@@ -84,11 +92,19 @@ const MessageBubble = memo(({
           <div className="absolute bottom-full right-0 mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex space-x-2">
             <button
               className="text-xs bg-white text-gray-600 hover:text-blue-500 px-2 py-1 rounded shadow-sm transition-colors duration-200"
+              onClick={(e) => {
+                e.preventDefault();
+                onEdit(id, content);
+              }}
             >
               Edit
             </button>
             <button
               className="text-xs bg-white text-gray-600 hover:text-red-500 px-2 py-1 rounded shadow-sm transition-colors duration-200"
+              onClick={(e) => {
+                e.preventDefault();
+                onDelete(id);
+              }}
             >
               Delete
             </button>
@@ -425,20 +441,27 @@ const ChatWindow = ({
     const originalMessages = [...localMessages];
     
     // Optimistically remove the message
-    setLocalMessages(messages => messages.filter(m => m.id !== messageId));
+    setLocalMessages(messages => messages.filter(m => 
+      (m.id !== messageId && m.Id !== messageId)
+    ));
 
     try {
+      // Delete via REST API
       await messageService.deleteMessage(messageId);
-      if (onMessageDeleted) {
-        onMessageDeleted(messageId);
+      
+      // Delete via SignalR for real-time update
+      try {
+        await signalRService.deleteMessage(messageId);
+      } catch (signalRError) {
+        console.warn('SignalR delete failed, but REST delete succeeded:', signalRError);
       }
+
       toast.success('Message deleted successfully');
     } catch (error) {
-      console.error('Message deletion failed:', error);
-      toast.error('Failed to delete message');
-      
-      // Revert to original messages
+      console.error('Failed to delete message:', error);
+      // Revert to original messages on error
       setLocalMessages(originalMessages);
+      toast.error('Failed to delete message. Please try again.');
     }
   };
 
@@ -515,12 +538,22 @@ const ChatWindow = ({
               receiverId: message.receiverId
             };
 
+            const isMessageBeingEdited = editingMessageId === (message.id || message.Id);
+
             return (
               <MessageBubble
                 key={normalizedMessage.id || `temp-${normalizedMessage.timestamp}`}
                 message={normalizedMessage}
                 isCurrentUser={normalizedMessage.senderId === currentUser?.id}
                 formatTime={formatTime}
+                onEdit={startEditing}
+                onDelete={handleDeleteMessage}
+                isEditing={isMessageBeingEdited}
+                editMessageContent={editMessageContent}
+                setEditMessageContent={setEditMessageContent}
+                handleEditMessage={handleEditMessage}
+                editInputRef={editInputRef}
+                onCancelEdit={cancelEditing}
               />
             );
           })

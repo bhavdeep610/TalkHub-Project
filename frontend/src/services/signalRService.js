@@ -277,15 +277,15 @@ class SignalRService {
   }
 
   async deleteMessage(messageId) {
-    if (!this.isInitialized || this.connection?.state !== signalR.HubConnectionState.Connected) {
-      throw new Error('SignalR connection is not established');
+    if (!this.isConnected()) {
+      throw new Error('Not connected to SignalR hub');
     }
 
     try {
       await this.connection.invoke('DeleteMessage', messageId);
-      return true;
+      return { success: true };
     } catch (error) {
-      console.error('Error deleting message:', error);
+      console.error('Error deleting message via SignalR:', error);
       throw error;
     }
   }
