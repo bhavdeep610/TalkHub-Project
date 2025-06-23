@@ -42,9 +42,9 @@ const MessageBubble = ({
   }, [handleEditMessage, message, onCancelEdit]);
   
   return (
-    <div className={`my-3 flex items-start ${isCurrentUser ? 'justify-end' : 'justify-start'}`}>
+    <div className={`my-3 flex items-end ${isCurrentUser ? 'justify-end' : 'justify-start'}`}>
       {!isCurrentUser && (
-        <div className="flex flex-col items-center mr-2">
+        <div className="flex flex-col items-center mr-2 mb-1">
           <div className="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center text-white font-bold text-sm">
             {senderName.substring(0, 1).toUpperCase()}
           </div>
@@ -57,7 +57,7 @@ const MessageBubble = ({
           <div className="flex justify-end mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
             <button
               onClick={() => onEdit(message.id || message.Id, content)}
-              className="text-xs bg-white border border-gray-200 text-gray-600 hover:text-blue-500 hover:border-blue-500 px-3 py-0.5 rounded-full shadow-sm transition-all duration-200 mr-2"
+              className="text-xs bg-white border border-gray-300 text-gray-700 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-400 px-3 py-0.5 rounded-full shadow-sm transition-all duration-200 mr-2 font-medium"
               title="Edit message"
             >
               Edit
@@ -68,7 +68,7 @@ const MessageBubble = ({
                   onDelete(message.id || message.Id);
                 }
               }}
-              className="text-xs bg-white border border-gray-200 text-gray-600 hover:text-red-500 hover:border-red-500 px-3 py-0.5 rounded-full shadow-sm transition-all duration-200"
+              className="text-xs bg-white border border-gray-300 text-gray-700 hover:bg-red-50 hover:text-red-600 hover:border-red-400 px-3 py-0.5 rounded-full shadow-sm transition-all duration-200 font-medium"
               title="Delete message"
             >
               Delete
@@ -129,7 +129,7 @@ const MessageBubble = ({
       </div>
       
       {isCurrentUser && (
-        <div className="flex flex-col items-center ml-2">
+        <div className="flex flex-col items-center ml-2 mb-1">
           <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold text-sm">
             {senderName.substring(0, 1).toUpperCase()}
           </div>
