@@ -19,22 +19,10 @@ export default defineConfig({
     minify: 'esbuild',
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
-          if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
-              return 'vendor-react'
-            }
-            if (id.includes('framer-motion') || id.includes('react-hot-toast')) {
-              return 'vendor-ui'
-            }
-            return 'vendor'
-          }
-          if (id.includes('services')) {
-            return 'services'
-          }
-          if (id.includes('components')) {
-            return 'components'
-          }
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-ui': ['framer-motion', 'react-hot-toast'],
+          'vendor': ['axios', '@microsoft/signalr']
         }
       }
     }
@@ -46,9 +34,9 @@ export default defineConfig({
       'react-router-dom', 
       'framer-motion', 
       'react-hot-toast',
-      '@microsoft/signalr'
-    ],
-    exclude: []
+      '@microsoft/signalr',
+      'axios'
+    ]
   },
   server: {
     port: 5175,

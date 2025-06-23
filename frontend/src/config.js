@@ -1,6 +1,6 @@
 // Get the base URL for the API
 const getBaseUrl = () => {
-  if (process.env.NODE_ENV === 'development') {
+  if (import.meta.env.DEV) {
     return 'http://localhost:5211';
   }
   return 'https://talkhub-backend-02fc.onrender.com';
@@ -15,7 +15,7 @@ export const config = {
   API_ENDPOINT: normalizeUrl(`${baseUrl}/api`),
   WEBSOCKET_URL: normalizeUrl(baseUrl.replace(/^http/, 'ws')) + '/chathub',
   WEBSOCKET_ENDPOINT: normalizeUrl(baseUrl) + '/chathub',
-  isDevelopment: process.env.NODE_ENV === 'development',
+  isDevelopment: import.meta.env.DEV,
   CORS_SETTINGS: {
     credentials: 'include',
     headers: {
