@@ -12,13 +12,15 @@ const MessageBubble = ({
   formatTime 
 }) => {
   const formattedTime = useMemo(() => {
-    return formatTime(message.created || message.Created);
-  }, [message.created, message.Created, formatTime]);
+    const timestamp = message.timestamp || message.created || message.Created || message.updatedAt;
+    return formatTime(timestamp);
+  }, [message, formatTime]);
 
   const content = useMemo(() => {
     return message.content || message.Content;
-  }, [message.content, message.Content]);
+  }, [message]);
 
+  const isEdited = message.updated || message.Updated || message.updatedAt;
   const senderName = message.senderName || message.SenderName || 
     (isCurrentUser ? "You" : "Unknown User");
   
@@ -61,11 +63,18 @@ const MessageBubble = ({
           WebkitBackfaceVisibility: 'hidden'
         }}
       >
-        <p>{content}</p>
+        <p className="whitespace-pre-wrap break-words">{content}</p>
         <div className="flex justify-between items-center mt-1">
-          <p className={`text-xs ${isCurrentUser ? 'text-purple-200' : 'text-gray-500'}`}>
-            {formattedTime}
-          </p>
+          <div className="flex items-center gap-1">
+            <p className={`text-xs ${isCurrentUser ? 'text-purple-200' : 'text-gray-500'}`}>
+              {formattedTime}
+            </p>
+            {isEdited && (
+              <span className={`text-xs ${isCurrentUser ? 'text-purple-200' : 'text-gray-500'}`}>
+                (edited)
+              </span>
+            )}
+          </div>
         </div>
       </div>
       
@@ -86,7 +95,13 @@ MessageBubble.propTypes = {
     content: PropTypes.string,
     Content: PropTypes.string,
     created: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    Created: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    Created: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    updated: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    Updated: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    updatedAt: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    timestamp: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    senderName: PropTypes.string,
+    SenderName: PropTypes.string
   }).isRequired,
   isCurrentUser: PropTypes.bool.isRequired,
   formatTime: PropTypes.func.isRequired
@@ -99,8 +114,12 @@ export default React.memo(MessageBubble, (prevProps, nextProps) => {
   const nextContent = nextProps.message.content || nextProps.message.Content;
   if (prevContent !== nextContent) return false;
   
-  const prevCreated = prevProps.message.created || prevProps.message.Created;
-  const nextCreated = nextProps.message.created || nextProps.message.Created;
+  const prevUpdated = prevProps.message.updated || prevProps.message.Updated || prevProps.message.updatedAt;
+  const nextUpdated = nextProps.message.updated || nextProps.message.Updated || nextProps.message.updatedAt;
+  if (prevUpdated !== nextUpdated) return false;
+  
+  const prevCreated = prevProps.message.created || prevProps.message.Created || prevProps.message.timestamp;
+  const nextCreated = nextProps.message.created || nextProps.message.Created || nextProps.message.timestamp;
   if (prevCreated !== nextCreated) return false;
   
   return true;

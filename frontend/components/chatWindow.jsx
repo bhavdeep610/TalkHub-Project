@@ -266,6 +266,28 @@ const ChatWindow = ({
     };
   }, []);
 
+  useEffect(() => {
+    const handleMessageUpdate = (data) => {
+      if (data.type === 'update' && data.message) {
+        setLocalMessages(prevMessages => 
+          prevMessages.map(msg => 
+            (msg.id === data.message.id || msg.Id === data.message.id) 
+              ? {
+                  ...msg,
+                  content: data.message.content,
+                  updated: data.message.updated || new Date().toISOString(),
+                  updatedAt: data.message.updatedAt || new Date().toISOString()
+                }
+              : msg
+          )
+        );
+      }
+    };
+
+    const unsubscribe = signalRService.onReceiveMessage(handleMessageUpdate);
+    return () => unsubscribe();
+  }, []);
+
   useMemo(() => {
     const groups = new Map();
     
@@ -412,18 +434,20 @@ const ChatWindow = ({
       return;
     }
 
-    const originalMessage = localMessages.find(m => m.id === messageId);
+    const originalMessage = localMessages.find(m => m.id === messageId || m.Id === messageId);
     if (!originalMessage) return;
 
     const optimisticMessage = {
       ...originalMessage,
       content: editMessageContent,
+      updated: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
       isOptimistic: true
     };
 
     // Optimistically update the UI
     setLocalMessages(messages => 
-      messages.map(m => m.id === messageId ? optimisticMessage : m)
+      messages.map(m => (m.id === messageId || m.Id === messageId) ? optimisticMessage : m)
     );
 
     try {
@@ -431,7 +455,14 @@ const ChatWindow = ({
       
       // Update with the server response
       setLocalMessages(messages =>
-        messages.map(m => m.id === messageId ? updatedMessage : m)
+        messages.map(m => (m.id === messageId || m.Id === messageId) 
+          ? {
+              ...updatedMessage,
+              updated: updatedMessage.updated || new Date().toISOString(),
+              updatedAt: updatedMessage.updatedAt || new Date().toISOString()
+            }
+          : m
+        )
       );
       
       cancelEditing();
@@ -442,7 +473,7 @@ const ChatWindow = ({
       
       // Revert to original message
       setLocalMessages(messages =>
-        messages.map(m => m.id === messageId ? originalMessage : m)
+        messages.map(m => (m.id === messageId || m.Id === messageId) ? originalMessage : m)
       );
     }
   };
