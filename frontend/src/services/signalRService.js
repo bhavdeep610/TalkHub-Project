@@ -1,26 +1,22 @@
 import * as signalR from '@microsoft/signalr';
 import { config } from '../config';
 
-let instance = null;
-
 class SignalRService {
   constructor() {
-    if (instance) {
-      return instance;
+    if (!SignalRService.instance) {
+      this.connection = null;
+      this.messageCallbacks = new Set();
+      this.conversationCallbacks = new Set();
+      this.typingCallbacks = new Set();
+      this.connectionCallbacks = new Set();
+      this.reconnectAttempts = 0;
+      this.maxReconnectAttempts = 5;
+      this.reconnectDelay = 2000;
+      this.isInitialized = false;
+      this.connectionPromise = null;
+      SignalRService.instance = this;
     }
-    
-    this.connection = null;
-    this.messageCallbacks = new Set();
-    this.conversationCallbacks = new Set();
-    this.typingCallbacks = new Set();
-    this.connectionCallbacks = new Set();
-    this.reconnectAttempts = 0;
-    this.maxReconnectAttempts = 5;
-    this.reconnectDelay = 2000;
-    this.isInitialized = false;
-    this.connectionPromise = null;
-
-    instance = this;
+    return SignalRService.instance;
   }
 
   async initialize() {
@@ -249,6 +245,7 @@ class SignalRService {
   }
 }
 
-const signalRService = new SignalRService();
-Object.freeze(signalRService);
-export default signalRService; 
+const instance = new SignalRService();
+Object.freeze(instance);
+
+export default instance; 

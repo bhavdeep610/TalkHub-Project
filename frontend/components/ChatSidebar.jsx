@@ -33,6 +33,17 @@ const ChatSidebar = ({
   const sidebarRef = useRef(null);
   const mountedRef = useRef(true);
 
+  const handleSelectConversation = useCallback((conversation) => {
+    if (conversation && conversation.user) {
+      onSelectUser(conversation.user);
+    }
+  }, [onSelectUser]);
+
+  const handleStartChat = useCallback((userId) => {
+    onStartNewChat(userId);
+    setShowUserList(false);
+  }, [onStartNewChat]);
+
   useEffect(() => {
     conversations.forEach(conversation => {
       if (conversation.lastMessage) {
@@ -242,18 +253,6 @@ const ChatSidebar = ({
       );
     });
   }, [newChatUserOptions, userProfilePictures, loadingPictures]);
-
-  const handleSelectConversation = useCallback((conversation) => {
-    if (conversation && conversation.user) {
-      onSelectUser(conversation.user);
-    }
-  }, [onSelectUser]);
-
-  const handleStartChat = useCallback((userId) => {
-    if (onStartNewChat(userId)) {
-      setShowUserList(false);
-    }
-  }, [onStartNewChat]);
 
    useCallback(() => {
     onRefreshUsers();
