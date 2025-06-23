@@ -1,5 +1,6 @@
 import { useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import ProfilePicture from './ProfilePicture';
 
 /**
  * Individual message bubble component
@@ -31,6 +32,7 @@ const MessageBubble = ({
   const isEdited = message.updated || message.Updated || message.updatedAt;
   const senderName = message.senderName || message.SenderName || 
     (isCurrentUser ? "You" : "Unknown User");
+  const userId = message.senderId || message.SenderId;
 
   const handleKeyDown = useCallback((e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -45,8 +47,8 @@ const MessageBubble = ({
     <div className={`my-3 flex items-end ${isCurrentUser ? 'justify-end' : 'justify-start'}`}>
       {!isCurrentUser && (
         <div className="flex flex-col items-center mr-2 mb-1">
-          <div className="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center text-white font-bold text-sm">
-            {senderName.substring(0, 1).toUpperCase()}
+          <div className="w-8 h-8">
+            <ProfilePicture userId={userId} size="small" />
           </div>
           <span className="text-[10px] text-gray-500 mt-1">{senderName}</span>
         </div>
@@ -130,8 +132,8 @@ const MessageBubble = ({
       
       {isCurrentUser && (
         <div className="flex flex-col items-center ml-2 mb-1">
-          <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold text-sm">
-            {senderName.substring(0, 1).toUpperCase()}
+          <div className="w-8 h-8">
+            <ProfilePicture userId={userId} size="small" />
           </div>
           <span className="text-[10px] text-gray-500 mt-1">You</span>
         </div>
@@ -153,7 +155,9 @@ MessageBubble.propTypes = {
     updatedAt: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     timestamp: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     senderName: PropTypes.string,
-    SenderName: PropTypes.string
+    SenderName: PropTypes.string,
+    senderId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    SenderId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   }).isRequired,
   isCurrentUser: PropTypes.bool.isRequired,
   formatTime: PropTypes.func.isRequired,
