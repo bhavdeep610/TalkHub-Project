@@ -82,25 +82,26 @@ const MessageBubble = ({
       >
         {isEditing ? (
           <div className="flex flex-col space-y-2">
-            <input
+            <textarea
               ref={editInputRef}
-              type="text"
               value={editMessageContent}
               onChange={(e) => setEditMessageContent(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="w-full px-2 py-1 text-sm text-gray-800 bg-white rounded border border-gray-300 focus:outline-none focus:border-purple-500"
+              className="w-full px-2 py-1 text-sm text-gray-800 bg-white rounded border border-gray-300 focus:outline-none focus:border-purple-500 resize-none"
               autoFocus
+              rows={Math.min(4, (editMessageContent.match(/\n/g) || []).length + 1)}
+              style={{ minHeight: '2.5rem' }}
             />
             <div className="flex justify-end space-x-2">
               <button
                 onClick={() => handleEditMessage(message.id || message.Id)}
-                className="text-xs bg-green-500 text-white hover:bg-green-600 px-2 py-1 rounded"
+                className="text-xs bg-green-500 text-white hover:bg-green-600 px-2 py-1 rounded transition-colors duration-200"
               >
                 Save
               </button>
               <button
                 onClick={onCancelEdit}
-                className="text-xs bg-gray-500 text-white hover:bg-gray-600 px-2 py-1 rounded"
+                className="text-xs bg-gray-500 text-white hover:bg-gray-600 px-2 py-1 rounded transition-colors duration-200"
               >
                 Cancel
               </button>
@@ -125,13 +126,13 @@ const MessageBubble = ({
         )}
 
         {isCurrentUser && !isEditing && (
-          <div className="absolute top-0 right-0 mt-1 mr-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex space-x-1">
+          <div className="absolute top-0 right-0 mt-1 mr-1 opacity-100 flex space-x-1">
             <button
               onClick={() => onEdit(message.id || message.Id, content)}
               className="text-xs bg-white text-gray-600 hover:text-blue-500 hover:bg-blue-50 px-2 py-1 rounded shadow-sm transition-all duration-200"
               title="Edit message"
             >
-              <span>✎</span>
+              <span role="img" aria-label="Edit">✎</span>
             </button>
             <button
               onClick={() => {
@@ -142,7 +143,7 @@ const MessageBubble = ({
               className="text-xs bg-white text-gray-600 hover:text-red-500 hover:bg-red-50 px-2 py-1 rounded shadow-sm transition-all duration-200"
               title="Delete message"
             >
-              <span>×</span>
+              <span role="img" aria-label="Delete">×</span>
             </button>
           </div>
         )}
@@ -190,6 +191,7 @@ MessageBubble.propTypes = {
 export default React.memo(MessageBubble, (prevProps, nextProps) => {
   if (prevProps.isCurrentUser !== nextProps.isCurrentUser) return false;
   if (prevProps.isEditing !== nextProps.isEditing) return false;
+  if (prevProps.editMessageContent !== nextProps.editMessageContent) return false;
   
   const prevContent = prevProps.message.content || prevProps.message.Content;
   const nextContent = nextProps.message.content || nextProps.message.Content;
@@ -198,10 +200,6 @@ export default React.memo(MessageBubble, (prevProps, nextProps) => {
   const prevUpdated = prevProps.message.updated || prevProps.message.Updated || prevProps.message.updatedAt;
   const nextUpdated = nextProps.message.updated || nextProps.message.Updated || nextProps.message.updatedAt;
   if (prevUpdated !== nextUpdated) return false;
-  
-  const prevCreated = prevProps.message.created || prevProps.message.Created || prevProps.message.timestamp;
-  const nextCreated = nextProps.message.created || nextProps.message.Created || nextProps.message.timestamp;
-  if (prevCreated !== nextCreated) return false;
   
   return true;
 }); 

@@ -6,6 +6,7 @@ import { useSignalR } from '../hooks/useSignalR';
 import signalRService from '../src/services/signalRService';
 import { profilePictureService } from '../src/services/profilePictureService';
 import { messageService } from '../src/services/messageService';
+import MessageBubble from './MessageBubble';
 
 const createTimeFormatter = () => {
   const cache = new Map();
@@ -54,68 +55,6 @@ const MessageContent = memo(({ content }) => (
 ));
 
 MessageContent.displayName = 'MessageContent';
-
-const MessageBubble = memo(({
-  message,
-  isCurrentUser,
-  formatTime,
-  onEdit,
-  onDelete,
-  isEditing,
-  editMessageContent,
-  setEditMessageContent,
-  handleEditMessage,
-  editInputRef,
-  onCancelEdit
-}) => {
-  const { id, content, timestamp, updated, updatedAt, senderName } = message;
-
-  return (
-    <div className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'} items-end space-x-2`}>
-      {!isCurrentUser && (
-        <div className="h-6 w-6 rounded-full bg-purple-600 flex-shrink-0 flex items-center justify-center text-white text-xs">
-          {senderName[0].toUpperCase()}
-        </div>
-      )}
-      
-      <div className="group relative">
-        <div className={`max-w-[180%] rounded-xl px-3 py-1.5 ${
-          isCurrentUser
-            ? 'bg-purple-600 text-white rounded-br-none'
-            : 'bg-white text-gray-800 rounded-bl-none shadow-sm'
-        }`}>
-          <MessageContent content={content} />
-          <MessageTimestamp timestamp={timestamp} isCurrentUser={isCurrentUser} />
-        </div>
-
-        {isCurrentUser && (
-          <div className="absolute bottom-full right-0 mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex space-x-2">
-            <button
-              className="text-xs bg-white text-gray-600 hover:text-blue-500 px-2 py-1 rounded shadow-sm transition-colors duration-200"
-              onClick={(e) => {
-                e.preventDefault();
-                onEdit(id, content);
-              }}
-            >
-              Edit
-            </button>
-            <button
-              className="text-xs bg-white text-gray-600 hover:text-red-500 px-2 py-1 rounded shadow-sm transition-colors duration-200"
-              onClick={(e) => {
-                e.preventDefault();
-                onDelete(id);
-              }}
-            >
-              Delete
-            </button>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-});
-
-MessageBubble.displayName = 'MessageBubble';
 
 const ChatWindow = ({
   selectedUser,
@@ -553,21 +492,58 @@ const ChatWindow = ({
   };
 
   const startEditing = (messageId, content) => {
-    console.log('Starting edit for message:', { messageId, content });
-    setEditingMessageId(messageId);
-    setEditMessageContent(content);
-    setTimeout(() => {
-      if (editInputRef.current) {
-        editInputRef.current.focus();
-        editInputRef.current.select();
+    try {
+      console.log('Starting edit for message:', { 
+        messageId, 
+        content,
+        currentEditingId: editingMessageId,
+        currentEditContent: editMessageContent 
+      });
+
+      // Validate inputs
+      if (!messageId) {
+        console.error('Invalid messageId in startEditing');
+        return;
       }
-    }, 0);
+
+      if (content === undefined || content === null) {
+        console.warn('Empty content in startEditing, using empty string');
+        content = '';
+      }
+
+      // Update state
+      setEditingMessageId(messageId);
+      setEditMessageContent(content);
+
+      // Focus input after a short delay to ensure the component has rendered
+      setTimeout(() => {
+        if (editInputRef.current) {
+          console.log('Focusing edit input');
+          editInputRef.current.focus();
+          editInputRef.current.select();
+        } else {
+          console.warn('Edit input ref not available');
+        }
+      }, 50);
+    } catch (error) {
+      console.error('Error in startEditing:', error);
+      toast.error('Failed to start editing. Please try again.');
+    }
   };
 
   const cancelEditing = () => {
-    console.log('Canceling edit');
-    setEditingMessageId(null);
-    setEditMessageContent('');
+    try {
+      console.log('Canceling edit:', {
+        currentEditingId: editingMessageId,
+        currentEditContent: editMessageContent
+      });
+      
+      setEditingMessageId(null);
+      setEditMessageContent('');
+    } catch (error) {
+      console.error('Error in cancelEditing:', error);
+      toast.error('Failed to cancel editing. Please refresh the page.');
+    }
   };
 
   if (!selectedUser) {
