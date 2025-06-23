@@ -373,6 +373,8 @@ const ChatWindow = ({
       try {
         await signalRService.updateMessage(messageId, editMessageContent.trim());
         console.log('SignalR update successful');
+        cancelEditing();
+        toast.success('Message updated successfully');
       } catch (signalRError) {
         console.warn('SignalR update failed, falling back to REST:', signalRError);
         
@@ -393,10 +395,10 @@ const ChatWindow = ({
               : m
           ))
         );
+        
+        cancelEditing();
+        toast.success('Message updated successfully');
       }
-      
-      cancelEditing();
-      toast.success('Message updated successfully');
     } catch (error) {
       console.error('Failed to update message:', {
         messageId,
