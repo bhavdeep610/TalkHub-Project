@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { uploadProfilePicture, getProfilePicture, deleteProfilePicture } from '../src/services/profileService';
+import { profilePictureService } from '../src/services/profilePictureService';
 import defaultAvatar from '../src/assets/default-avatar.svg';
 import './ProfilePicture.css';
 
@@ -14,9 +14,11 @@ const ProfilePicture = ({ userId, editable = false, size = 'medium' }) => {
 
     const loadProfilePicture = async () => {
         try {
-            const data = await getProfilePicture(userId);
-            if (data && data.fileUrl) {
-                setImageUrl(`http://localhost:5000${data.fileUrl}`);
+            const imageUrl = await profilePictureService.getProfilePicture(userId);
+            if (imageUrl) {
+                setImageUrl(imageUrl);
+            } else {
+                setImageUrl(defaultAvatar);
             }
         } catch (err) {
             console.error('Error loading profile picture:', err);
@@ -43,7 +45,9 @@ const ProfilePicture = ({ userId, editable = false, size = 'medium' }) => {
         setError(null);
 
         try {
-            await uploadProfilePicture(file);
+            const formData = new FormData();
+            formData.append('file', file);
+            await profilePictureService.uploadProfilePicture(formData);
             await loadProfilePicture();
         } catch (err) {
             setError(err.response?.data || 'Error uploading profile picture');
@@ -62,7 +66,7 @@ const ProfilePicture = ({ userId, editable = false, size = 'medium' }) => {
         setError(null);
 
         try {
-            await deleteProfilePicture();
+            await profilePictureService.deleteProfilePicture();
             setImageUrl(defaultAvatar);
         } catch (err) {
             setError('Error deleting profile picture');
