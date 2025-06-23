@@ -56,44 +56,18 @@ const MessageContent = memo(({ content }) => (
 MessageContent.displayName = 'MessageContent';
 
 const MessageBubble = memo(({
-  messageId,
-  content,
-  timestamp,
+  message,
   isCurrentUser,
-  isEditing,
-  editMessageContent,
-  setEditMessageContent,
-  handleEditMessage,
-  startEditing,
-  cancelEditing,
-  handleDeleteMessage,
-  editInputRef,
-  selectedUser,
-  profilePicture
+  formatTime
 }) => {
-  const handleKeyDown = useCallback((e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleEditMessage(messageId);
-    } else if (e.key === 'Escape') {
-      cancelEditing();
-    }
-  }, [handleEditMessage, messageId, cancelEditing]);
+  const { id, content, timestamp, updated, updatedAt, senderName } = message;
 
   return (
     <div className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'} items-end space-x-2`}>
       {!isCurrentUser && (
-        profilePicture ? (
-          <img 
-            src={profilePicture} 
-            alt={`${selectedUser.username}'s profile`}
-            className="h-6 w-6 rounded-full object-cover flex-shrink-0"
-          />
-        ) : (
-          <div className="h-6 w-6 rounded-full bg-purple-600 flex-shrink-0 flex items-center justify-center text-white text-xs">
-            {selectedUser.username[0].toUpperCase()}
-          </div>
-        )
+        <div className="h-6 w-6 rounded-full bg-purple-600 flex-shrink-0 flex items-center justify-center text-white text-xs">
+          {senderName[0].toUpperCase()}
+        </div>
       )}
       
       <div className="group relative">
@@ -102,49 +76,18 @@ const MessageBubble = memo(({
             ? 'bg-purple-600 text-white rounded-br-none'
             : 'bg-white text-gray-800 rounded-bl-none shadow-sm'
         }`}>
-          {isEditing ? (
-            <div className="flex flex-col space-y-2">
-              <input
-                ref={editInputRef}
-                type="text"
-                value={editMessageContent}
-                onChange={(e) => setEditMessageContent(e.target.value)}
-                onKeyDown={handleKeyDown}
-                className="w-full px-2 py-1 text-sm text-gray-800 bg-white rounded border border-gray-300 focus:outline-none focus:border-purple-500"
-              />
-              <div className="flex justify-end space-x-2">
-                <button
-                  onClick={() => handleEditMessage(messageId)}
-                  className="text-xs text-green-500 hover:text-green-600"
-                >
-                  Save
-                </button>
-                <button
-                  onClick={cancelEditing}
-                  className="text-xs text-gray-500 hover:text-gray-600"
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          ) : (
-            <>
-              <MessageContent content={content} />
-              <MessageTimestamp timestamp={timestamp} isCurrentUser={isCurrentUser} />
-            </>
-          )}
+          <MessageContent content={content} />
+          <MessageTimestamp timestamp={timestamp} isCurrentUser={isCurrentUser} />
         </div>
 
-        {isCurrentUser && !isEditing && (
+        {isCurrentUser && (
           <div className="absolute bottom-full right-0 mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex space-x-2">
             <button
-              onClick={() => startEditing(messageId, content)}
               className="text-xs bg-white text-gray-600 hover:text-blue-500 px-2 py-1 rounded shadow-sm transition-colors duration-200"
             >
               Edit
             </button>
             <button
-              onClick={() => handleDeleteMessage(messageId)}
               className="text-xs bg-white text-gray-600 hover:text-red-500 px-2 py-1 rounded shadow-sm transition-colors duration-200"
             >
               Delete
@@ -557,25 +500,30 @@ const ChatWindow = ({
             <p className="text-sm">Send a message to start the conversation!</p>
           </div>
         ) : (
-          localMessages.map((message) => (
-            <MessageBubble
-              key={message.id || message.Id || `temp-${message.timestamp}`}
-              messageId={message.id || message.Id}
-              content={message.content || message.Content}
-              timestamp={message.timestamp || message.created || message.Created}
-              isCurrentUser={message.senderId === currentUser?.id}
-              isEditing={editingMessageId === (message.id || message.Id)}
-              editMessageContent={editMessageContent}
-              setEditMessageContent={setEditMessageContent}
-              handleEditMessage={handleEditMessage}
-              startEditing={startEditing}
-              cancelEditing={cancelEditing}
-              handleDeleteMessage={handleDeleteMessage}
-              editInputRef={editInputRef}
-              selectedUser={selectedUser}
-              profilePicture={message.senderId === currentUser?.id ? currentUserProfilePicture : selectedUserProfilePicture}
-            />
-          ))
+          localMessages.map((message) => {
+            // Normalize message data
+            const normalizedMessage = {
+              ...message,
+              id: message.id || message.Id,
+              content: message.content || message.Content,
+              timestamp: message.timestamp || message.created || message.Created,
+              updated: message.updated || message.Updated,
+              updatedAt: message.updatedAt,
+              senderName: message.senderName || message.SenderName || 
+                (message.senderId === currentUser?.id ? currentUser.username : selectedUser.username),
+              senderId: message.senderId,
+              receiverId: message.receiverId
+            };
+
+            return (
+              <MessageBubble
+                key={normalizedMessage.id || `temp-${normalizedMessage.timestamp}`}
+                message={normalizedMessage}
+                isCurrentUser={normalizedMessage.senderId === currentUser?.id}
+                formatTime={formatTime}
+              />
+            );
+          })
         )}
         <div ref={messagesEndRef} />
       </div>
