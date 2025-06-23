@@ -57,7 +57,7 @@ const MessageBubble = ({
           <div className="flex justify-end mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
             <button
               onClick={() => onEdit(message.id || message.Id, content)}
-              className="text-xs bg-white border border-gray-300 text-gray-700 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-400 px-3 py-0.5 rounded-full shadow-sm transition-all duration-200 mr-2 font-medium"
+              className="text-xs bg-white border-2 border-gray-700 text-gray-900 hover:bg-gray-100 px-3 py-0.5 rounded-full shadow-sm transition-all duration-200 mr-2 font-semibold"
               title="Edit message"
             >
               Edit
@@ -68,7 +68,7 @@ const MessageBubble = ({
                   onDelete(message.id || message.Id);
                 }
               }}
-              className="text-xs bg-white border border-gray-300 text-gray-700 hover:bg-red-50 hover:text-red-600 hover:border-red-400 px-3 py-0.5 rounded-full shadow-sm transition-all duration-200 font-medium"
+              className="text-xs bg-white border-2 border-gray-700 text-gray-900 hover:bg-gray-100 px-3 py-0.5 rounded-full shadow-sm transition-all duration-200 font-semibold"
               title="Delete message"
             >
               Delete
