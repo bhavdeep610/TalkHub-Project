@@ -19,6 +19,7 @@ class SignalRService {
     this.reconnectDelay = 2000;
     this.isInitialized = false;
     this.connectionPromise = null;
+    this.messageQueue = new Map();
 
     SignalRService._instance = this;
   }
@@ -76,13 +77,28 @@ class SignalRService {
       this.notifyConnectionCallbacks({ status: 'reconnecting', error });
     });
 
-    this.connection.onreconnected(connectionId => {
+    this.connection.onreconnected(async connectionId => {
       console.log('SignalR reconnected:', connectionId);
       this.notifyConnectionCallbacks({ status: 'connected', connectionId });
+      
+      // Process queued messages
+      for (const [key, { receiverId, content }] of this.messageQueue.entries()) {
+        try {
+          await this.sendMessage(receiverId, content, false);
+          this.messageQueue.delete(key);
+        } catch (error) {
+          console.error('Failed to send queued message:', error);
+        }
+      }
+    });
+
+    // Message events
+    this.connection.on('MessageSent', message => {
+      this.notifyMessageCallbacks({ type: 'sent', message });
     });
 
     this.connection.on('ReceiveMessage', message => {
-      this.notifyMessageCallbacks(message);
+      this.notifyMessageCallbacks({ type: 'received', message });
     });
 
     this.connection.on('MessageDeleted', messageId => {
@@ -216,16 +232,26 @@ class SignalRService {
     });
   }
 
-  async sendMessage(receiverId, content) {
-    if (!this.isInitialized || this.connection?.state !== signalR.HubConnectionState.Connected) {
-      throw new Error('SignalR connection is not established');
+  async sendMessage(receiverId, content, shouldQueue = true) {
+    if (!this.connection || this.connection.state !== signalR.HubConnectionState.Connected) {
+      if (shouldQueue) {
+        const key = `${Date.now()}-${Math.random()}`;
+        this.messageQueue.set(key, { receiverId, content });
+        return { queued: true, key };
+      }
+      throw new Error('Not connected');
     }
 
     try {
       await this.connection.invoke('SendMessage', receiverId, content);
-      return { queued: true };
+      return { sent: true };
     } catch (error) {
-      console.error('Error sending message through SignalR:', error);
+      console.error('Error sending message:', error);
+      if (shouldQueue) {
+        const key = `${Date.now()}-${Math.random()}`;
+        this.messageQueue.set(key, { receiverId, content });
+        return { queued: true, key };
+      }
       throw error;
     }
   }
