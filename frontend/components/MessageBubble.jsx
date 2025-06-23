@@ -68,7 +68,7 @@ const MessageBubble = ({
       <div 
         className={`relative group max-w-xs lg:max-w-md px-4 py-2 rounded-lg transition-all duration-200 ease-in-out ${
           isCurrentUser 
-            ? 'bg-purple-600 text-white rounded-br-none' 
+            ? 'bg-purple-600 text-white rounded-br-none hover:bg-purple-700' 
             : 'bg-white text-gray-800 rounded-bl-none shadow'
         }`}
         style={{ 
@@ -89,17 +89,18 @@ const MessageBubble = ({
               onChange={(e) => setEditMessageContent(e.target.value)}
               onKeyDown={handleKeyDown}
               className="w-full px-2 py-1 text-sm text-gray-800 bg-white rounded border border-gray-300 focus:outline-none focus:border-purple-500"
+              autoFocus
             />
             <div className="flex justify-end space-x-2">
               <button
                 onClick={() => handleEditMessage(message.id || message.Id)}
-                className="text-xs text-green-500 hover:text-green-600"
+                className="text-xs bg-green-500 text-white hover:bg-green-600 px-2 py-1 rounded"
               >
                 Save
               </button>
               <button
                 onClick={onCancelEdit}
-                className="text-xs text-gray-500 hover:text-gray-600"
+                className="text-xs bg-gray-500 text-white hover:bg-gray-600 px-2 py-1 rounded"
               >
                 Cancel
               </button>
@@ -124,12 +125,13 @@ const MessageBubble = ({
         )}
 
         {isCurrentUser && !isEditing && (
-          <div className="absolute bottom-full right-0 mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex space-x-2">
+          <div className="absolute top-0 right-0 mt-1 mr-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex space-x-1">
             <button
               onClick={() => onEdit(message.id || message.Id, content)}
-              className="text-xs bg-white text-gray-600 hover:text-blue-500 px-2 py-1 rounded shadow-sm transition-colors duration-200"
+              className="text-xs bg-white text-gray-600 hover:text-blue-500 hover:bg-blue-50 px-2 py-1 rounded shadow-sm transition-all duration-200"
+              title="Edit message"
             >
-              Edit
+              <span>✎</span>
             </button>
             <button
               onClick={() => {
@@ -137,9 +139,10 @@ const MessageBubble = ({
                   onDelete(message.id || message.Id);
                 }
               }}
-              className="text-xs bg-white text-gray-600 hover:text-red-500 px-2 py-1 rounded shadow-sm transition-colors duration-200"
+              className="text-xs bg-white text-gray-600 hover:text-red-500 hover:bg-red-50 px-2 py-1 rounded shadow-sm transition-all duration-200"
+              title="Delete message"
             >
-              Delete
+              <span>×</span>
             </button>
           </div>
         )}

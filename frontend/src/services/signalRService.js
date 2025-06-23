@@ -282,11 +282,91 @@ class SignalRService {
     }
 
     try {
-      await this.connection.invoke('DeleteMessage', messageId);
-      return { success: true };
+      // Ensure messageId is a valid integer
+      let messageIdInt;
+      if (typeof messageId === 'string') {
+        messageIdInt = parseInt(messageId.replace(/\D/g, ''), 10);
+      } else if (typeof messageId === 'number') {
+        messageIdInt = messageId;
+      } else {
+        throw new Error('Invalid message ID type');
+      }
+
+      if (isNaN(messageIdInt) || messageIdInt <= 0) {
+        throw new Error('Invalid message ID value');
+      }
+
+      // Log the message ID being sent
+      console.log('Attempting to delete message with ID:', messageIdInt);
+
+      // Invoke the DeleteMessage hub method
+      await this.connection.invoke('DeleteMessage', messageIdInt);
+
+      // Notify message callbacks about the deletion
+      this.notifyMessageCallbacks({
+        type: 'delete',
+        messageId: messageIdInt
+      });
+
+      return { success: true, messageId: messageIdInt };
     } catch (error) {
-      console.error('Error deleting message via SignalR:', error);
-      throw error;
+      // Log the detailed error
+      console.error('Error in SignalR deleteMessage:', {
+        messageId,
+        error: error.message,
+        stack: error.stack
+      });
+
+      // Rethrow with more context
+      throw new Error(`Failed to delete message ${messageId}: ${error.message}`);
+    }
+  }
+
+  async updateMessage(messageId, content) {
+    if (!this.isConnected()) {
+      throw new Error('Not connected to SignalR hub');
+    }
+
+    try {
+      // Ensure messageId is a valid integer
+      let messageIdInt;
+      if (typeof messageId === 'string') {
+        messageIdInt = parseInt(messageId.replace(/\D/g, ''), 10);
+      } else if (typeof messageId === 'number') {
+        messageIdInt = messageId;
+      } else {
+        throw new Error('Invalid message ID type');
+      }
+
+      if (isNaN(messageIdInt) || messageIdInt <= 0) {
+        throw new Error('Invalid message ID value');
+      }
+
+      // Log the update attempt
+      console.log('Attempting to update message:', { id: messageIdInt, content });
+
+      // Invoke the UpdateMessage hub method
+      await this.connection.invoke('UpdateMessage', messageIdInt, content);
+
+      // Notify message callbacks about the update
+      this.notifyMessageCallbacks({
+        type: 'update',
+        messageId: messageIdInt,
+        content
+      });
+
+      return { success: true, messageId: messageIdInt, content };
+    } catch (error) {
+      // Log the detailed error
+      console.error('Error in SignalR updateMessage:', {
+        messageId,
+        content,
+        error: error.message,
+        stack: error.stack
+      });
+
+      // Rethrow with more context
+      throw new Error(`Failed to update message ${messageId}: ${error.message}`);
     }
   }
 }

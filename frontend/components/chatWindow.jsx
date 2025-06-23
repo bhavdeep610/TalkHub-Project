@@ -393,9 +393,24 @@ const ChatWindow = ({
       return;
     }
 
-    const originalMessage = localMessages.find(m => m.id === messageId || m.Id === messageId);
-    if (!originalMessage) return;
+    const originalMessage = localMessages.find(m => 
+      m.id === messageId || m.Id === messageId || 
+      m.id === parseInt(messageId) || m.Id === parseInt(messageId)
+    );
 
+    if (!originalMessage) {
+      toast.error('Message not found');
+      return;
+    }
+
+    // Log the edit attempt
+    console.log('Attempting to edit message:', {
+      messageId,
+      originalContent: originalMessage.content,
+      newContent: editMessageContent
+    });
+
+    // Create optimistic update
     const optimisticMessage = {
       ...originalMessage,
       content: editMessageContent,
@@ -406,76 +421,151 @@ const ChatWindow = ({
 
     // Optimistically update the UI
     setLocalMessages(messages => 
-      messages.map(m => (m.id === messageId || m.Id === messageId) ? optimisticMessage : m)
+      messages.map(m => (
+        (m.id === messageId || m.Id === messageId || 
+         m.id === parseInt(messageId) || m.Id === parseInt(messageId))
+          ? optimisticMessage 
+          : m
+      ))
     );
 
     try {
-      const updatedMessage = await messageService.updateMessage(messageId, editMessageContent.trim());
-      
-      // Update with the server response
-      setLocalMessages(messages =>
-        messages.map(m => (m.id === messageId || m.Id === messageId) 
-          ? {
-              ...updatedMessage,
-              updated: updatedMessage.updated || new Date().toISOString(),
-              updatedAt: updatedMessage.updatedAt || new Date().toISOString()
-            }
-          : m
-        )
-      );
+      // Try SignalR update first for real-time update
+      try {
+        await signalRService.updateMessage(messageId, editMessageContent.trim());
+        console.log('SignalR update successful');
+      } catch (signalRError) {
+        console.warn('SignalR update failed, falling back to REST:', signalRError);
+        
+        // If SignalR fails, try REST API
+        const updatedMessage = await messageService.updateMessage(messageId, editMessageContent.trim());
+        console.log('REST update successful:', updatedMessage);
+
+        // Update with the server response
+        setLocalMessages(messages =>
+          messages.map(m => (
+            (m.id === messageId || m.Id === messageId || 
+             m.id === parseInt(messageId) || m.Id === parseInt(messageId))
+              ? {
+                  ...updatedMessage,
+                  updated: updatedMessage.updated || new Date().toISOString(),
+                  updatedAt: updatedMessage.updatedAt || new Date().toISOString()
+                }
+              : m
+          ))
+        );
+      }
       
       cancelEditing();
       toast.success('Message updated successfully');
     } catch (error) {
-      console.error('Message update failed:', error);
-      toast.error('Failed to update message');
+      console.error('Failed to update message:', {
+        messageId,
+        error: error.message,
+        response: error.response
+      });
       
       // Revert to original message
       setLocalMessages(messages =>
-        messages.map(m => (m.id === messageId || m.Id === messageId) ? originalMessage : m)
+        messages.map(m => (
+          (m.id === messageId || m.Id === messageId || 
+           m.id === parseInt(messageId) || m.Id === parseInt(messageId))
+            ? originalMessage 
+            : m
+        ))
       );
+      
+      // Show appropriate error message
+      if (error.message?.includes('Message not found')) {
+        toast.error('Message was already deleted or not found');
+      } else if (error.message?.includes('Not authorized')) {
+        toast.error('You are not authorized to edit this message');
+      } else {
+        toast.error('Failed to update message. Please try again.');
+      }
     }
   };
 
   const handleDeleteMessage = async (messageId) => {
+    if (!messageId) {
+      toast.error('Invalid message ID');
+      return;
+    }
+
     const originalMessages = [...localMessages];
     
+    // Find the message to be deleted
+    const messageToDelete = localMessages.find(m => 
+      (m.id === messageId || m.Id === messageId || 
+       m.id === parseInt(messageId) || m.Id === parseInt(messageId))
+    );
+
+    if (!messageToDelete) {
+      toast.error('Message not found');
+      return;
+    }
+
+    // Log the message being deleted
+    console.log('Attempting to delete message:', {
+      messageId,
+      message: messageToDelete
+    });
+
     // Optimistically remove the message
-    setLocalMessages(messages => messages.filter(m => 
-      (m.id !== messageId && m.Id !== messageId)
-    ));
+    setLocalMessages(messages => messages.filter(m => {
+      const mId = m.id || m.Id;
+      return mId !== messageId && mId !== parseInt(messageId);
+    }));
 
     try {
-      // Delete via REST API
-      await messageService.deleteMessage(messageId);
-      
-      // Delete via SignalR for real-time update
+      // Try SignalR delete first for real-time update
       try {
         await signalRService.deleteMessage(messageId);
+        console.log('SignalR delete successful');
       } catch (signalRError) {
-        console.warn('SignalR delete failed, but REST delete succeeded:', signalRError);
+        console.warn('SignalR delete failed, falling back to REST:', signalRError);
+        
+        // If SignalR fails, try REST API
+        await messageService.deleteMessage(messageId);
+        console.log('REST delete successful');
       }
 
       toast.success('Message deleted successfully');
     } catch (error) {
-      console.error('Failed to delete message:', error);
+      console.error('Failed to delete message:', {
+        messageId,
+        error: error.message,
+        response: error.response
+      });
+
       // Revert to original messages on error
       setLocalMessages(originalMessages);
-      toast.error('Failed to delete message. Please try again.');
+      
+      // Show appropriate error message
+      if (error.message?.includes('Message not found')) {
+        toast.error('Message was already deleted or not found');
+      } else if (error.message?.includes('Not authorized')) {
+        toast.error('You are not authorized to delete this message');
+      } else {
+        toast.error('Failed to delete message. Please try again.');
+      }
     }
   };
 
   const startEditing = (messageId, content) => {
+    console.log('Starting edit for message:', { messageId, content });
     setEditingMessageId(messageId);
     setEditMessageContent(content);
     setTimeout(() => {
       if (editInputRef.current) {
         editInputRef.current.focus();
+        editInputRef.current.select();
       }
     }, 0);
   };
 
   const cancelEditing = () => {
+    console.log('Canceling edit');
     setEditingMessageId(null);
     setEditMessageContent('');
   };
