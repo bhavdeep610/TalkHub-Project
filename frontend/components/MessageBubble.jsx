@@ -74,9 +74,7 @@ const MessageBubble = ({
         Delete
       </button>
     </div>
-  )}
-</div>
-
+        )}
         
         <div 
           className={`relative group px-3 py-1.5 rounded-lg ${
