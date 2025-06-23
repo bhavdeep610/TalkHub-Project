@@ -65,11 +65,7 @@ const MessageBubble = ({
               Edit
             </button>
             <button
-              onClick={() => {
-                if (window.confirm('Are you sure you want to delete this message?')) {
-                  onDelete(message.id || message.Id);
-                }
-              }}
+              onClick={() => onDelete(message.id || message.Id)}
               className="text-xs bg-white border-2 border-gray-700 text-gray-900 hover:bg-gray-100 px-3 py-0.5 rounded-full shadow-sm transition-all duration-200 font-semibold"
               title="Delete message"
             >
