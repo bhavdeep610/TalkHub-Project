@@ -52,29 +52,31 @@ const MessageBubble = ({
         </div>
       )}
       
-      <div className="flex flex-col max-w-[35%]">
-        {isCurrentUser && !isEditing && (
-          <div className="flex justify-end mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-            <button
-              onClick={() => onEdit(message.id || message.Id, content)}
-              className="text-xs bg-white border-2 border-gray-700 text-gray-900 hover:bg-gray-100 px-3 py-0.5 rounded-full shadow-sm transition-all duration-200 mr-2 font-semibold"
-              title="Edit message"
-            >
-              Edit
-            </button>
-            <button
-              onClick={() => {
-                if (window.confirm('Are you sure you want to delete this message?')) {
-                  onDelete(message.id || message.Id);
-                }
-              }}
-              className="text-xs bg-white border-2 border-gray-700 text-gray-900 hover:bg-gray-100 px-3 py-0.5 rounded-full shadow-sm transition-all duration-200 font-semibold"
-              title="Delete message"
-            >
-              Delete
-            </button>
-          </div>
-        )}
+      <div className="flex flex-col max-w-[35%] group"> {/* ← added `group` here */}
+  {isCurrentUser && !isEditing && (
+    <div className="flex justify-end mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+      <button
+        onClick={() => onEdit(message.id || message.Id, content)}
+        className="text-xs bg-white border-2 border-gray-700 text-gray-900 hover:bg-gray-100 px-3 py-0.5 rounded-full shadow-sm transition-all duration-200 mr-2 font-semibold"
+        title="Edit message"
+      >
+        Edit
+      </button>
+      <button
+        onClick={() => {
+          if (window.confirm('Are you sure you want to delete this message?')) {
+            onDelete(message.id || message.Id);
+          }
+        }}
+        className="text-xs bg-white border-2 border-gray-700 text-gray-900 hover:bg-gray-100 px-3 py-0.5 rounded-full shadow-sm transition-all duration-200 font-semibold"
+        title="Delete message"
+      >
+        Delete
+      </button>
+    </div>
+  )}
+</div>
+
         
         <div 
           className={`relative group px-3 py-1.5 rounded-lg ${
