@@ -82,15 +82,8 @@ export const useChatAPI = () => {
     };
   }, []);
 
-  const debouncedFetchUsers = useCallback(async () => {
-    if (!currentUser) return;
-    
-    const now = Date.now();
-    if (now - lastUsersFetchTimeRef.current < 5000) {
-      return; 
-    }
-
-    if (isLoadingUsers) return;
+  const fetchRegisteredUsers = useCallback(async () => {
+    if (!currentUser || isLoadingUsers) return;
 
     setIsLoadingUsers(true);
     setError(null);
@@ -107,54 +100,26 @@ export const useChatAPI = () => {
         
         if (filteredUsers.length > 0) {
           setRegisteredUsers(prevUsers => {
-            const hasChanges = filteredUsers.some(newUser => {
-              const existingUser = prevUsers.find(u => u.id === newUser.id);
-              return !existingUser || existingUser.username !== newUser.username;
-            });
-
-            if (!hasChanges) {
+            // Deep comparison of users to prevent unnecessary updates
+            const prevUsersStr = JSON.stringify(prevUsers);
+            const newUsersStr = JSON.stringify(filteredUsers);
+            
+            if (prevUsersStr === newUsersStr) {
               return prevUsers;
             }
 
-            const currentOrder = new Map(prevUsers.map((user, index) => [user.id, index]));
-            
-            let maxOrder = currentOrder.size > 0 
-              ? Math.max(...Array.from(currentOrder.values())) + 1 
-              : 0;
-            
-            filteredUsers.forEach(user => {
-              if (!currentOrder.has(user.id)) {
-                currentOrder.set(user.id, maxOrder++);
-              }
-            });
-            
-            const sortedUsers = filteredUsers.sort((a, b) => {
-              const orderA = currentOrder.get(a.id) ?? Number.MAX_SAFE_INTEGER;
-              const orderB = currentOrder.get(b.id) ?? Number.MAX_SAFE_INTEGER;
-              return orderA - orderB;
-            });
-            
-            userOrderRef.current = currentOrder;
-            
-            return sortedUsers;
+            return filteredUsers;
           });
-          lastUsersFetchTimeRef.current = now;
         }
       }
     } catch (error) {
       console.error("Failed to fetch users:", error);
       setError("Failed to load users. Please try again later.");
+      throw error; // Re-throw to handle in the component
     } finally {
       setIsLoadingUsers(false);
     }
   }, [currentUser, isLoadingUsers]);
-
-  const fetchRegisteredUsers = useCallback(() => {
-    if (fetchUsersTimerRef.current) {
-      clearTimeout(fetchUsersTimerRef.current);
-    }
-    fetchUsersTimerRef.current = setTimeout(debouncedFetchUsers, 2000);
-  }, [debouncedFetchUsers]);
 
   const debouncedFetchMessages = useCallback(
     debounce((userId) => {
@@ -608,21 +573,8 @@ export const useChatAPI = () => {
   useEffect(() => {
     if (currentUser) {
       let isMounted = true;
-      let pollTimeoutId = null;
-      let lastPollTime = Date.now();
 
-      const pollUsers = async () => {
-        if (!isMounted) return;
-
-        const now = Date.now();
-        const timeSinceLastPoll = now - lastPollTime;
-        
-        // Only poll if it's been at least 10 seconds since the last poll
-        if (timeSinceLastPoll < 10000) {
-          pollTimeoutId = setTimeout(pollUsers, 10000 - timeSinceLastPoll);
-          return;
-        }
-
+      const initializeData = async () => {
         try {
           const response = await API.get('/Chat/conversations');
           if (!isMounted) return;
@@ -636,67 +588,23 @@ export const useChatAPI = () => {
                          conv.user.userName || conv.user.UserName
               }
             }));
-
-            // Only update if there are actual changes
+            
             setConversations(prev => {
               const hasChanges = JSON.stringify(prev) !== JSON.stringify(formattedConversations);
               return hasChanges ? formattedConversations : prev;
             });
           }
         } catch (error) {
-          console.error('Error polling conversations:', error);
-        } finally {
-          lastPollTime = Date.now();
-          if (isMounted) {
-            pollTimeoutId = setTimeout(pollUsers, 10000);
-          }
+          console.error('Error initializing data:', error);
         }
       };
 
-      // Initial poll
-      pollUsers();
+      initializeData();
 
       return () => {
         isMounted = false;
-        if (pollTimeoutId) {
-          clearTimeout(pollTimeoutId);
-        }
       };
     }
-  }, [currentUser]);
-
-  // Remove messagesPollInterval and conversationsPollInterval
-  useEffect(() => {
-    if (!currentUser) return;
-    let isMounted = true;
-
-    const initializeData = async () => {
-      try {
-        const response = await API.get('/Chat/conversations');
-        if (!isMounted) return;
-
-        if (response.data && Array.isArray(response.data)) {
-          const formattedConversations = response.data.map(conv => ({
-            ...conv,
-            user: {
-              id: conv.user.id || conv.user.Id,
-              username: conv.user.username || conv.user.Username || 
-                       conv.user.userName || conv.user.UserName
-            }
-          }));
-          
-          setConversations(formattedConversations);
-        }
-      } catch (error) {
-        console.error('Error initializing data:', error);
-      }
-    };
-
-    initializeData();
-
-    return () => {
-      isMounted = false;
-    };
   }, [currentUser]);
 
   const updateMessages = useCallback((updatedMessages) => {

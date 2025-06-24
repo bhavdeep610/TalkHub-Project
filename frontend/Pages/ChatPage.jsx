@@ -49,6 +49,8 @@ const ChatPage = () => {
   const [loadingPictures, setLoadingPictures] = useState(false);
   const profilePictureFetchTimeoutRef = useRef(null);
   const [dialogLoading, setDialogLoading] = useState(false);
+  const [hasInitiallyFetched, setHasInitiallyFetched] = useState(false);
+  const initialFetchRef = useRef(false);
 
   useEffect(() => {
     try {
@@ -127,11 +129,14 @@ const ChatPage = () => {
   };
 
   const filteredUsers = useMemo(() => {
-    if (!searchQuery) return registeredUsers.filter(u => u.id !== currentUser?.id);
-    const query = searchQuery.toLowerCase();
-    return registeredUsers.filter(
-      u => u.id !== currentUser?.id && u.username.toLowerCase().includes(query)
-    );
+    if (!registeredUsers || !currentUser) return [];
+    const users = searchQuery 
+      ? registeredUsers.filter(u => 
+          u.id !== currentUser.id && 
+          u.username.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      : registeredUsers.filter(u => u.id !== currentUser.id);
+    return users;
   }, [registeredUsers, searchQuery, currentUser?.id]);
 
   const debouncedFetchProfilePictures = useCallback((users) => {
@@ -234,16 +239,31 @@ const ChatPage = () => {
   }, [conversations]);
 
   useEffect(() => {
-    if (showNewChatDialog && !registeredUsers.length && !isLoadingUsers) {
-      setDialogLoading(true);
-      fetchRegisteredUsers().finally(() => {
-        setDialogLoading(false);
-      });
+    if (showNewChatDialog && !initialFetchRef.current) {
+      const fetchUsers = async () => {
+        setDialogLoading(true);
+        try {
+          await fetchRegisteredUsers();
+          initialFetchRef.current = true;
+          setHasInitiallyFetched(true);
+        } finally {
+          setDialogLoading(false);
+        }
+      };
+      fetchUsers();
     }
-  }, [showNewChatDialog, registeredUsers.length, isLoadingUsers, fetchRegisteredUsers]);
+
+    if (!showNewChatDialog) {
+      initialFetchRef.current = false;
+    }
+  }, [showNewChatDialog, fetchRegisteredUsers]);
 
   const NewChatDialog = useMemo(() => {
     if (!showNewChatDialog) return null;
+
+    const isLoading = dialogLoading && !hasInitiallyFetched;
+    const showEmptyState = !isLoading && filteredUsers.length === 0;
+    const showUserList = !isLoading && filteredUsers.length > 0;
 
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -267,19 +287,20 @@ const ChatPage = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors duration-200"
+                disabled={isLoading}
               />
             </div>
           </div>
           <div className="overflow-y-auto flex-1 p-2">
-            {dialogLoading || isLoadingUsers || loadingPictures ? (
+            {isLoading ? (
               <div className="flex justify-center items-center py-4">
                 <div className="animate-spin rounded-full h-6 w-6 border-2 border-purple-500"></div>
               </div>
-            ) : filteredUsers.length === 0 ? (
+            ) : showEmptyState ? (
               <div className="text-center py-4 text-gray-500">
                 {searchQuery ? 'No users found' : 'Start typing to search users'}
               </div>
-            ) : (
+            ) : showUserList && (
               <div className="space-y-2">
                 {filteredUsers.map(user => (
                   <div
@@ -324,10 +345,9 @@ const ChatPage = () => {
     );
   }, [
     showNewChatDialog,
-    searchQuery,
     dialogLoading,
-    isLoadingUsers,
-    loadingPictures,
+    hasInitiallyFetched,
+    searchQuery,
     filteredUsers,
     userProfilePictures,
     handleUserSelect
