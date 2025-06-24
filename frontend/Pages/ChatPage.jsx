@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import API from '../src/services/api';
 import { useNavigate } from 'react-router-dom';
 import ChatSidebar from '../components/ChatSidebar';
@@ -47,6 +47,7 @@ const ChatPage = () => {
     return {};
   });
   const [loadingPictures, setLoadingPictures] = useState(false);
+  const profilePictureFetchTimeoutRef = useRef(null);
 
   useEffect(() => {
     try {
@@ -132,14 +133,30 @@ const ChatPage = () => {
     );
   }, [registeredUsers, searchQuery, currentUser?.id]);
 
+  const debouncedFetchProfilePictures = useCallback((users) => {
+    if (profilePictureFetchTimeoutRef.current) {
+      clearTimeout(profilePictureFetchTimeoutRef.current);
+    }
+    
+    profilePictureFetchTimeoutRef.current = setTimeout(() => {
+      fetchProfilePictures(users);
+    }, 1000); // 1 second debounce
+  }, []);
+
   useEffect(() => {
     if (showNewChatDialog && filteredUsers.length > 0) {
       const usersWithoutPictures = filteredUsers.filter(user => !userProfilePictures[user.id]);
       if (usersWithoutPictures.length > 0) {
-        fetchProfilePictures(usersWithoutPictures);
+        debouncedFetchProfilePictures(usersWithoutPictures);
       }
     }
-  }, [showNewChatDialog, filteredUsers]);
+
+    return () => {
+      if (profilePictureFetchTimeoutRef.current) {
+        clearTimeout(profilePictureFetchTimeoutRef.current);
+      }
+    };
+  }, [showNewChatDialog, filteredUsers, userProfilePictures, debouncedFetchProfilePictures]);
 
   useEffect(() => {
     const clearExpiredCache = () => {
@@ -214,6 +231,89 @@ const ChatPage = () => {
       fetchProfilePictures(users);
     }
   }, [conversations]);
+
+  const NewChatDialog = useMemo(() => {
+    if (!showNewChatDialog) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white rounded-lg shadow-xl w-96 max-h-[80vh] flex flex-col">
+          <div className="p-4 border-b border-gray-200">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-gray-800">New Chat</h3>
+              <button
+                onClick={() => setShowNewChatDialog(false)}
+                className="text-gray-500 hover:text-gray-700 transition-colors duration-200"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="mt-4">
+              <input
+                type="text"
+                placeholder="Search users..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors duration-200"
+              />
+            </div>
+          </div>
+          <div className="overflow-y-auto flex-1 p-2">
+            {isLoadingUsers || loadingPictures ? (
+              <div className="flex justify-center items-center py-4">
+                <div className="animate-spin rounded-full h-6 w-6 border-2 border-purple-500"></div>
+              </div>
+            ) : filteredUsers.length === 0 ? (
+              <div className="text-center py-4 text-gray-500">
+                No users found
+              </div>
+            ) : (
+              filteredUsers.map(user => (
+                <div
+                  key={user.id}
+                  onClick={() => handleUserSelect(user)}
+                  className="flex items-center p-3 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors duration-200"
+                >
+                  <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-purple-600 flex-shrink-0 transform hover:scale-105 transition-transform duration-200">
+                    {loadingPictures ? (
+                      <div className="w-full h-full bg-gray-100 animate-pulse flex items-center justify-center">
+                        <div className="w-5 h-5 border-2 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
+                      </div>
+                    ) : userProfilePictures[user.id] ? (
+                      <img 
+                        src={userProfilePictures[user.id]}
+                        alt={`${user.username}'s profile`}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          console.error(`Error loading image for user ${user.username}:`, e);
+                          e.target.onerror = null;
+                          setUserProfilePictures(prev => ({
+                            ...prev,
+                            [user.id]: null
+                          }));
+                        }}
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-purple-100 flex items-center justify-center">
+                        <span className="text-sm font-medium text-purple-600">
+                          {user.username[0].toUpperCase()}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="ml-3">
+                    <p className="font-medium text-gray-900">{user.username}</p>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }, [showNewChatDialog, searchQuery, filteredUsers, isLoadingUsers, loadingPictures, userProfilePictures, handleUserSelect]);
 
   if (authLoading) {
     return (
@@ -303,90 +403,11 @@ const ChatPage = () => {
             )}
           </div>
         </div>
+        {NewChatDialog}
       </motion.div>
-
-      {showNewChatDialog && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl w-96 max-h-[80vh] flex flex-col">
-            <div className="p-4 border-b border-gray-200">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-800">New Chat</h3>
-                <button
-                  onClick={() => setShowNewChatDialog(false)}
-                  className="text-gray-500 hover:text-gray-700 transition-colors duration-200"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-              <div className="mt-4">
-                <input
-                  type="text"
-                  placeholder="Search users..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors duration-200"
-                />
-              </div>
-            </div>
-            <div className="overflow-y-auto flex-1 p-2">
-              {isLoadingUsers || loadingPictures ? (
-                <div className="flex justify-center items-center py-4">
-                  <div className="animate-spin rounded-full h-6 w-6 border-2 border-purple-500"></div>
-                </div>
-              ) : filteredUsers.length === 0 ? (
-                <div className="text-center py-4 text-gray-500">
-                  No users found
-                </div>
-              ) : (
-                filteredUsers.map(user => (
-                  <div
-                    key={user.id}
-                    onClick={() => {
-                      handleUserSelect(user);
-                    }}
-                    className="flex items-center p-3 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors duration-200"
-                  >
-                    <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-purple-600 flex-shrink-0 transform hover:scale-105 transition-transform duration-200">
-                      {loadingPictures ? (
-                        <div className="w-full h-full bg-gray-100 animate-pulse flex items-center justify-center">
-                          <div className="w-5 h-5 border-2 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
-                        </div>
-                      ) : userProfilePictures[user.id] ? (
-                        <img 
-                          src={userProfilePictures[user.id]}
-                          alt={`${user.username}'s profile`}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            console.error(`Error loading image for user ${user.username}:`, e);
-                            e.target.onerror = null;
-                            setUserProfilePictures(prev => ({
-                              ...prev,
-                              [user.id]: null
-                            }));
-                          }}
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-purple-100 flex items-center justify-center">
-                          <span className="text-sm font-medium text-purple-600">
-                      {user.username[0].toUpperCase()}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="ml-3">
-                      <p className="font-medium text-gray-900">{user.username}</p>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
 
 export default React.memo(ChatPage);
+

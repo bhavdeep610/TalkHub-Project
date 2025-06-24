@@ -99,11 +99,27 @@ public class ChatController : ControllerBase
     {
         try
         {
-        int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-        var message = await _context.Messages.FindAsync(id);
+            int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var message = await _context.Messages.FindAsync(id);
 
-        message.Content = dto.NewContent;
-        await _context.SaveChangesAsync();
+            if (message == null)
+            {
+                return NotFound(new { message = "Message not found" });
+            }
+
+            if (message.SenderId != userId)
+            {
+                return Unauthorized(new { message = "Not authorized to update this message" });
+            }
+
+            if (string.IsNullOrWhiteSpace(dto.NewContent))
+            {
+                return BadRequest(new { message = "Message content cannot be empty" });
+            }
+
+            message.Content = dto.NewContent;
+            message.Updated = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
 
             var senderName = await _context.Users
                 .Where(u => u.Id == message.SenderId)
@@ -122,13 +138,14 @@ public class ChatController : ControllerBase
                 senderId = message.SenderId,
                 receiverId = message.ReceiverId,
                 created = message.Created,
+                updated = message.Updated,
                 senderName = senderName,
                 receiverName = receiverName
             });
         }
         catch (Exception ex)
         {
-            return StatusCode(500, $"An error occurred while updating the message: {ex.Message}");
+            return StatusCode(500, new { message = $"An error occurred while updating the message: {ex.Message}" });
         }
     }
 

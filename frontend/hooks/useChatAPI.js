@@ -107,6 +107,15 @@ export const useChatAPI = () => {
         
         if (filteredUsers.length > 0) {
           setRegisteredUsers(prevUsers => {
+            const hasChanges = filteredUsers.some(newUser => {
+              const existingUser = prevUsers.find(u => u.id === newUser.id);
+              return !existingUser || existingUser.username !== newUser.username;
+            });
+
+            if (!hasChanges) {
+              return prevUsers;
+            }
+
             const currentOrder = new Map(prevUsers.map((user, index) => [user.id, index]));
             
             let maxOrder = currentOrder.size > 0 
@@ -144,7 +153,7 @@ export const useChatAPI = () => {
     if (fetchUsersTimerRef.current) {
       clearTimeout(fetchUsersTimerRef.current);
     }
-    fetchUsersTimerRef.current = setTimeout(debouncedFetchUsers, 1000); 
+    fetchUsersTimerRef.current = setTimeout(debouncedFetchUsers, 2000);
   }, [debouncedFetchUsers]);
 
   const debouncedFetchMessages = useCallback(
