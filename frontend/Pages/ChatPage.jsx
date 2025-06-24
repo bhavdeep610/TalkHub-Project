@@ -48,6 +48,7 @@ const ChatPage = () => {
   });
   const [loadingPictures, setLoadingPictures] = useState(false);
   const profilePictureFetchTimeoutRef = useRef(null);
+  const [dialogLoading, setDialogLoading] = useState(false);
 
   useEffect(() => {
     try {
@@ -232,6 +233,15 @@ const ChatPage = () => {
     }
   }, [conversations]);
 
+  useEffect(() => {
+    if (showNewChatDialog && !registeredUsers.length && !isLoadingUsers) {
+      setDialogLoading(true);
+      fetchRegisteredUsers().finally(() => {
+        setDialogLoading(false);
+      });
+    }
+  }, [showNewChatDialog, registeredUsers.length, isLoadingUsers, fetchRegisteredUsers]);
+
   const NewChatDialog = useMemo(() => {
     if (!showNewChatDialog) return null;
 
@@ -261,59 +271,67 @@ const ChatPage = () => {
             </div>
           </div>
           <div className="overflow-y-auto flex-1 p-2">
-            {isLoadingUsers || loadingPictures ? (
+            {dialogLoading || isLoadingUsers || loadingPictures ? (
               <div className="flex justify-center items-center py-4">
                 <div className="animate-spin rounded-full h-6 w-6 border-2 border-purple-500"></div>
               </div>
             ) : filteredUsers.length === 0 ? (
               <div className="text-center py-4 text-gray-500">
-                No users found
+                {searchQuery ? 'No users found' : 'Start typing to search users'}
               </div>
             ) : (
-              filteredUsers.map(user => (
-                <div
-                  key={user.id}
-                  onClick={() => handleUserSelect(user)}
-                  className="flex items-center p-3 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors duration-200"
-                >
-                  <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-purple-600 flex-shrink-0 transform hover:scale-105 transition-transform duration-200">
-                    {loadingPictures ? (
-                      <div className="w-full h-full bg-gray-100 animate-pulse flex items-center justify-center">
-                        <div className="w-5 h-5 border-2 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
-                      </div>
-                    ) : userProfilePictures[user.id] ? (
-                      <img 
-                        src={userProfilePictures[user.id]}
-                        alt={`${user.username}'s profile`}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          console.error(`Error loading image for user ${user.username}:`, e);
-                          e.target.onerror = null;
-                          setUserProfilePictures(prev => ({
-                            ...prev,
-                            [user.id]: null
-                          }));
-                        }}
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-purple-100 flex items-center justify-center">
-                        <span className="text-sm font-medium text-purple-600">
-                          {user.username[0].toUpperCase()}
-                        </span>
-                      </div>
-                    )}
+              <div className="space-y-2">
+                {filteredUsers.map(user => (
+                  <div
+                    key={user.id}
+                    onClick={() => handleUserSelect(user)}
+                    className="flex items-center p-3 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors duration-200"
+                  >
+                    <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-purple-600 flex-shrink-0 transform hover:scale-105 transition-transform duration-200">
+                      {userProfilePictures[user.id] ? (
+                        <img 
+                          src={userProfilePictures[user.id]}
+                          alt={`${user.username}'s profile`}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                          onError={(e) => {
+                            console.error(`Error loading image for user ${user.username}:`, e);
+                            e.target.onerror = null;
+                            setUserProfilePictures(prev => ({
+                              ...prev,
+                              [user.id]: null
+                            }));
+                          }}
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-purple-100 flex items-center justify-center">
+                          <span className="text-sm font-medium text-purple-600">
+                            {user.username[0].toUpperCase()}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="ml-3">
+                      <p className="font-medium text-gray-900">{user.username}</p>
+                    </div>
                   </div>
-                  <div className="ml-3">
-                    <p className="font-medium text-gray-900">{user.username}</p>
-                  </div>
-                </div>
-              ))
+                ))}
+              </div>
             )}
           </div>
         </div>
       </div>
     );
-  }, [showNewChatDialog, searchQuery, filteredUsers, isLoadingUsers, loadingPictures, userProfilePictures, handleUserSelect]);
+  }, [
+    showNewChatDialog,
+    searchQuery,
+    dialogLoading,
+    isLoadingUsers,
+    loadingPictures,
+    filteredUsers,
+    userProfilePictures,
+    handleUserSelect
+  ]);
 
   if (authLoading) {
     return (

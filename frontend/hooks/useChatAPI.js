@@ -606,177 +606,23 @@ export const useChatAPI = () => {
   }, [selectedUser?.id, currentUser?.id]);
 
   useEffect(() => {
-    if (!currentUser) return;
-
-    let isMounted = true;
-    let pollTimeoutId = null;
-    let lastUpdateTime = Date.now();
-    let consecutiveNoChanges = 0;
-
-    const pollConversations = async () => {
-      if (!isMounted) return;
-
-      const now = Date.now();
-      const timeSinceLastUpdate = now - lastUpdateTime;
-      
-      const minPollInterval = Math.min(3000 * Math.pow(1.5, consecutiveNoChanges), 10000);
-      
-      if (timeSinceLastUpdate < minPollInterval) {
-        pollTimeoutId = setTimeout(pollConversations, minPollInterval - timeSinceLastUpdate);
-        return;
-      }
-
-      try {
-        const response = await API.get('/Chat/conversations');
-        if (!isMounted) return;
-
-        if (response.data && Array.isArray(response.data)) {
-          const formattedConversations = response.data.map(conv => ({
-            user: {
-              id: conv.user.id,
-              username: conv.user.username || `User ${conv.user.id}`
-            },
-            lastMessage: conv.lastMessage,
-            messages: conv.messages || [],
-            hasMessages: Boolean(conv.messages?.length)
-          }));
-
-          setConversations(prev => {
-            const hasChanges = JSON.stringify(prev) !== JSON.stringify(formattedConversations);
-            if (hasChanges) {
-              consecutiveNoChanges = 0;
-              return formattedConversations;
-            }
-            consecutiveNoChanges++;
-            return prev;
-          });
-        }
-      } catch (error) {
-        console.error('Error polling conversations:', error);
-        consecutiveNoChanges++;
-      } finally {
-        lastUpdateTime = Date.now();
-        if (isMounted) {
-          const nextPollInterval = Math.min(3000 * Math.pow(1.5, consecutiveNoChanges), 10000);
-          pollTimeoutId = setTimeout(pollConversations, nextPollInterval);
-        }
-      }
-    };
-
-    pollConversations();
-
-    return () => {
-      isMounted = false;
-      if (pollTimeoutId) {
-        clearTimeout(pollTimeoutId);
-      }
-    };
-  }, [currentUser?.id]);
-
-  const updateMessages = useCallback((updatedMessages) => {
-    setMessages(updatedMessages);
-  }, []);
-
-  useEffect(() => {
     if (currentUser) {
       let isMounted = true;
+      let pollTimeoutId = null;
+      let lastPollTime = Date.now();
 
-      const initializeData = async () => {
-        try {
-          setIsLoadingConversations(true);
-          const response = await API.get('/Chat/conversations');
-          if (!isMounted) return;
+      const pollUsers = async () => {
+        if (!isMounted) return;
 
-          if (response.data) {
-            const formattedConversations = response.data.map(conv => ({
-              ...conv,
-              user: {
-                id: conv.user.id || conv.user.Id,
-                username: conv.user.username || conv.user.Username || conv.user.userName || conv.user.UserName
-              }
-            }));
-            
-            setConversations(formattedConversations);
-            
-            if (formattedConversations.length > 0) {
-              const mostRecentConversation = formattedConversations[0];
-              const partnerId = mostRecentConversation.user.id;
-              
-              try {
-                const partnerResponse = await API.get(`/Chat/user/${partnerId}`);
-                if (!isMounted) return;
-
-                if (partnerResponse.data) {
-                  const userData = {
-                    id: partnerResponse.data.id || partnerResponse.data.Id,
-                    username: partnerResponse.data.username || partnerResponse.data.Username || 
-                             partnerResponse.data.userName || partnerResponse.data.UserName
-                  };
-                  setSelectedUser(userData);
-                  
-                  const messagesResponse = await API.get(`/Chat/get/${partnerId}`);
-                  if (!isMounted) return;
-
-                  if (messagesResponse.data && Array.isArray(messagesResponse.data)) {
-                    const formattedMessages = messagesResponse.data.map(msg => ({
-                      id: msg.id || msg.Id,
-                      senderId: msg.senderId || msg.SenderId,
-                      senderName: msg.senderName || msg.SenderName,
-                      receiverId: msg.receiverId || msg.ReceiverId,
-                      receiverName: msg.receiverName || msg.ReceiverName,
-                      content: msg.content || msg.Content,
-                      timestamp: msg.created || msg.Created
-                    }));
-                    setMessages(formattedMessages);
-                  }
-                }
-              } catch (error) {
-                console.error('Error fetching user or messages:', error);
-              }
-            }
-          }
-        } catch (error) {
-          console.error('Error initializing chat data:', error);
-        } finally {
-          if (isMounted) {
-            setIsLoadingConversations(false);
-          }
+        const now = Date.now();
+        const timeSinceLastPoll = now - lastPollTime;
+        
+        // Only poll if it's been at least 10 seconds since the last poll
+        if (timeSinceLastPoll < 10000) {
+          pollTimeoutId = setTimeout(pollUsers, 10000 - timeSinceLastPoll);
+          return;
         }
-      };
 
-      initializeData();
-
-      const messagesPollInterval = setInterval(async () => {
-        if (selectedUser) {
-          try {
-            const response = await API.get(`/Chat/get/${selectedUser.id}`);
-            if (!isMounted) return;
-
-            if (response.data && Array.isArray(response.data)) {
-              const formattedMessages = response.data.map(msg => ({
-                id: msg.id || msg.Id,
-                senderId: msg.senderId || msg.SenderId,
-                senderName: msg.senderName || msg.SenderName,
-                receiverId: msg.receiverId || msg.ReceiverId,
-                receiverName: msg.receiverName || msg.ReceiverName,
-                content: msg.content || msg.Content,
-                timestamp: msg.created || msg.Created
-              }));
-
-              setMessages(prevMessages => {
-                if (formattedMessages.length > prevMessages.length) {
-                  return formattedMessages;
-                }
-                return prevMessages;
-              });
-            }
-          } catch (error) {
-            console.error('Error polling messages:', error);
-          }
-        }
-      }, 3000);
-
-      const conversationsPollInterval = setInterval(async () => {
         try {
           const response = await API.get('/Chat/conversations');
           if (!isMounted) return;
@@ -790,54 +636,72 @@ export const useChatAPI = () => {
                          conv.user.userName || conv.user.UserName
               }
             }));
-            setConversations(formattedConversations);
+
+            // Only update if there are actual changes
+            setConversations(prev => {
+              const hasChanges = JSON.stringify(prev) !== JSON.stringify(formattedConversations);
+              return hasChanges ? formattedConversations : prev;
+            });
           }
         } catch (error) {
           console.error('Error polling conversations:', error);
+        } finally {
+          lastPollTime = Date.now();
+          if (isMounted) {
+            pollTimeoutId = setTimeout(pollUsers, 10000);
+          }
         }
-      }, 5000);
+      };
+
+      // Initial poll
+      pollUsers();
 
       return () => {
         isMounted = false;
-        clearInterval(messagesPollInterval);
-        clearInterval(conversationsPollInterval);
+        if (pollTimeoutId) {
+          clearTimeout(pollTimeoutId);
+        }
       };
     }
   }, [currentUser]);
 
+  // Remove messagesPollInterval and conversationsPollInterval
   useEffect(() => {
-    if (selectedUser && currentUser) {
-      let isMounted = true;
+    if (!currentUser) return;
+    let isMounted = true;
 
-      const fetchInitialMessages = async () => {
-        try {
-          const response = await API.get(`/Chat/get/${selectedUser.id}`);
-          if (!isMounted) return;
+    const initializeData = async () => {
+      try {
+        const response = await API.get('/Chat/conversations');
+        if (!isMounted) return;
 
-          if (response.data && Array.isArray(response.data)) {
-            const formattedMessages = response.data.map(msg => ({
-              id: msg.id || msg.Id,
-              senderId: msg.senderId || msg.SenderId,
-              senderName: msg.senderName || msg.SenderName,
-              receiverId: msg.receiverId || msg.ReceiverId,
-              receiverName: msg.receiverName || msg.ReceiverName,
-              content: msg.content || msg.Content,
-              timestamp: msg.created || msg.Created
-            }));
-            setMessages(formattedMessages);
-          }
-        } catch (error) {
-          console.error('Error fetching initial messages:', error);
+        if (response.data && Array.isArray(response.data)) {
+          const formattedConversations = response.data.map(conv => ({
+            ...conv,
+            user: {
+              id: conv.user.id || conv.user.Id,
+              username: conv.user.username || conv.user.Username || 
+                       conv.user.userName || conv.user.UserName
+            }
+          }));
+          
+          setConversations(formattedConversations);
         }
-      };
+      } catch (error) {
+        console.error('Error initializing data:', error);
+      }
+    };
 
-      fetchInitialMessages();
+    initializeData();
 
-      return () => {
-        isMounted = false;
-      };
-    }
-  }, [selectedUser, currentUser]);
+    return () => {
+      isMounted = false;
+    };
+  }, [currentUser]);
+
+  const updateMessages = useCallback((updatedMessages) => {
+    setMessages(updatedMessages);
+  }, []);
 
   return {
     conversations,
